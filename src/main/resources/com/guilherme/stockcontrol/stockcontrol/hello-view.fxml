@@ -5,12 +5,53 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.guilherme.stockcontrol.stockcontrol.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<BorderPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="480.0"
+            prefWidth="720.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <VBox BorderPane.alignment="CENTER">
+            <children>
+                <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@assets/img/logo-placeholder.jpg"/>
+                    </image>
+                </ImageView>
+                <Button mnemonicParsing="false" prefHeight="46.0" prefWidth="200.0"
+                        style="-fx-background-color: #0073e6;" text="Home" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
+                </Button>
+            </children>
+        </VBox>
+    </left>
+    <center>
+        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+            <children>
+                <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="200.0">
+                    <children>
+                        <Button graphicTextGap="8.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0"
+                                style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Add"
+                                textFill="WHITE">
+                            <graphic>
+                                <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@assets/icons/plus-solid.png"/>
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+            </padding>
+        </VBox>
+    </center>
+</BorderPane>
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
