@@ -17,16 +17,12 @@ public class HelloController {
 
     public Button addNewItemBtn;
 
-    public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws IOException {
+    public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloController.class.getResource("add-item-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        InsertItemApplication insertItemApplication = new InsertItemApplication();
         Stage stage = new Stage();
-        stage.setTitle("Insert Item!");
-        stage.setScene(scene);
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(addNewItemBtn.getScene().getWindow());
-        stage.show();
+
+        insertItemApplication.start(stage);
 
     }
 }
