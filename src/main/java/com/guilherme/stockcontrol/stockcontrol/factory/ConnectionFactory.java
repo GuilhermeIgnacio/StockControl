@@ -9,7 +9,7 @@ public class ConnectionFactory {
 
     private static final String PASSWORD = "";
 
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/stockdb";
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/StockDb";
 
     public static Connection createConnectionToMySql() throws Exception {
         Class.forName("com.mysql.jdbc.Driver");

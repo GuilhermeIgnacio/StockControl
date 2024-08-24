@@ -1,5 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -47,7 +49,28 @@ public class InsertItemController {
     }
 
     public void onSaveItemClicked(ActionEvent actionEvent) {
-        //Todo: Save Item, If Saved Successfully Close Window and Clear Input Fields else, Show Error.
+        StockDAO stockDao = new StockDAO();
+
+        String itemName = itemNameTextField.getText(); //This Field Cannot Be Null
+        String itemDescription = itemDescriptionTextField.getText();
+        float itemPrice = Float.parseFloat(priceTextField.getText()); //This Field Cannot Be Null
+        int itemQuantity = Integer.parseInt(itemQuantityTextField.getText()); //This Field Cannot Be Null
+
+        Item item = new Item();
+        item.setItemName(itemName);
+        item.setItemDescription(itemDescription);
+        item.setItemPrice(itemPrice);
+        item.setItemQuantity(itemQuantity);
+
+        if (!itemNameTextField.getText().isEmpty() || !priceTextField.getText().isEmpty() || !itemQuantityTextField.getText().isEmpty()) {
+            stockDao.insertItem(item);
+            Stage stage = (Stage) saveItemBtn.getScene().getWindow();
+            stage.close();
+        } else {
+            //Todo: Trigger Error Warning
+        }
+
+
     }
 
     public void onClearFieldsBtnClicked(ActionEvent actionEvent) {
