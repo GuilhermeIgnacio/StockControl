@@ -6,5 +6,7 @@ module com.guilherme.stockcontrol.stockcontrol {
 
 
     opens com.guilherme.stockcontrol.stockcontrol to javafx.fxml;
+    opens com.guilherme.stockcontrol.stockcontrol.model;
     exports com.guilherme.stockcontrol.stockcontrol;
+
 }
