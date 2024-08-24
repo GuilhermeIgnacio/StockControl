@@ -1,5 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,5 +26,12 @@ public class HelloController {
 
         insertItemApplication.start(stage);
 
+    }
+
+    public void onFetchBtnClicked(ActionEvent actionEvent) {
+        StockDAO stockDAO = new StockDAO();
+        for (Item item : stockDAO.fetchItems()) {
+            System.out.println(item.getItemName() + " - " + item.getItemDescription() + " - " + item.getItemQuantity() + " - " + item.getItemPrice() + " - " + item.getCreatedAt() + " - " + item.getUpdatedAt());
+        }
     }
 }

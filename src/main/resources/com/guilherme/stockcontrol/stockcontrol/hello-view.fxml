@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.HelloController" >
+<BorderPane maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.HelloController">
     <left>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -42,6 +42,7 @@
                         </Button>
                     </children>
                 </HBox>
+            <Button mnemonicParsing="false" onAction="#onFetchBtnClicked" text="Button" />
             </children>
             <padding>
                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />

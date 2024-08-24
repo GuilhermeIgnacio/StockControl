@@ -5,8 +5,12 @@ import com.guilherme.stockcontrol.stockcontrol.model.Item;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StockDAO {
+
     public void insertItem(Item item) {
         String sql = "INSERT INTO items(itemName, itemDescription, itemQuantity, itemPrice) VALUES (?, ?, ?, ?)";
         Connection conn = null;
@@ -42,6 +46,42 @@ public class StockDAO {
         }
 
     }
+
+    public List<Item> fetchItems() {
+        String sql = "SELECT * FROM items";
+        List<Item> items = new ArrayList<>();
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                Item item = new Item();
+
+                item.setId(resultSet.getInt("id"));
+                item.setItemName(resultSet.getString("itemName"));
+                item.setItemDescription(resultSet.getString("itemDescription"));
+                item.setItemQuantity(resultSet.getInt("itemQuantity"));
+                item.setItemPrice(resultSet.getFloat("itemPrice"));
+                item.setCreatedAt(resultSet.getTimestamp("createdAt").toLocalDateTime());
+                item.setUpdatedAt(resultSet.getTimestamp("updatedAt").toLocalDateTime());
+
+                items.add(item);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return items;
+
+    }
+
 }
 
 
