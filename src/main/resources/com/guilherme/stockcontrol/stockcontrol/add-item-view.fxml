@@ -14,12 +14,12 @@
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
 
-                <TextField maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Name">
+                <TextField fx:id="itemNameTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="Name">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextField>
-                <TextArea maxWidth="1.7976931348623157E308" prefHeight="100.0" promptText="Description" wrapText="true">
+                <TextArea fx:id="itemDescriptionTextField" maxWidth="1.7976931348623157E308" prefHeight="100.0" promptText="Description" wrapText="true">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
@@ -29,24 +29,24 @@
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="priceTextField1" layoutX="10.0" layoutY="136.0" maxWidth="-Infinity" promptText="Quantity">
+                <TextField fx:id="itemQuantityTextField" layoutX="10.0" layoutY="136.0" maxWidth="-Infinity" promptText="Quantity">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextField>
-            <HBox fillHeight="false" maxHeight="-Infinity" prefWidth="200.0">
-               <children>
-                      <Button fx:id="addNewItemBtn" graphicTextGap="8.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Save" textFill="WHITE">
-                </Button>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" text="Clear Fields">
-                     <HBox.margin>
-                        <Insets right="4.0" />
-                     </HBox.margin>
-                  </Button>
-                  <Button layoutX="404.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" text="Cancel" />
-               </children>
-            </HBox>
+                <HBox fillHeight="false" maxHeight="-Infinity" prefWidth="200.0">
+                    <children>
+                        <Button fx:id="saveItemBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveItemClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Save" textFill="WHITE">
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Clear Fields">
+                            <HBox.margin>
+                                <Insets right="4.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button fx:id="cancelBtn" layoutX="404.0" layoutY="10.0" mnemonicParsing="false" onAction="#onCancelBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Cancel" />
+                    </children>
+                </HBox>
             </children>
         </VBox>
     </center>
