@@ -44,6 +44,8 @@ public class HelloController implements Initializable {
 
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
+    StockDAO stockDAO = new StockDAO();
+
     public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
 
         InsertItemApplication insertItemApplication = new InsertItemApplication();
@@ -59,7 +61,7 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        StockDAO stockDAO = new StockDAO();
+//        StockDAO stockDAO = new StockDAO();
 
         try {
             itemList.clear();
@@ -104,6 +106,9 @@ public class HelloController implements Initializable {
 
     public void onDeleteBtnClicked(ActionEvent actionEvent) {
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+
+            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Confirm Item Delete");
             alert.setHeaderText("Are You Sure You Want to Delete This Item? This Action Cannot be Undone");
@@ -115,11 +120,14 @@ public class HelloController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonTypeOne) {
-                //Item Deletion Confirmed
-                //Refresh TableView
+                //User Confirmed Item Deletion
+                //Todo: Refresh TableView
                 System.out.println("Item Deleted");
+
+                stockDAO.deleteItemById(selectedItem.getId());
+
             } else {
-                //Item Deletion Canceled
+                //User Cancelled Item Deletion
                 System.out.println("Item Deletion Canceled");
             }
         }

@@ -82,6 +82,34 @@ public class StockDAO {
 
     }
 
+    public void deleteItemById(int id) {
+        String sql = "DELETE FROM items WHERE id = ?";
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, id);
+            pstm.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }
 
 
