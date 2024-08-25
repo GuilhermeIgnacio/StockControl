@@ -12,9 +12,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -23,6 +21,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
@@ -40,6 +39,9 @@ public class HelloController implements Initializable {
     public TableColumn<Item, String> updatedAtTableColumn;
     //Table Columns
 
+    public Button editBtn;
+    public Button deleteBtn;
+
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
     public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
@@ -52,10 +54,6 @@ public class HelloController implements Initializable {
     }
 
     public void onFetchBtnClicked(ActionEvent actionEvent) {
-        StockDAO stockDAO = new StockDAO();
-        for (Item item : stockDAO.fetchItems()) {
-            System.out.println(item.getItemName() + " - " + item.getItemDescription() + " - " + item.getItemQuantity() + " - " + item.getItemPrice() + " - " + item.getCreatedAt() + " - " + item.getUpdatedAt());
-        }
     }
 
     @Override
@@ -94,5 +92,36 @@ public class HelloController implements Initializable {
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
+    }
+
+    public void onEditBtnClicked(ActionEvent actionEvent) {
+
+        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+            //Todo: Open Window Edit
+        }
+
+    }
+
+    public void onDeleteBtnClicked(ActionEvent actionEvent) {
+        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Item Delete");
+            alert.setHeaderText("Are You Sure You Want to Delete This Item? This Action Cannot be Undone");
+
+            ButtonType buttonTypeOne = new ButtonType("Confirm");
+            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+            alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == buttonTypeOne) {
+                //Item Deletion Confirmed
+                //Refresh TableView
+                System.out.println("Item Deleted");
+            } else {
+                //Item Deletion Canceled
+                System.out.println("Item Deletion Canceled");
+            }
+        }
     }
 }
