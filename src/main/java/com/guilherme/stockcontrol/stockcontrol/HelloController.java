@@ -95,10 +95,17 @@ public class HelloController implements Initializable {
         }
     }
 
-    public void onEditBtnClicked(ActionEvent actionEvent) {
+    public void onEditBtnClicked(ActionEvent actionEvent) throws IOException {
 
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
             //Todo: Open Window Edit
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("edit-item-view.fxml"));
+
+            EditItemController controller = loader.getController();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            stage.showAndWait();
         }
 
     }
@@ -119,8 +126,6 @@ public class HelloController implements Initializable {
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonTypeOne) {
-                //User Confirmed Item Deletion
-                //Todo: Refresh TableView
 
                 stockDAO.deleteItemById(selectedItem.getId());
                 fetchItems();
@@ -135,4 +140,7 @@ public class HelloController implements Initializable {
     public void onRefreshBtnClicked(ActionEvent actionEvent) {
         fetchItems();
     }
+
+
+
 }
