@@ -47,7 +47,25 @@
                   </Button>
                     </children>
                 </HBox>
-                <Button mnemonicParsing="false" onAction="#onFetchBtnClicked" text="Button" />
+            <HBox alignment="TOP_RIGHT" prefWidth="200.0">
+               <children>
+                  <Button graphicTextGap="8.0" mnemonicParsing="false" onAction="#onRefreshBtnClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Refresh" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/icons/arrows-rotate-solid.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="8.0" top="16.0" />
+               </VBox.margin>
+            </HBox>
                 <TableView fx:id="itemTableView" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                         <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="id" />

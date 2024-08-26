@@ -55,9 +55,6 @@ public class HelloController implements Initializable {
 
     }
 
-    public void onFetchBtnClicked(ActionEvent actionEvent) {
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -133,5 +130,9 @@ public class HelloController implements Initializable {
                 System.out.println("Item Deletion Canceled");
             }
         }
+    }
+
+    public void onRefreshBtnClicked(ActionEvent actionEvent) {
+        fetchItems();
     }
 }
