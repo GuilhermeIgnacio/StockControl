@@ -1,10 +1,10 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.event.ActionEvent;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.util.function.UnaryOperator;
 
@@ -14,6 +14,12 @@ public class EditItemController {
     public TextArea itemDescriptionTextField;
     public TextField priceTextField;
     public TextField itemQuantityTextField;
+    public Button saveItemBtn;
+    public Button clearFieldsBtn;
+    public Button cancelBtn;
+    public Label errorLabel;
+
+    StockDAO stockDAO = new StockDAO();
 
     public void initialize() {
         UnaryOperator<TextFormatter.Change> filter = change -> {
@@ -50,4 +56,43 @@ public class EditItemController {
         priceTextField.setText(String.valueOf(item.getItemPrice()));
     }
 
+    public void onClearFieldBtnClicked(ActionEvent actionEvent) {
+        itemNameTextField.clear();
+        itemDescriptionTextField.clear();
+        priceTextField.clear();
+        itemQuantityTextField.clear();
+    }
+
+    public void onCancelBtnClicked(ActionEvent actionEvent) {
+        Stage stage = (Stage) cancelBtn.getScene().getWindow();
+        stage.close();
+    }
+
+    public void onSaveBtnClicked(ActionEvent actionEvent) {
+
+        if (!itemNameTextField.getText().isEmpty() || !priceTextField.getText().isEmpty() || !itemQuantityTextField.getText().isEmpty()) {
+
+            String itemName = itemNameTextField.getText();
+            String itemDescription = itemDescriptionTextField.getText();
+            int itemQuantity = Integer.parseInt(itemQuantityTextField.getText());
+            float itemPrice = Float.parseFloat(priceTextField.getText());
+
+            Item item = new Item();
+            item.setId(itemID);
+            item.setItemName(itemName);
+            item.setItemDescription(itemDescription);
+            item.setItemQuantity(itemQuantity);
+            item.setItemPrice(itemPrice);
+
+            try {
+                //Update Item
+            } catch (Exception e) {
+                errorLabel.setText("Error: " + e);
+            }
+
+        } else {
+            errorLabel.setText("Make sure you have filled out all the required fields.");
+        }
+
+    }
 }
