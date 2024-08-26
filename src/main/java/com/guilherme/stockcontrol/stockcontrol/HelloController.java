@@ -61,8 +61,19 @@ public class HelloController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-//        StockDAO stockDAO = new StockDAO();
+        fetchItems();
 
+        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
+        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
+        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
+        priceTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
+        createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
+        updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
+
+    }
+
+    private void fetchItems() {
         try {
             itemList.clear();
 
@@ -85,15 +96,6 @@ public class HelloController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
-        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
-        priceTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
-        createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
-
     }
 
     public void onEditBtnClicked(ActionEvent actionEvent) {
@@ -122,9 +124,9 @@ public class HelloController implements Initializable {
             if (result.get() == buttonTypeOne) {
                 //User Confirmed Item Deletion
                 //Todo: Refresh TableView
-                System.out.println("Item Deleted");
 
                 stockDAO.deleteItemById(selectedItem.getId());
+                fetchItems();
 
             } else {
                 //User Cancelled Item Deletion
