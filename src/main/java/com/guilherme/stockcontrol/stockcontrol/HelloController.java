@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -99,12 +100,19 @@ public class HelloController implements Initializable {
 
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
             //Todo: Open Window Edit
+
+            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("edit-item-view.fxml"));
 
-            EditItemController controller = loader.getController();
-
-            Stage stage = new Stage();
+            Stage stage = new Stage(StageStyle.DECORATED);
             stage.setScene(new Scene(loader.load()));
+            stage.setMinWidth(500.0);
+            stage.setMinHeight(400.0);
+
+            EditItemController controller = loader.getController();
+            controller.getItem(selectedItem);
+
             stage.showAndWait();
         }
 
@@ -140,7 +148,6 @@ public class HelloController implements Initializable {
     public void onRefreshBtnClicked(ActionEvent actionEvent) {
         fetchItems();
     }
-
 
 
 }
