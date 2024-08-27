@@ -85,7 +85,9 @@ public class EditItemController {
             item.setItemPrice(itemPrice);
 
             try {
-                //Update Item
+                stockDAO.updateItem(item);
+                Stage stage = (Stage) saveItemBtn.getScene().getWindow();
+                stage.close();
             } catch (Exception e) {
                 errorLabel.setText("Error: " + e);
             }

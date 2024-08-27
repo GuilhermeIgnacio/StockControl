@@ -114,6 +114,9 @@ public class HelloController implements Initializable {
             controller.getItem(selectedItem);
 
             stage.showAndWait();
+
+            fetchItems();
+
         }
 
     }

@@ -82,6 +82,43 @@ public class StockDAO {
 
     }
 
+    public void updateItem(Item item) {
+        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, itemPrice = ? WHERE id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setString(1, item.getItemName());
+            pstm.setString(2, item.getItemDescription());
+            pstm.setInt(3, item.getItemQuantity());
+            pstm.setFloat(4, item.getItemPrice());
+            pstm.setInt(5, item.getId());
+
+            pstm.execute();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void deleteItemById(int id) {
         String sql = "DELETE FROM items WHERE id = ?";
         Connection conn = null;
