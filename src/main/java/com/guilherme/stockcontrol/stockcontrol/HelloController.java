@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -99,7 +100,6 @@ public class HelloController implements Initializable {
     public void onEditBtnClicked(ActionEvent actionEvent) throws IOException {
 
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
-            //Todo: Open Window Edit
 
             Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
 
@@ -153,4 +153,28 @@ public class HelloController implements Initializable {
     }
 
 
+    public void onItemClicked(MouseEvent mouseEvent) throws IOException {
+
+        if (mouseEvent.getClickCount() == 2) {
+
+            if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+                Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
+
+                Stage stage = new Stage(StageStyle.DECORATED);
+                stage.setScene(new Scene(loader.load()));
+                stage.setMinWidth(500.0);
+                stage.setMinHeight(400.0);
+
+                ItemDetailController controller = loader.getController();
+                controller.getItem(selectedItem);
+
+                stage.showAndWait();
+            }
+
+        }
+
+
+    }
 }

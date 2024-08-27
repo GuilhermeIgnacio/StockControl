@@ -66,7 +66,7 @@
                   <Insets bottom="8.0" top="16.0" />
                </VBox.margin>
             </HBox>
-                <TableView fx:id="itemTableView" prefHeight="200.0" prefWidth="200.0">
+                <TableView fx:id="itemTableView" onMouseClicked="#onItemClicked" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                         <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="id" />
                         <TableColumn fx:id="nameTableColumn" prefWidth="75.0" text="Name" />
