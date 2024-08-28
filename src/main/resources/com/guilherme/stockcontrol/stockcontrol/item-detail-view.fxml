@@ -1,14 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.guilherme.stockcontrol.stockcontrol.ItemDetailController"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.ItemDetailController">
+    <content>
+        <BorderPane prefHeight="200.0" prefWidth="200.0">
+            <center>
+                <VBox minHeight="-Infinity" prefWidth="100.0" styleClass="card" BorderPane.alignment="CENTER">
+                    <children>
+                        <VBox prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                            <children>
+                                <Label text="ID" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="detailIdLabel" layoutX="10.0" layoutY="10.0" text="item_id" textFill="WHITE" />
+                            </children>
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="24.0" />
+                            </VBox.margin>
+                        </VBox>
+                        <VBox layoutX="26.0" layoutY="26.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                            <children>
+                                <Label text="Name" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="detailNameLabel" layoutX="10.0" layoutY="10.0" text="item_name" textFill="WHITE" />
+                            </children>
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="24.0" />
+                            </VBox.margin>
+                        </VBox>
+                        <VBox layoutX="26.0" layoutY="86.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                            <children>
+                                <Label text="Description" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Label fx:id="detailDescriptionLabel" layoutX="10.0" layoutY="10.0" text="item_desc" textFill="WHITE" wrapText="true" />
+                            </children>
+                            <padding>
+                                <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets bottom="24.0" />
+                            </VBox.margin>
+                        </VBox>
+                  <HBox fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="200.0" spacing="32.0">
+                     <children>
+                        <VBox maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                           <children>
+                              <Label text="Quantity" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="detailQuantityLabel" layoutX="10.0" layoutY="10.0" text="item_quantity" textFill="WHITE" wrapText="true" />
+                           </children>
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                           <children>
+                              <Label text="Price" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="detailPriceLabel" layoutX="10.0" layoutY="10.0" text="item_price" textFill="WHITE" wrapText="true" />
+                           </children>
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </HBox>
+                    </children>
+                    <padding>
+                        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+                    </padding>
+                </VBox>
+            </center>
+        </BorderPane>
+    </content>
+</ScrollPane>
