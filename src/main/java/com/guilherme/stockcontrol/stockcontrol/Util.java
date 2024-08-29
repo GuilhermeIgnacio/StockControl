@@ -19,7 +19,8 @@ public class Util {
     }
 
     public static UnaryOperator<TextFormatter.Change> getChangeUnaryOperator(String regex) {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
+        return change -> {
+
             String newText = change.getControlNewText();
 
             if (newText.matches(regex)) {
@@ -27,7 +28,6 @@ public class Util {
             }
             return null;
         };
-        return filter;
     }
 
 }
