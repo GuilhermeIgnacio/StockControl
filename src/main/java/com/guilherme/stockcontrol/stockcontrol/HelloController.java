@@ -18,10 +18,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -37,8 +39,8 @@ public class HelloController implements Initializable {
     public TableColumn<Item, String> descriptionTableColumn;
     public TableColumn<Item, String> quantityTableColumn;
     public TableColumn<Item, String> priceTableColumn;
-    public TableColumn<Item, String> createdAtTableColumn;
-    public TableColumn<Item, String> updatedAtTableColumn;
+    public TableColumn<Item, LocalDateTime> createdAtTableColumn;
+    public TableColumn<Item, LocalDateTime> updatedAtTableColumn;
     //Table Columns
 
     public Button editBtn;
@@ -72,6 +74,42 @@ public class HelloController implements Initializable {
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+        createdAtTableColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Item, LocalDateTime> call(TableColumn<Item, LocalDateTime> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(LocalDateTime item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item.format(formatter));
+                        }
+                    }
+                };
+            }
+        });
+
+        updatedAtTableColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Item, LocalDateTime> call(TableColumn<Item, LocalDateTime> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(LocalDateTime item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(item.format(formatter));
+                        }
+                    }
+                };
+            }
+        });
+
     }
 
     private void fetchItems() {
@@ -88,6 +126,10 @@ public class HelloController implements Initializable {
                 newItem.setItemPrice(item.getItemPrice());
                 newItem.setCreatedAt(item.getCreatedAt());
                 newItem.setUpdatedAt(item.getUpdatedAt());
+
+
+                // Custom CellFactory para createdAt
+
 
                 itemList.add(newItem);
                 itemTableView.setItems(itemList);
