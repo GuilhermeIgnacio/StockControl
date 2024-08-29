@@ -55,6 +55,8 @@ public class HelloController implements Initializable {
 
         insertItemApplication.start(stage);
 
+        fetchItems();
+
     }
 
     @Override

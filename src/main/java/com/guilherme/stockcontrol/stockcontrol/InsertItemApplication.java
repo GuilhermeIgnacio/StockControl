@@ -16,6 +16,6 @@ public class InsertItemApplication extends Application {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(500.0);
         stage.setMinHeight(400.0);
-        stage.show();
+        stage.showAndWait();
     }
 }
