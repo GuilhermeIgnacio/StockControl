@@ -166,6 +166,7 @@ public class HelloController implements Initializable {
 
                 Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(new Scene(loader.load()));
+                stage.setTitle(selectedItem.getItemName());
                 stage.setMinWidth(500.0);
                 stage.setMinHeight(400.0);
 

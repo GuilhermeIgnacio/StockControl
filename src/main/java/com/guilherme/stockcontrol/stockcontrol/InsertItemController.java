@@ -44,6 +44,9 @@ public class InsertItemController {
         TextFormatter<String> intTextFormatter = new TextFormatter<>(intFilter);
         itemQuantityTextField.setTextFormatter(intTextFormatter);
 
+        Util.addTextLimiter(itemNameTextField, 100);
+        //Todo: Add Char Counter Under Item Name Textfield.
+
     }
 
     public void onSaveItemClicked(ActionEvent actionEvent) {
