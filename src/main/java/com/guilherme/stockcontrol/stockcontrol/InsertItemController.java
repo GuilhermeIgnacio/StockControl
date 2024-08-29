@@ -9,6 +9,9 @@ import javafx.stage.Stage;
 
 import java.util.function.UnaryOperator;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.addTextLimiter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperator;
+
 public class InsertItemController {
     public TextField itemNameTextField;
     public TextArea itemDescriptionTextField;
@@ -20,34 +23,18 @@ public class InsertItemController {
     public Label errorLabel;
 
     public void initialize() {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
 
-            if (newText.matches("\\d*(\\.\\d*)?")) {
-                return change;
-            }
-            return null;
-        };
-
-        UnaryOperator<TextFormatter.Change> intFilter = change -> {
-            String newText = change.getControlNewText();
-
-            if (newText.matches("^-?\\d*$")) {
-                return change;
-            }
-            return null;
-        };
-
-        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> textFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
         priceTextField.setTextFormatter(textFormatter);
 
-        TextFormatter<String> intTextFormatter = new TextFormatter<>(intFilter);
+        TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
         itemQuantityTextField.setTextFormatter(intTextFormatter);
 
-        Util.addTextLimiter(itemNameTextField, 100);
-        //Todo: Add Char Counter Under Item Name Textfield.
+        addTextLimiter(itemNameTextField, 100);
+        //Todo: Add Char Counter Under Item Name Text field.
 
     }
+
 
     public void onSaveItemClicked(ActionEvent actionEvent) {
         StockDAO stockDao = new StockDAO();

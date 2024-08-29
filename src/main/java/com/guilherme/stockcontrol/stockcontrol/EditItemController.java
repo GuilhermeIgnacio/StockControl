@@ -8,6 +8,9 @@ import javafx.stage.Stage;
 
 import java.util.function.UnaryOperator;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.addTextLimiter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperator;
+
 public class EditItemController {
     public int itemID;
     public TextField itemNameTextField;
@@ -22,29 +25,14 @@ public class EditItemController {
     StockDAO stockDAO = new StockDAO();
 
     public void initialize() {
-        UnaryOperator<TextFormatter.Change> filter = change -> {
-            String newText = change.getControlNewText();
 
-            if (newText.matches("\\d*(\\.\\d*)?")) {
-                return change;
-            }
-            return null;
-        };
-
-        UnaryOperator<TextFormatter.Change> intFilter = change -> {
-            String newText = change.getControlNewText();
-
-            if (newText.matches("^-?\\d*$")) {
-                return change;
-            }
-            return null;
-        };
-
-        TextFormatter<String> textFormatter = new TextFormatter<>(filter);
+        TextFormatter<String> textFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
         priceTextField.setTextFormatter(textFormatter);
 
-        TextFormatter<String> intTextFormatter = new TextFormatter<>(intFilter);
+        TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
         itemQuantityTextField.setTextFormatter(intTextFormatter);
+
+        addTextLimiter(itemNameTextField, 100);
 
     }
 
