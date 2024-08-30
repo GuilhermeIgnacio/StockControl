@@ -12,7 +12,8 @@ public class ConnectionFactory {
     private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/StockDb";
 
     public static Connection createConnectionToMySql() throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+
+        //Class.forName("com.mysql.jdbc.Driver"); Deprecated
 
         return DriverManager.getConnection(DATABASE_URL, USERNAME, PASSWORD);
 
