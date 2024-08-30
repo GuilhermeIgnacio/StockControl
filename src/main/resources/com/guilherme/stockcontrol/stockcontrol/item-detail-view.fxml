@@ -12,7 +12,7 @@
     <content>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <center>
-                <VBox minHeight="-Infinity" prefWidth="100.0" styleClass="card" BorderPane.alignment="CENTER">
+                <VBox minHeight="-Infinity" prefWidth="100.0" spacing="16.0" styleClass="card" BorderPane.alignment="CENTER">
                     <children>
                         <VBox prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
@@ -26,9 +26,6 @@
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                             </padding>
-                            <VBox.margin>
-                                <Insets bottom="24.0" />
-                            </VBox.margin>
                         </VBox>
                         <VBox layoutX="26.0" layoutY="26.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
@@ -42,9 +39,6 @@
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                             </padding>
-                            <VBox.margin>
-                                <Insets bottom="24.0" />
-                            </VBox.margin>
                         </VBox>
                         <VBox layoutX="26.0" layoutY="86.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
@@ -58,10 +52,33 @@
                             <padding>
                                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                             </padding>
-                            <VBox.margin>
-                                <Insets bottom="24.0" />
-                            </VBox.margin>
                         </VBox>
+                  <VBox layoutX="26.0" layoutY="178.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                     <children>
+                        <Label text="Created At" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="detailCreatedAtLabel" layoutX="10.0" layoutY="10.0" text="item_desc" textFill="WHITE" wrapText="true" />
+                     </children>
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                  </VBox>
+                  <VBox layoutX="26.0" layoutY="254.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                     <children>
+                        <Label text="Last Update" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="detailUpdatedAtLabel" layoutX="10.0" layoutY="10.0" text="item_desc" textFill="WHITE" wrapText="true" />
+                     </children>
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                  </VBox>
                   <HBox fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="200.0" spacing="32.0">
                      <children>
                         <VBox maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
