@@ -22,11 +22,16 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.formatter;
 
 public class HelloController implements Initializable {
 
@@ -38,7 +43,7 @@ public class HelloController implements Initializable {
     public TableColumn<Item, String> nameTableColumn;
     public TableColumn<Item, String> descriptionTableColumn;
     public TableColumn<Item, String> quantityTableColumn;
-    public TableColumn<Item, String> priceTableColumn;
+    public TableColumn<Item, Float> priceTableColumn;
     public TableColumn<Item, LocalDateTime> createdAtTableColumn;
     public TableColumn<Item, LocalDateTime> updatedAtTableColumn;
     //Table Columns
@@ -74,7 +79,23 @@ public class HelloController implements Initializable {
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        priceTableColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Item, Float> call(TableColumn<Item, Float> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(Float item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(currencyFormatter.format(item));
+//                            setText("R$" + item);
+                        }
+                    }
+                };
+            }
+        });
 
         createdAtTableColumn.setCellFactory(new Callback<>() {
             @Override
