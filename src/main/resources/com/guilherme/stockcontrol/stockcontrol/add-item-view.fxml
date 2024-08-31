@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="400.0" maxWidth="1.7976931348623157E308" minHeight="400.0" minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.InsertItemController">
+<BorderPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.InsertItemController">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
@@ -26,29 +26,17 @@
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextArea>
-                <TextField fx:id="priceTextField" maxWidth="-Infinity" promptText="Price*">
+                <TextField fx:id="itemQuantityTextField" layoutX="10.0" layoutY="136.0" maxWidth="1.7976931348623157E308" promptText="Quantity*">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextField>
-                <TextField fx:id="itemQuantityTextField" layoutX="10.0" layoutY="136.0" maxWidth="-Infinity" promptText="Quantity*">
-                    <VBox.margin>
-                        <Insets bottom="8.0" />
-                    </VBox.margin>
-                </TextField>
-                <HBox fillHeight="false" maxHeight="-Infinity" prefWidth="200.0">
-                    <children>
-                        <Button fx:id="saveItemBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveItemClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Save" textFill="WHITE">
-                        </Button>
-                        <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Clear Fields">
-                            <HBox.margin>
-                                <Insets right="4.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button fx:id="cancelBtn" layoutX="404.0" layoutY="10.0" mnemonicParsing="false" onAction="#onCancelBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Cancel" />
-                    </children>
-                </HBox>
+            <HBox prefWidth="200.0" spacing="8.0">
+               <children>
+                      <TextField fx:id="purchasePriceTextField" maxWidth="-Infinity" promptText="Purchase Price*" />
+                  <TextField fx:id="retailPriceTextField" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" promptText="Retail Price*" />
+               </children>
+            </HBox>
             <Label fx:id="errorLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="RED" wrapText="true">
                <VBox.margin>
                   <Insets top="16.0" />
@@ -57,6 +45,23 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <VBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+               <children>
+                      <HBox fillHeight="false" minHeight="-Infinity" prefWidth="200.0">
+                          <children>
+                              <Button fx:id="saveItemBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveItemClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Save" textFill="WHITE">
+                        </Button>
+                              <Region HBox.hgrow="ALWAYS" />
+                              <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Clear Fields">
+                                  <HBox.margin>
+                                      <Insets right="4.0" />
+                                  </HBox.margin>
+                              </Button>
+                              <Button fx:id="cancelBtn" layoutX="404.0" layoutY="10.0" mnemonicParsing="false" onAction="#onCancelBtnClicked" prefHeight="29.0" prefWidth="90.0" text="Cancel" />
+                          </children>
+                      </HBox>
+               </children>
+            </VBox>
             </children>
         </VBox>
     </center>

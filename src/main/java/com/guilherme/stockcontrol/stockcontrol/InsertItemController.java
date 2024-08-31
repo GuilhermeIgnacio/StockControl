@@ -12,7 +12,8 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperato
 public class InsertItemController {
     public TextField itemNameTextField;
     public TextArea itemDescriptionTextField;
-    public TextField priceTextField;
+    public TextField purchasePriceTextField;
+    public TextField retailPriceTextField;
     public TextField itemQuantityTextField;
     public Button saveItemBtn;
     public Button clearFieldsBtn;
@@ -22,7 +23,11 @@ public class InsertItemController {
     public void initialize() {
 
         TextFormatter<String> textFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
-        priceTextField.setTextFormatter(textFormatter);
+        purchasePriceTextField.setTextFormatter(textFormatter);
+
+        TextFormatter<String> retailPriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
+        retailPriceTextField.setTextFormatter(retailPriceFormatter);
+
 
         TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
         itemQuantityTextField.setTextFormatter(intTextFormatter);
@@ -37,17 +42,19 @@ public class InsertItemController {
         StockDAO stockDao = new StockDAO();
 
 
-        if (!itemNameTextField.getText().isEmpty() && !priceTextField.getText().isEmpty() && !itemQuantityTextField.getText().isEmpty()) {
+        if (!itemNameTextField.getText().isEmpty() && !purchasePriceTextField.getText().isEmpty() && !retailPriceTextField.getText().isEmpty() && !itemQuantityTextField.getText().isEmpty()) {
 
             String itemName = itemNameTextField.getText(); //This Field Cannot Be Null
             String itemDescription = itemDescriptionTextField.getText();
-            float itemPrice = Float.parseFloat(priceTextField.getText()); //This Field Cannot Be Null
+            float purchasePrice = Float.parseFloat(purchasePriceTextField.getText()); //This Field Cannot Be Null
+            float retailPrice = Float.parseFloat(retailPriceTextField.getText()); //This Field Cannot Be Null
             int itemQuantity = Integer.parseInt(itemQuantityTextField.getText()); //This Field Cannot Be Null
 
             Item item = new Item();
             item.setItemName(itemName);
             item.setItemDescription(itemDescription);
-            item.setPurchasePrice(itemPrice);
+            item.setPurchasePrice(purchasePrice);
+            item.setRetailPrice(retailPrice);
             item.setItemQuantity(itemQuantity);
 
             try {
@@ -70,7 +77,8 @@ public class InsertItemController {
     public void onClearFieldsBtnClicked(ActionEvent actionEvent) {
         itemNameTextField.clear();
         itemDescriptionTextField.clear();
-        priceTextField.clear();
+        purchasePriceTextField.clear();
+        retailPriceTextField.clear();
         itemQuantityTextField.clear();
     }
 
