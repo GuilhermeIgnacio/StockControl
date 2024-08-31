@@ -20,6 +20,10 @@ public class InsertItemController {
     public Button cancelBtn;
     public Label errorLabel;
 
+    Item item = new Item();
+
+    boolean editMode = false;
+
     public void initialize() {
 
         TextFormatter<String> textFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
@@ -37,6 +41,25 @@ public class InsertItemController {
 
     }
 
+    public void getItem(Item selectedItem) {
+        if (item != null) {
+            editMode = true;
+
+            item.setId(selectedItem.getId());
+            item.setItemName(selectedItem.getItemName());
+            item.setItemDescription(selectedItem.getItemDescription());
+            item.setItemQuantity(selectedItem.getItemQuantity());
+            item.setPurchasePrice(selectedItem.getPurchasePrice());
+            item.setRetailPrice(selectedItem.getRetailPrice());
+
+            itemNameTextField.setText(item.getItemName());
+            itemDescriptionTextField.setText(item.getItemDescription());
+            itemQuantityTextField.setText(String.valueOf(item.getItemQuantity()));
+            purchasePriceTextField.setText(String.valueOf(item.getPurchasePrice()));
+            retailPriceTextField.setText(String.valueOf(item.getRetailPrice()));
+
+        }
+    }
 
     public void onSaveItemClicked(ActionEvent actionEvent) {
         StockDAO stockDao = new StockDAO();
@@ -50,7 +73,7 @@ public class InsertItemController {
             float retailPrice = Float.parseFloat(retailPriceTextField.getText()); //This Field Cannot Be Null
             int itemQuantity = Integer.parseInt(itemQuantityTextField.getText()); //This Field Cannot Be Null
 
-            Item item = new Item();
+
             item.setItemName(itemName);
             item.setItemDescription(itemDescription);
             item.setPurchasePrice(purchasePrice);
@@ -58,7 +81,13 @@ public class InsertItemController {
             item.setItemQuantity(itemQuantity);
 
             try {
-                stockDao.insertItem(item);
+
+                if (editMode) {
+                    stockDao.updateItem(item);
+                } else {
+                    stockDao.insertItem(item);
+                }
+
                 Stage stage = (Stage) saveItemBtn.getScene().getWindow();
                 stage.close();
             } catch (Exception e) {
