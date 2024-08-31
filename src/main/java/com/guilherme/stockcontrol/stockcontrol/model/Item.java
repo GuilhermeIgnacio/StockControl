@@ -8,7 +8,8 @@ public class Item {
     private String itemName;
     private String itemDescription;
     private int itemQuantity;
-    private float itemPrice;
+    private float purchasePrice;
+    private float retailPrice;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -26,8 +27,11 @@ public class Item {
     public int getItemQuantity() {
         return itemQuantity;
     }
-    public float getItemPrice() {
-        return itemPrice;
+    public float getPurchasePrice() {
+        return purchasePrice;
+    }
+    public float getRetailPrice() {
+        return retailPrice;
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -52,8 +56,11 @@ public class Item {
     public void setItemQuantity(int itemQuantity) {
         this.itemQuantity = itemQuantity;
     }
-    public void setItemPrice(float itemPrice) {
-        this.itemPrice = itemPrice;
+    public void setPurchasePrice(float purchasePrice) {
+        this.purchasePrice = purchasePrice;
+    }
+    public void setRetailPrice(float retailPrice) {
+        this.retailPrice = retailPrice;
     }
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;

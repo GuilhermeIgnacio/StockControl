@@ -6,8 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
-import java.util.function.UnaryOperator;
-
 import static com.guilherme.stockcontrol.stockcontrol.Util.addTextLimiter;
 import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperator;
 
@@ -41,7 +39,7 @@ public class EditItemController {
         itemNameTextField.setText(item.getItemName());
         itemDescriptionTextField.setText(item.getItemDescription());
         itemQuantityTextField.setText(String.valueOf(item.getItemQuantity()));
-        priceTextField.setText(String.valueOf(item.getItemPrice()));
+        priceTextField.setText(String.valueOf(item.getPurchasePrice()));
     }
 
     public void onClearFieldBtnClicked(ActionEvent actionEvent) {
@@ -70,7 +68,7 @@ public class EditItemController {
             item.setItemName(itemName);
             item.setItemDescription(itemDescription);
             item.setItemQuantity(itemQuantity);
-            item.setItemPrice(itemPrice);
+            item.setPurchasePrice(itemPrice);
 
             try {
                 stockDAO.updateItem(item);

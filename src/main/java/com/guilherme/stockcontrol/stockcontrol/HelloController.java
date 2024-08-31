@@ -2,31 +2,22 @@ package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.NumberFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -71,6 +62,7 @@ public class HelloController implements Initializable {
 
         fetchItems();
 
+        //Todo: Add purchasePrice and retailPrice columns
         idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
@@ -144,7 +136,8 @@ public class HelloController implements Initializable {
                 newItem.setItemName(item.getItemName());
                 newItem.setItemDescription(item.getItemDescription());
                 newItem.setItemQuantity(item.getItemQuantity());
-                newItem.setItemPrice(item.getItemPrice());
+                newItem.setPurchasePrice(item.getPurchasePrice());
+                newItem.setRetailPrice(item.getRetailPrice());
                 newItem.setCreatedAt(item.getCreatedAt());
                 newItem.setUpdatedAt(item.getUpdatedAt());
 

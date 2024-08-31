@@ -12,7 +12,7 @@ import java.util.List;
 public class StockDAO {
 
     public void insertItem(Item item) {
-        String sql = "INSERT INTO items(itemName, itemDescription, itemQuantity, itemPrice) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO items(itemName, itemDescription, itemQuantity, purchasePrice, retailPrice) VALUES (?, ?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -23,7 +23,8 @@ public class StockDAO {
             pstm.setString(1, item.getItemName());
             pstm.setString(2, item.getItemDescription());
             pstm.setInt(3, item.getItemQuantity());
-            pstm.setFloat(4, item.getItemPrice());
+            pstm.setFloat(4, item.getPurchasePrice());
+            pstm.setFloat(5, item.getRetailPrice());
 
             pstm.execute();
         } catch (Exception e) {
@@ -67,7 +68,8 @@ public class StockDAO {
                 item.setItemName(resultSet.getString("itemName"));
                 item.setItemDescription(resultSet.getString("itemDescription"));
                 item.setItemQuantity(resultSet.getInt("itemQuantity"));
-                item.setItemPrice(resultSet.getFloat("itemPrice"));
+                item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
+                item.setRetailPrice(resultSet.getFloat("retailPrice"));
                 item.setCreatedAt(resultSet.getTimestamp("createdAt").toLocalDateTime());
                 item.setUpdatedAt(resultSet.getTimestamp("updatedAt").toLocalDateTime());
 
@@ -83,7 +85,7 @@ public class StockDAO {
     }
 
     public void updateItem(Item item) {
-        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, itemPrice = ? WHERE id = ?";
+        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, purchasePrice = ?, retailPrice = ? WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -95,8 +97,9 @@ public class StockDAO {
             pstm.setString(1, item.getItemName());
             pstm.setString(2, item.getItemDescription());
             pstm.setInt(3, item.getItemQuantity());
-            pstm.setFloat(4, item.getItemPrice());
-            pstm.setInt(5, item.getId());
+            pstm.setFloat(4, item.getPurchasePrice());
+            pstm.setFloat(5, item.getRetailPrice());
+            pstm.setInt(6, item.getId());
 
             pstm.execute();
 

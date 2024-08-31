@@ -3,11 +3,8 @@ package com.guilherme.stockcontrol.stockcontrol;
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
-import java.util.function.UnaryOperator;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.addTextLimiter;
 import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperator;
@@ -50,7 +47,7 @@ public class InsertItemController {
             Item item = new Item();
             item.setItemName(itemName);
             item.setItemDescription(itemDescription);
-            item.setItemPrice(itemPrice);
+            item.setPurchasePrice(itemPrice);
             item.setItemQuantity(itemQuantity);
 
             try {
