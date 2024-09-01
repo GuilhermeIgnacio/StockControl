@@ -5,10 +5,11 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.ItemDetailController">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.ItemDetailController">
     <content>
         <BorderPane prefHeight="200.0" prefWidth="200.0">
             <center>
@@ -79,29 +80,56 @@
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                      </padding>
                   </VBox>
-                  <HBox fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="200.0" spacing="32.0">
+                  <VBox maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                      <children>
-                        <VBox maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                        <Label text="Quantity" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="detailQuantityLabel" layoutX="10.0" layoutY="10.0" text="item_quantity" textFill="WHITE" wrapText="true" />
+                     </children>
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                  </VBox>
+                  <HBox fillHeight="false" maxHeight="1.7976931348623157E308" minHeight="-Infinity" prefWidth="200.0" spacing="8.0">
+                     <children>
+                        <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                            <children>
-                              <Label text="Quantity" textFill="WHITE">
+                              <Label text="Purchase Price" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="detailQuantityLabel" layoutX="10.0" layoutY="10.0" text="item_quantity" textFill="WHITE" wrapText="true" />
+                              <Label fx:id="detailPurchasePriceLabel" layoutX="10.0" layoutY="10.0" text="purchase_price" textFill="WHITE" wrapText="true" />
                            </children>
                            <padding>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                            </padding>
                         </VBox>
-                        <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
+                        <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                            <children>
-                              <Label text="Price" textFill="WHITE">
+                              <Label text="Retail Price" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="detailPriceLabel" layoutX="10.0" layoutY="10.0" text="item_price" textFill="WHITE" wrapText="true" />
+                              <Label fx:id="detailRetailPriceLabel" layoutX="10.0" layoutY="10.0" text="purchase_price" textFill="WHITE" wrapText="true" />
+                           </children>
+                           <padding>
+                              <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                           </padding>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <VBox layoutX="168.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="150.0" style="-fx-background-color: #197C45; -fx-background-radius: 10;">
+                           <children>
+                              <Label text="Profit Margin" textFill="WHITE">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="detailProfitMarginLabel" layoutX="10.0" layoutY="10.0" text="profit_margin" textFill="WHITE" wrapText="true" />
                            </children>
                            <padding>
                               <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
