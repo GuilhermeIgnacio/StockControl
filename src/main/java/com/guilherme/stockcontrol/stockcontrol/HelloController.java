@@ -11,7 +11,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -35,13 +34,15 @@ public class HelloController implements Initializable {
     public TableColumn<Item, String> nameTableColumn;
     public TableColumn<Item, String> descriptionTableColumn;
     public TableColumn<Item, String> quantityTableColumn;
-    public TableColumn<Item, Float> priceTableColumn;
+    public TableColumn<Item, Float> purchasePriceTableColumn;
+    public TableColumn<Item, Float> retailPriceTableColumn;
     public TableColumn<Item, LocalDateTime> createdAtTableColumn;
     public TableColumn<Item, LocalDateTime> updatedAtTableColumn;
     //Table Columns
 
     public Button editBtn;
     public Button deleteBtn;
+
 
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
@@ -63,16 +64,34 @@ public class HelloController implements Initializable {
 
         fetchItems();
 
-        //Todo: Add purchasePrice and retailPrice columns
         idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
         quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
-        priceTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemPrice"));
+        purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchasePrice"));
+        retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retailPrice"));
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
         updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        priceTableColumn.setCellFactory(new Callback<>() {
+        purchasePriceTableColumn.setCellFactory(new Callback<>() {
+            @Override
+            public TableCell<Item, Float> call(TableColumn<Item, Float> param) {
+                return new TableCell<>() {
+                    @Override
+                    protected void updateItem(Float item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (item == null || empty) {
+                            setText(null);
+                        } else {
+                            setText(currencyFormatter.format(item));
+//                            setText("R$" + item);
+                        }
+                    }
+                };
+            }
+        });
+
+        retailPriceTableColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Item, Float> call(TableColumn<Item, Float> param) {
                 return new TableCell<>() {

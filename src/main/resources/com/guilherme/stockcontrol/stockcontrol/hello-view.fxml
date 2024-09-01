@@ -72,7 +72,8 @@
                         <TableColumn fx:id="nameTableColumn" prefWidth="75.0" text="Name" />
                         <TableColumn fx:id="descriptionTableColumn" prefWidth="75.0" text="Description" />
                         <TableColumn fx:id="quantityTableColumn" prefWidth="75.0" text="Quantity" />
-                        <TableColumn fx:id="priceTableColumn" prefWidth="75.0" text="Price" />
+                        <TableColumn fx:id="purchasePriceTableColumn" prefWidth="75.0" text="Purchase Price" />
+                  <TableColumn fx:id="retailPriceTableColumn" prefWidth="75.0" text="Retail Price" />
                         <TableColumn fx:id="createdAtTableColumn" prefWidth="75.0" text="Created At" />
                         <TableColumn fx:id="updatedAtTableColumn" prefWidth="75.0" text="Updated At" />
                     </columns>
