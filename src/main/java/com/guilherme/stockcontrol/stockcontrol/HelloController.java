@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
-import static com.guilherme.stockcontrol.stockcontrol.Util.formatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
 
 public class HelloController implements Initializable {
 
@@ -119,7 +119,7 @@ public class HelloController implements Initializable {
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(item.format(formatter));
+                            setText(item.format(dateTimeFormatter));
                         }
                     }
                 };
@@ -136,7 +136,7 @@ public class HelloController implements Initializable {
                         if (item == null || empty) {
                             setText(null);
                         } else {
-                            setText(item.format(formatter));
+                            setText(item.format(dateTimeFormatter));
                         }
                     }
                 };

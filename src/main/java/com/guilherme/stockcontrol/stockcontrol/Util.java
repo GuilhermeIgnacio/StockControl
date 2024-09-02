@@ -1,7 +1,5 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
@@ -33,7 +31,7 @@ public class Util {
         };
     }
 
-    public static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     public static Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
     public static NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 

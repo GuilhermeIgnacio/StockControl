@@ -3,9 +3,8 @@ package com.guilherme.stockcontrol.stockcontrol;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.scene.control.Label;
 
-import java.time.format.DateTimeFormatter;
-
 import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
 
 public class ItemDetailController {
     public Label detailIdLabel;
@@ -17,8 +16,6 @@ public class ItemDetailController {
     public Label detailProfitMarginLabel;
     public Label detailCreatedAtLabel;
     public Label detailUpdatedAtLabel;
-
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public void getItem(Item item) {
         detailIdLabel.setText(String.valueOf(item.getId()));
