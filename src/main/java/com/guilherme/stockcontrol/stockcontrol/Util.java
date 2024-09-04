@@ -4,6 +4,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -14,9 +15,14 @@ import java.util.function.UnaryOperator;
 
 public class Util {
 
-    public static ResourceBundle getProp() throws Exception {
-        FileInputStream file = new FileInputStream("src/main/resources/com/guilherme/stockcontrol/stockcontrol/strings.properties");
-        return new PropertyResourceBundle(file);
+    public static ResourceBundle getProp() {
+        FileInputStream file;
+        try {
+            file = new FileInputStream("src/main/resources/com/guilherme/stockcontrol/stockcontrol/strings.properties");
+            return new PropertyResourceBundle(file);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void addTextLimiter(final TextField textField, final int maxLength) {

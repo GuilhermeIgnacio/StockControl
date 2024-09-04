@@ -33,7 +33,7 @@
             <children>
                 <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                     <children>
-                  <Button graphicTextGap="8.0" layoutX="424.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Add" textFill="WHITE">
+                  <Button graphicTextGap="8.0" layoutX="424.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.insert.new.item" textFill="WHITE">
                      <graphic>
                         <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -49,7 +49,7 @@
                 </HBox>
             <HBox alignment="TOP_RIGHT" prefWidth="200.0">
                <children>
-                  <Button graphicTextGap="8.0" mnemonicParsing="false" onAction="#onRefreshBtnClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Refresh" textFill="WHITE">
+                  <Button graphicTextGap="8.0" mnemonicParsing="false" onAction="#onRefreshBtnClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.refresh" textFill="WHITE">
                      <graphic>
                         <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -68,14 +68,14 @@
             </HBox>
                 <TableView fx:id="itemTableView" onMouseClicked="#onItemClicked" prefHeight="200.0" prefWidth="200.0">
                     <columns>
-                        <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="id" />
-                        <TableColumn fx:id="nameTableColumn" prefWidth="75.0" text="%prop.title" />
-                        <TableColumn fx:id="descriptionTableColumn" prefWidth="75.0" text="Description" />
-                        <TableColumn fx:id="quantityTableColumn" prefWidth="75.0" text="Quantity" />
-                        <TableColumn fx:id="purchasePriceTableColumn" prefWidth="75.0" text="Purchase Price" />
-                  <TableColumn fx:id="retailPriceTableColumn" prefWidth="75.0" text="Retail Price" />
-                        <TableColumn fx:id="createdAtTableColumn" prefWidth="75.0" text="Created At" />
-                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="75.0" text="Updated At" />
+                        <TableColumn fx:id="idTableColumn" prefWidth="75.0" text="%id.table.column" />
+                        <TableColumn fx:id="nameTableColumn" prefWidth="75.0" text="%name.table.column" />
+                        <TableColumn fx:id="descriptionTableColumn" prefWidth="75.0" text="%description.table.column" />
+                        <TableColumn fx:id="quantityTableColumn" prefWidth="75.0" text="%quantity.table.column" />
+                        <TableColumn fx:id="purchasePriceTableColumn" prefWidth="75.0" text="%purchase.price.table.column" />
+                  <TableColumn fx:id="retailPriceTableColumn" prefWidth="75.0" text="%retail.price.table.column" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="75.0" text="%created.table.column" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="75.0" text="%updated.table.column" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -83,7 +83,7 @@
                 </TableView>
             <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                <children>
-                  <Button fx:id="editBtn" alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Edit" textFill="WHITE">
+                  <Button fx:id="editBtn" alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.edit.item" textFill="WHITE">
                      <graphic>
                         <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -98,7 +98,7 @@
                         <Insets right="8.0" />
                      </HBox.margin>
                   </Button>
-                        <Button fx:id="deleteBtn" alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onDeleteBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #e40001; -fx-border-color: transparent;" text="Delete" textFill="WHITE">
+                        <Button fx:id="deleteBtn" alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onDeleteBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #e40001; -fx-border-color: transparent;" text="%button.delete.item" textFill="WHITE">
                             <graphic>
                                 <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
