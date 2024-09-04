@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+
 public class InsertItemApplication extends Application {
 
     Item selectedItem;
@@ -14,6 +16,7 @@ public class InsertItemApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(InsertItemApplication.class.getResource("add-item-view.fxml"));
+        fxmlLoader.setResources(getProp());
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Insert Item");
         stage.setScene(scene);
