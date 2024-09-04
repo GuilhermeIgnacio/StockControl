@@ -3,12 +3,21 @@ package com.guilherme.stockcontrol.stockcontrol;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 
+import java.io.FileInputStream;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Properties;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 public class Util {
+
+    public static ResourceBundle getProp() throws Exception {
+        FileInputStream file = new FileInputStream("src/main/resources/com/guilherme/stockcontrol/stockcontrol/strings.properties");
+        return new PropertyResourceBundle(file);
+    }
 
     public static void addTextLimiter(final TextField textField, final int maxLength) {
         textField.textProperty().addListener((observableValue, oldValue, newValue) -> {

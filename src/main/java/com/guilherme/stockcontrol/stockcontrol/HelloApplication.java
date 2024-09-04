@@ -7,10 +7,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+
 public class HelloApplication extends Application {
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        fxmlLoader.setResources(getProp());
         Scene scene = new Scene(fxmlLoader.load(), 720, 480);
         stage.setTitle("Hello!");
         stage.setScene(scene);
