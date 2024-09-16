@@ -83,7 +83,6 @@ public class HelloController implements Initializable {
                             setText(null);
                         } else {
                             setText(currencyFormatter.format(item));
-//                            setText("R$" + item);
                         }
                     }
                 };
@@ -101,7 +100,6 @@ public class HelloController implements Initializable {
                             setText(null);
                         } else {
                             setText(currencyFormatter.format(item));
-//                            setText("R$" + item);
                         }
                     }
                 };
@@ -199,11 +197,11 @@ public class HelloController implements Initializable {
             Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirm Item Delete");
-            alert.setHeaderText("Are You Sure You Want to Delete This Item? This Action Cannot be Undone");
+            alert.setTitle(getProp().getString("delete.confirm.message"));
+            alert.setHeaderText(getProp().getString("delete.warning"));
 
-            ButtonType buttonTypeOne = new ButtonType("Confirm");
-            ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType buttonTypeOne = new ButtonType(getProp().getString("delete.confirm.button"));
+            ButtonType buttonTypeCancel = new ButtonType(getProp().getString("delete.cancel.button"), ButtonBar.ButtonData.CANCEL_CLOSE);
 
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 
