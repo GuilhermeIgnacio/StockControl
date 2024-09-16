@@ -21,8 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
-import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class HelloController implements Initializable {
 
@@ -234,6 +233,7 @@ public class HelloController implements Initializable {
                 Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
+                loader.setResources(getProp());
 
                 Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(new Scene(loader.load()));

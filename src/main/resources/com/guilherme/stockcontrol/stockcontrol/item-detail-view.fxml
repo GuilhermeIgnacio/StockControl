@@ -17,7 +17,7 @@
                     <children>
                         <VBox prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
-                                <Label text="ID" textFill="WHITE">
+                                <Label text="%detail.id.label" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="18.0" />
                                     </font>
@@ -30,7 +30,7 @@
                         </VBox>
                         <VBox layoutX="26.0" layoutY="26.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
-                                <Label text="Name" textFill="WHITE">
+                                <Label text="%detail.name.label" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="18.0" />
                                     </font>
@@ -43,7 +43,7 @@
                         </VBox>
                         <VBox layoutX="26.0" layoutY="86.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                             <children>
-                                <Label text="Description" textFill="WHITE">
+                                <Label text="%detail.description.label" textFill="WHITE">
                                     <font>
                                         <Font name="System Bold" size="18.0" />
                                     </font>
@@ -56,7 +56,7 @@
                         </VBox>
                   <VBox layoutX="26.0" layoutY="178.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                      <children>
-                        <Label text="Created At" textFill="WHITE">
+                        <Label text="%detail.created.at.label" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -69,7 +69,7 @@
                   </VBox>
                   <VBox layoutX="26.0" layoutY="254.0" prefWidth="100.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                      <children>
-                        <Label text="Last Update" textFill="WHITE">
+                        <Label text="%detail.updated.at.label" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -82,7 +82,7 @@
                   </VBox>
                   <VBox maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                      <children>
-                        <Label text="Quantity" textFill="WHITE">
+                        <Label text="%detail.quantity.label" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
@@ -97,7 +97,7 @@
                      <children>
                         <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                            <children>
-                              <Label text="Purchase Price" textFill="WHITE">
+                              <Label text="%detail.purchase.price.label" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -110,7 +110,7 @@
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="150.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                            <children>
-                              <Label text="Retail Price" textFill="WHITE">
+                              <Label text="%detail.retail.price.label" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>
@@ -124,7 +124,7 @@
                         <Region HBox.hgrow="ALWAYS" />
                         <VBox layoutX="168.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minWidth="150.0" style="-fx-background-color: #197C45; -fx-background-radius: 10;">
                            <children>
-                              <Label text="Profit Margin" textFill="WHITE">
+                              <Label text="%detail.profit.margin.label" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="18.0" />
                                  </font>

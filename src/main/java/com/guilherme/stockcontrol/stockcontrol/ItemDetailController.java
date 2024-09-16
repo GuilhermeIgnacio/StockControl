@@ -3,8 +3,7 @@ package com.guilherme.stockcontrol.stockcontrol;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.scene.control.Label;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
-import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class ItemDetailController {
     public Label detailIdLabel;
@@ -30,7 +29,7 @@ public class ItemDetailController {
 
         float profitMargin = ((item.getRetailPrice() - item.getPurchasePrice()) / item.getRetailPrice()) * 100f;
 
-        String formattedMarginProfit = String.format("%.1f%% (%s per unit)", profitMargin, currencyFormatter.format(item.getRetailPrice() - item.getPurchasePrice()));
+        String formattedMarginProfit = String.format(getProp().getString("detail.per.unit"), profitMargin, currencyFormatter.format(item.getRetailPrice() - item.getPurchasePrice()));
 
         detailProfitMarginLabel.setText(formattedMarginProfit);
 
