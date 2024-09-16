@@ -18,7 +18,11 @@ public class InsertItemApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(InsertItemApplication.class.getResource("add-item-view.fxml"));
         fxmlLoader.setResources(getProp());
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Insert Item");
+        if (selectedItem == null) {
+            stage.setTitle(getProp().getString("insert.window.title"));
+        } else {
+            stage.setTitle(getProp().getString("edit.window.title"));
+        }
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setMinWidth(500.0);
