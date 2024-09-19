@@ -7,10 +7,13 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -18,6 +21,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -25,7 +29,6 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class HelloController implements Initializable {
 
-    public Button addNewItemBtn;
     public TableView itemTableView;
 
     //Table Columns
@@ -41,7 +44,8 @@ public class HelloController implements Initializable {
 
     public Button editBtn;
     public Button deleteBtn;
-
+    public Button statisticsBtn;
+    public VBox contentArea;
 
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
@@ -248,5 +252,14 @@ public class HelloController implements Initializable {
         }
 
 
+    }
+
+    private void loadContent(String fxml) throws Exception {
+        Parent newContent = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml)));
+        contentArea.getChildren().setAll(newContent);
+    }
+
+    public void onStatisticsBtnClicked(ActionEvent actionEvent) throws Exception {
+        loadContent("statistics-view.fxml");
     }
 }
