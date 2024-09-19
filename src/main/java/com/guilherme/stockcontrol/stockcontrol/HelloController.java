@@ -46,6 +46,7 @@ public class HelloController implements Initializable {
     public Button deleteBtn;
     public Button statisticsBtn;
     public VBox contentArea;
+    public Button registerSaleBtn;
 
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
@@ -261,5 +262,26 @@ public class HelloController implements Initializable {
 
     public void onStatisticsBtnClicked(ActionEvent actionEvent) throws Exception {
         loadContent("statistics-view.fxml");
+    }
+
+    public void onRegisterSaleClicked(ActionEvent actionEvent) {
+
+        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+
+            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setHeaderText("Register Sell");
+            dialog.setContentText("Quantidade de Itens Vendidos:");
+
+            TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
+            dialog.getEditor().setTextFormatter(intTextFormatter);
+
+            Optional<String> result = dialog.showAndWait();
+
+            if (result.isPresent()){}
+
+        }
+
     }
 }
