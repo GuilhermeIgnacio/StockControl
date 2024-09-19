@@ -36,6 +36,7 @@ public class HelloController implements Initializable {
     public TableColumn<Item, String> nameTableColumn;
     public TableColumn<Item, String> descriptionTableColumn;
     public TableColumn<Item, String> quantityTableColumn;
+    public TableColumn<Item, String> salesTableColumn;
     public TableColumn<Item, Float> purchasePriceTableColumn;
     public TableColumn<Item, Float> retailPriceTableColumn;
     public TableColumn<Item, LocalDateTime> createdAtTableColumn;
@@ -72,6 +73,7 @@ public class HelloController implements Initializable {
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
         quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
+        salesTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemSales"));
         purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchasePrice"));
         retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retailPrice"));
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
@@ -158,6 +160,7 @@ public class HelloController implements Initializable {
                 newItem.setItemName(item.getItemName());
                 newItem.setItemDescription(item.getItemDescription());
                 newItem.setItemQuantity(item.getItemQuantity());
+                newItem.setItemSales(item.getItemSales());
                 newItem.setPurchasePrice(item.getPurchasePrice());
                 newItem.setRetailPrice(item.getRetailPrice());
                 newItem.setCreatedAt(item.getCreatedAt());
@@ -279,7 +282,8 @@ public class HelloController implements Initializable {
 
             Optional<String> result = dialog.showAndWait();
 
-            if (result.isPresent()){}
+            if (result.isPresent()) {
+            }
 
         }
 

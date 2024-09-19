@@ -36,7 +36,11 @@
                       <TextField fx:id="purchasePriceTextField" maxWidth="-Infinity" promptText="%insert.prompt.text.purchase.price" />
                   <TextField fx:id="retailPriceTextField" layoutX="10.0" layoutY="10.0" maxWidth="-Infinity" promptText="%insert.prompt.text.retail.price" />
                </children>
+               <VBox.margin>
+                  <Insets bottom="8.0" />
+               </VBox.margin>
             </HBox>
+            <TextField fx:id="salesTextField" maxWidth="-Infinity" promptText="Sales" text="0" visible="false" />
             <Label fx:id="errorLabel" alignment="CENTER" maxWidth="1.7976931348623157E308" textAlignment="CENTER" textFill="RED" wrapText="true">
                <VBox.margin>
                   <Insets top="16.0" />

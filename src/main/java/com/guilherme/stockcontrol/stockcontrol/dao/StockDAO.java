@@ -68,6 +68,7 @@ public class StockDAO {
                 item.setItemName(resultSet.getString("itemName"));
                 item.setItemDescription(resultSet.getString("itemDescription"));
                 item.setItemQuantity(resultSet.getInt("itemQuantity"));
+                item.setItemSales(resultSet.getInt("itemSales"));
                 item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
                 item.setRetailPrice(resultSet.getFloat("retailPrice"));
                 item.setCreatedAt(resultSet.getTimestamp("createdAt").toLocalDateTime());
@@ -85,7 +86,7 @@ public class StockDAO {
     }
 
     public void updateItem(Item item) {
-        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, purchasePrice = ?, retailPrice = ? WHERE id = ?";
+        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, itemSales = ?, purchasePrice = ?, retailPrice = ? WHERE id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -97,9 +98,10 @@ public class StockDAO {
             pstm.setString(1, item.getItemName());
             pstm.setString(2, item.getItemDescription());
             pstm.setInt(3, item.getItemQuantity());
-            pstm.setFloat(4, item.getPurchasePrice());
-            pstm.setFloat(5, item.getRetailPrice());
-            pstm.setInt(6, item.getId());
+            pstm.setInt(4, item.getItemSales());
+            pstm.setFloat(5, item.getPurchasePrice());
+            pstm.setFloat(6, item.getRetailPrice());
+            pstm.setInt(7, item.getId());
 
             pstm.execute();
 

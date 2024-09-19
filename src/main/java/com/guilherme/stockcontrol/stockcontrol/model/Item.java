@@ -8,6 +8,7 @@ public class Item {
     private String itemName;
     private String itemDescription;
     private int itemQuantity;
+    private int itemSales;
     private float purchasePrice;
     private float retailPrice;
     private LocalDateTime createdAt;
@@ -26,6 +27,9 @@ public class Item {
     }
     public int getItemQuantity() {
         return itemQuantity;
+    }
+    public int getItemSales() {
+        return itemSales;
     }
     public float getPurchasePrice() {
         return purchasePrice;
@@ -55,6 +59,9 @@ public class Item {
     }
     public void setItemQuantity(int itemQuantity) {
         this.itemQuantity = itemQuantity;
+    }
+    public void setItemSales(int itemSales) {
+        this.itemSales = itemSales;
     }
     public void setPurchasePrice(float purchasePrice) {
         this.purchasePrice = purchasePrice;
