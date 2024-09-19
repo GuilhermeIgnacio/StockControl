@@ -277,12 +277,19 @@ public class HelloController implements Initializable {
             dialog.setHeaderText("Register Sell");
             dialog.setContentText("Quantidade de Itens Vendidos:");
 
-            TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
+            TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             dialog.getEditor().setTextFormatter(intTextFormatter);
 
             Optional<String> result = dialog.showAndWait();
 
-            if (result.isPresent()) {
+            if (result.isPresent() && !dialog.getEditor().getText().isEmpty()) {
+
+                selectedItem.setItemSales(Integer.parseInt(dialog.getEditor().getText()) + selectedItem.getItemSales());
+
+                stockDAO.updateItem(selectedItem);
+
+                fetchItems();
+
             }
 
         }
