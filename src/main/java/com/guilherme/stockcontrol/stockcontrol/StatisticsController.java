@@ -5,7 +5,7 @@ import com.guilherme.stockcontrol.stockcontrol.model.Item;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
+import javafx.scene.chart.*;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
@@ -17,29 +17,35 @@ public class StatisticsController implements Initializable {
     public BorderPane borderPane;
     StockDAO stockDAO = new StockDAO();
 
-    public ObservableList<PieChart.Data> fetchItems() {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+    public XYChart.Series<String, Number> fetchItems() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-        List<Item> items = stockDAO.fetchItems();
+        List<Item> items = stockDAO.fetchItems(); // Função que busca os dados do banco
 
         for (Item item : items) {
-            pieChartData.add(new PieChart.Data(item.getItemName(), item.getItemSales()));
+            series.getData().add(new XYChart.Data<>(item.getItemName(), item.getItemSales()));
         }
 
-        return pieChartData;
+        series.setName("Products Sales");
+        return series;
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ObservableList<PieChart.Data> pieChartData = fetchItems();
 
-        PieChart pieChart = new PieChart(pieChartData);
-        pieChart.setTitle("Title");
-        pieChart.setClockwise(true);
-        pieChart.setLabelLineLength(50);
-        pieChart.setLabelsVisible(true);
-        pieChart.setStartAngle(180);
+        CategoryAxis xAxis = new CategoryAxis();
+        NumberAxis yAxis = new NumberAxis();
 
-        borderPane.setCenter(pieChart);
+        xAxis.setLabel("Product");
+        yAxis.setLabel("Sales");
+
+        BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
+        //barChart.setTitle("Chart Title");
+
+        XYChart.Series<String, Number> series = fetchItems();
+
+        barChart.getData().add(series);
+        borderPane.setCenter(barChart);
+
     }
 }
