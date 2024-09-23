@@ -15,6 +15,7 @@ public class ItemDetailController {
     public Label detailProfitMarginLabel;
     public Label detailCreatedAtLabel;
     public Label detailUpdatedAtLabel;
+    public Label detailSalesLabel;
 
     public void getItem(Item item) {
         detailIdLabel.setText(String.valueOf(item.getId()));
@@ -23,6 +24,7 @@ public class ItemDetailController {
         detailDescriptionLabel.setText(item.getItemDescription());
 
         detailQuantityLabel.setText(String.valueOf(item.getItemQuantity()));
+        detailSalesLabel.setText(String.valueOf(item.getItemSales()));
 
         detailPurchasePriceLabel.setText(currencyFormatter.format(item.getPurchasePrice()));
         detailRetailPriceLabel.setText(currencyFormatter.format(item.getRetailPrice()));

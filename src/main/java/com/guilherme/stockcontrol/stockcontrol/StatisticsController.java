@@ -20,7 +20,7 @@ public class StatisticsController implements Initializable {
     public XYChart.Series<String, Number> fetchItems() {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-        List<Item> items = stockDAO.fetchItems(); // Função que busca os dados do banco
+        List<Item> items = stockDAO.fetchItems();
 
         for (Item item : items) {
             series.getData().add(new XYChart.Data<>(item.getItemName(), item.getItemSales()));
@@ -45,6 +45,7 @@ public class StatisticsController implements Initializable {
         XYChart.Series<String, Number> series = fetchItems();
 
         barChart.getData().add(series);
+        barChart.setLegendVisible(false);
         borderPane.setCenter(barChart);
 
     }
