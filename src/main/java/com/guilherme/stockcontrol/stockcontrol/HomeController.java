@@ -258,8 +258,8 @@ public class HomeController implements Initializable {
             Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
 
             TextInputDialog dialog = new TextInputDialog();
-            dialog.setHeaderText("Register Sell");
-            dialog.setContentText("Quantidade de Itens Vendidos:");
+            dialog.setHeaderText(getProp().getString("register.sale.header.text"));
+            dialog.setContentText(getProp().getString("register.sale.content.text"));
 
             TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             dialog.getEditor().setTextFormatter(intTextFormatter);

@@ -12,6 +12,8 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+
 public class StatisticsController implements Initializable {
 
     public BorderPane borderPane;
@@ -26,7 +28,7 @@ public class StatisticsController implements Initializable {
             series.getData().add(new XYChart.Data<>(item.getItemName(), item.getItemSales()));
         }
 
-        series.setName("Products Sales");
+//        series.setName("Products Sales"); Legend
         return series;
     }
 
@@ -36,8 +38,8 @@ public class StatisticsController implements Initializable {
         CategoryAxis xAxis = new CategoryAxis();
         NumberAxis yAxis = new NumberAxis();
 
-        xAxis.setLabel("Product");
-        yAxis.setLabel("Sales");
+        xAxis.setLabel(getProp().getString("x.axis.label"));
+        yAxis.setLabel(getProp().getString("y.axis.label"));
 
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         //barChart.setTitle("Chart Title");
