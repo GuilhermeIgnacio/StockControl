@@ -95,7 +95,7 @@
                   </VBox>
                   <VBox layoutX="26.0" layoutY="406.0" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="120.0" style="-fx-background-color: #0073e6; -fx-background-radius: 10;">
                      <children>
-                        <Label text="Sales" textFill="WHITE">
+                        <Label text="%detail.sales.label" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="18.0" />
                            </font>
