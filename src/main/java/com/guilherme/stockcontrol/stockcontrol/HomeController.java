@@ -271,6 +271,7 @@ public class HomeController implements Initializable {
                 selectedItem.setItemSales(Integer.parseInt(dialog.getEditor().getText()) + selectedItem.getItemSales());
 
                 stockDAO.updateItem(selectedItem);
+                stockDAO.insertSale(selectedItem.getId(), Integer.parseInt(dialog.getEditor().getText()));
 
                 fetchItems();
 
