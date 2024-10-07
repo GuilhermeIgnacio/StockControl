@@ -202,14 +202,21 @@ public class StockDAO {
 
     }
 
-    public List<MonthlySales> fetchSales() {
+    public List<MonthlySales> fetchSales(String startDate, String endDate) {
 
-        String sql = "SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
+        StringBuilder sql = new StringBuilder("SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
                 "COUNT(s.id) AS total_sales, i.itemName, s.product_id " +
                 "FROM sales s " +
-                "JOIN items i ON s.product_id = i.id " +
-                "GROUP BY sale_month, s.product_id, i.itemName " +
-                "ORDER BY sale_month, i.itemName;";
+                "JOIN items i ON s.product_id = i.id ");
+
+        if (startDate != null && endDate != null) {
+            if (!startDate.isBlank() && !endDate.isBlank()) {
+                sql.append("WHERE s.sale_date BETWEEN ? AND ? ");
+            }
+        }
+
+        sql.append("GROUP BY sale_month, s.product_id, i.itemName " +
+                "ORDER BY sale_month, i.itemName");
 
 
         List<MonthlySales> sales = new ArrayList<>();
@@ -220,7 +227,15 @@ public class StockDAO {
 
         try {
             conn = ConnectionFactory.createConnectionToMySql();
-            pstm = conn.prepareStatement(sql);
+            pstm = conn.prepareStatement(sql.toString());
+
+            if (startDate != null && endDate != null) {
+                if (!startDate.isEmpty() && !endDate.isEmpty()) {
+                    pstm.setString(1, startDate);
+                    pstm.setString(2, endDate);
+                }
+            }
+
             resultSet = pstm.executeQuery();
 
             while (resultSet.next()) {
