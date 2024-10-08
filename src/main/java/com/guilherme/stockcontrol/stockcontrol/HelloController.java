@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+import static com.guilherme.stockcontrol.stockcontrol.Util.loadContent;
 
 public class HelloController implements Initializable {
 
@@ -23,25 +24,18 @@ public class HelloController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            loadContent("home-view.fxml");
+            loadContent("home-view.fxml", contentArea);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
     }
 
-    private void loadContent(String fxml) throws Exception {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(fxml)));
-        loader.setResources(getProp());
-        Parent newContent = loader.load();
-        contentArea.getChildren().setAll(newContent);
-    }
-
     public void onStatisticsBtnClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("statistics-view.fxml");
+        loadContent("statistics-view.fxml", contentArea);
     }
 
     public void onHomeBtnClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("home-view.fxml");
+        loadContent("home-view.fxml", contentArea);
     }
 }

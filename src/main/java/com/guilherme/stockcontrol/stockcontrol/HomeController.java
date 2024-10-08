@@ -11,9 +11,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -21,7 +23,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
-import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
 
 public class HomeController implements Initializable {
 
@@ -42,6 +43,7 @@ public class HomeController implements Initializable {
     public Button editBtn;
     public Button deleteBtn;
     public Button registerSaleBtn;
+    public VBox contentArea;
 
     ObservableList<Item> itemList = FXCollections.observableArrayList();
 
@@ -281,4 +283,7 @@ public class HomeController implements Initializable {
 
     }
 
+    public void onAlertsClicked(ActionEvent actionEvent) throws Exception {
+        loadContent("alerts-view.fxml", contentArea);
+    }
 }

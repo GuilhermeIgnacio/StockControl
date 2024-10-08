@@ -1,16 +1,16 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.VBox;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.function.UnaryOperator;
 
 public class Util {
@@ -50,4 +50,10 @@ public class Util {
     public static Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
     public static NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
+    public static void loadContent(String fxml, VBox contentArea) throws Exception {
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(Util.class.getResource(fxml)));
+        loader.setResources(getProp());
+        Parent newContent = loader.load();
+        contentArea.getChildren().setAll(newContent);
+    }
 }

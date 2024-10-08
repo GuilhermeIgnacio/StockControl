@@ -14,15 +14,15 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.HomeController">
     <center>
-        <VBox maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="contentArea" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox alignment="TOP_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                     <children>
-                        <Button graphicTextGap="8.0" layoutX="424.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.insert.new.item" textFill="WHITE">
+                        <Button graphicTextGap="8.0" layoutX="424.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAlertsClicked" style="-fx-background-color: #0073e6; -fx-border-color: transparent; -fx-background-radius: 50px; -fx-min-height: 32px; -fx-min-width: 32px; -fx-max-width: 32px; -fx-max-height: 32px;" textFill="WHITE">
                             <graphic>
                                 <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
-                                        <Image url="@assets/icons/plus-solid.png" />
+                                        <Image url="@assets/icons/bell-solid.png" />
                                     </image>
                                 </ImageView>
                             </graphic>
@@ -30,6 +30,19 @@
                                 <Font name="System Bold" size="13.0" />
                             </font>
                         </Button>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <Button graphicTextGap="8.0" layoutX="624.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.insert.new.item" textFill="WHITE">
+                     <graphic>
+                        <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@assets/icons/plus-solid.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
+                  </Button>
                     </children>
                 </HBox>
                 <HBox alignment="TOP_RIGHT" prefWidth="200.0">
