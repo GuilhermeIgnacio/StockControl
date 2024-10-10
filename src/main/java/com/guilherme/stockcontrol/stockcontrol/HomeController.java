@@ -1,7 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
+import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,15 +29,15 @@ public class HomeController implements Initializable {
     public TableView itemTableView;
 
     //Table Columns
-    public TableColumn<Item, String> idTableColumn;
-    public TableColumn<Item, String> nameTableColumn;
-    public TableColumn<Item, String> descriptionTableColumn;
-    public TableColumn<Item, String> quantityTableColumn;
-    public TableColumn<Item, String> salesTableColumn;
-    public TableColumn<Item, Float> purchasePriceTableColumn;
-    public TableColumn<Item, Float> retailPriceTableColumn;
-    public TableColumn<Item, LocalDateTime> createdAtTableColumn;
-    public TableColumn<Item, LocalDateTime> updatedAtTableColumn;
+    public TableColumn<Product, String> idTableColumn;
+    public TableColumn<Product, String> nameTableColumn;
+    public TableColumn<Product, String> descriptionTableColumn;
+    public TableColumn<Product, String> quantityTableColumn;
+//    public TableColumn<Product, String> salesTableColumn;
+    public TableColumn<Product, Float> purchasePriceTableColumn;
+    public TableColumn<Product, Float> retailPriceTableColumn;
+    public TableColumn<Product, LocalDateTime> createdAtTableColumn;
+    public TableColumn<Product, LocalDateTime> updatedAtTableColumn;
     //Table Columns
 
     public Button editBtn;
@@ -45,7 +45,7 @@ public class HomeController implements Initializable {
     public Button registerSaleBtn;
     public VBox contentArea;
 
-    ObservableList<Item> itemList = FXCollections.observableArrayList();
+    ObservableList<Product> itemList = FXCollections.observableArrayList();
 
     StockDAO stockDAO = new StockDAO();
 
@@ -54,19 +54,19 @@ public class HomeController implements Initializable {
 
         fetchItems();
 
-        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemDescription"));
-        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemQuantity"));
-        salesTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemSales"));
-        purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchasePrice"));
-        retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retailPrice"));
-        createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
-        updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
+        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_name"));
+        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_description"));
+        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price")); // Move to under retail_price
+//        salesTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemSales"));
+        purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchase_price"));
+        retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price"));
+        createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("created_at"));
+        updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updated_at"));
 
         purchasePriceTableColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Item, Float> call(TableColumn<Item, Float> param) {
+            public TableCell<Product, Float> call(TableColumn<Product, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float item, boolean empty) {
@@ -83,7 +83,7 @@ public class HomeController implements Initializable {
 
         retailPriceTableColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Item, Float> call(TableColumn<Item, Float> param) {
+            public TableCell<Product, Float> call(TableColumn<Product, Float> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(Float item, boolean empty) {
@@ -100,7 +100,7 @@ public class HomeController implements Initializable {
 
         createdAtTableColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Item, LocalDateTime> call(TableColumn<Item, LocalDateTime> param) {
+            public TableCell<Product, LocalDateTime> call(TableColumn<Product, LocalDateTime> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(LocalDateTime item, boolean empty) {
@@ -117,7 +117,7 @@ public class HomeController implements Initializable {
 
         updatedAtTableColumn.setCellFactory(new Callback<>() {
             @Override
-            public TableCell<Item, LocalDateTime> call(TableColumn<Item, LocalDateTime> param) {
+            public TableCell<Product, LocalDateTime> call(TableColumn<Product, LocalDateTime> param) {
                 return new TableCell<>() {
                     @Override
                     protected void updateItem(LocalDateTime item, boolean empty) {
@@ -149,24 +149,23 @@ public class HomeController implements Initializable {
         try {
             itemList.clear();
 
-            for (Item item : stockDAO.fetchItems()) {
+            for (Product product : stockDAO.fetchItems()) {
 
-                Item newItem = new Item();
-                newItem.setId(item.getId());
-                newItem.setItemName(item.getItemName());
-                newItem.setItemDescription(item.getItemDescription());
-                newItem.setItemQuantity(item.getItemQuantity());
-                newItem.setItemSales(item.getItemSales());
-                newItem.setPurchasePrice(item.getPurchasePrice());
-                newItem.setRetailPrice(item.getRetailPrice());
-                newItem.setCreatedAt(item.getCreatedAt());
-                newItem.setUpdatedAt(item.getUpdatedAt());
+                Product newProduct = new Product();
+                newProduct.setProduct_id(product.getProduct_id());
+                newProduct.setProduct_name(product.getProduct_name());
+                newProduct.setProduct_description(product.getProduct_description());
+                newProduct.setStock_quantity(product.getStock_quantity());
+                newProduct.setPurchase_price(product.getPurchase_price());
+                newProduct.setRetail_price(product.getRetail_price());
+                newProduct.setCreated_at(product.getCreated_at());
+                newProduct.setUpdated_at(product.getUpdated_at());
 
 
                 // Custom CellFactory para createdAt
 
 
-                itemList.add(newItem);
+                itemList.add(newProduct);
                 itemTableView.setItems(itemList);
 
             }
@@ -180,7 +179,7 @@ public class HomeController implements Initializable {
 
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
 
             InsertItemApplication application = new InsertItemApplication();
             Stage stage = new Stage();
@@ -198,7 +197,7 @@ public class HomeController implements Initializable {
     public void onDeleteBtnClicked(ActionEvent actionEvent) {
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(getProp().getString("delete.confirm.message"));
@@ -212,7 +211,7 @@ public class HomeController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonTypeOne) {
 
-                stockDAO.deleteItemById(selectedItem.getId());
+                stockDAO.deleteItemById(selectedItem.getProduct_id());
                 fetchItems();
 
             } else {
@@ -231,14 +230,14 @@ public class HomeController implements Initializable {
         if (mouseEvent.getClickCount() == 2) {
 
             if (itemTableView.getSelectionModel().getSelectedItem() != null) {
-                Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+                Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
                 loader.setResources(getProp());
 
                 Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(new Scene(loader.load()));
-                stage.setTitle(selectedItem.getItemName());
+                stage.setTitle(selectedItem.getProduct_name());
                 stage.setMinWidth(720);
                 stage.setMinHeight(520);
 
@@ -257,7 +256,7 @@ public class HomeController implements Initializable {
 
         if (itemTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Item selectedItem = (Item) itemTableView.getSelectionModel().getSelectedItem();
+            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
 
             TextInputDialog dialog = new TextInputDialog();
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
@@ -270,10 +269,10 @@ public class HomeController implements Initializable {
 
             if (result.isPresent() && !dialog.getEditor().getText().isEmpty()) {
 
-                selectedItem.setItemSales(Integer.parseInt(dialog.getEditor().getText()) + selectedItem.getItemSales());
+//                selectedItem.setItemSales(Integer.parseInt(dialog.getEditor().getText()) + selectedItem.getItemSales());
 
                 stockDAO.updateItem(selectedItem);
-                stockDAO.insertSale(selectedItem.getId(), Integer.parseInt(dialog.getEditor().getText()));
+                stockDAO.insertSale(selectedItem.getProduct_id(), Integer.parseInt(dialog.getEditor().getText()));
 
                 fetchItems();
 

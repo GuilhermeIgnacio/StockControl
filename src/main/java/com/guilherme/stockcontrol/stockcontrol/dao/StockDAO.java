@@ -1,7 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol.dao;
 
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
+import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 
 import java.sql.Connection;
@@ -14,8 +14,8 @@ import java.util.List;
 
 public class StockDAO {
 
-    public void insertItem(Item item) {
-        String sql = "INSERT INTO items(itemName, itemDescription, itemQuantity, purchasePrice, retailPrice) VALUES (?, ?, ?, ?, ?)";
+    public void insertItem(Product product) {
+        String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -23,11 +23,11 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
 
-            pstm.setString(1, item.getItemName());
-            pstm.setString(2, item.getItemDescription());
-            pstm.setInt(3, item.getItemQuantity());
-            pstm.setFloat(4, item.getPurchasePrice());
-            pstm.setFloat(5, item.getRetailPrice());
+            pstm.setString(1, product.getProduct_name());
+            pstm.setString(2, product.getProduct_description());
+            pstm.setFloat(3, product.getPurchase_price());
+            pstm.setFloat(4, product.getRetail_price());
+            pstm.setInt(5, product.getStock_quantity());
 
             pstm.execute();
         } catch (Exception e) {
@@ -51,9 +51,9 @@ public class StockDAO {
 
     }
 
-    public List<Item> fetchItems() {
-        String sql = "SELECT * FROM items";
-        List<Item> items = new ArrayList<>();
+    public List<Product> fetchItems() {
+        String sql = "SELECT * FROM products";
+        List<Product> items = new ArrayList<>();
 
         Connection conn;
         PreparedStatement pstm;
@@ -65,19 +65,18 @@ public class StockDAO {
             resultSet = pstm.executeQuery();
 
             while (resultSet.next()) {
-                Item item = new Item();
+                Product product = new Product();
 
-                item.setId(resultSet.getInt("id"));
-                item.setItemName(resultSet.getString("itemName"));
-                item.setItemDescription(resultSet.getString("itemDescription"));
-                item.setItemQuantity(resultSet.getInt("itemQuantity"));
-                item.setItemSales(resultSet.getInt("itemSales"));
-                item.setPurchasePrice(resultSet.getFloat("purchasePrice"));
-                item.setRetailPrice(resultSet.getFloat("retailPrice"));
-                item.setCreatedAt(resultSet.getTimestamp("createdAt").toLocalDateTime());
-                item.setUpdatedAt(resultSet.getTimestamp("updatedAt").toLocalDateTime());
+                product.setProduct_id(resultSet.getInt("product_id"));
+                product.setProduct_name(resultSet.getString("product_name"));
+                product.setProduct_description(resultSet.getString("product_description"));
+                product.setPurchase_price(resultSet.getFloat("purchase_price"));
+                product.setRetail_price(resultSet.getFloat("retail_price"));
+                product.setStock_quantity(resultSet.getInt("stock_quantity"));
+                product.setCreated_at(resultSet.getTimestamp("created_at").toLocalDateTime());
+                product.setUpdated_at(resultSet.getTimestamp("updated_at").toLocalDateTime());
 
-                items.add(item);
+                items.add(product);
             }
 
         } catch (Exception e) {
@@ -88,8 +87,8 @@ public class StockDAO {
 
     }
 
-    public void updateItem(Item item) {
-        String sql = "UPDATE items SET itemName = ?, itemDescription = ?, itemQuantity = ?, itemSales = ?, purchasePrice = ?, retailPrice = ? WHERE id = ?";
+    public void updateItem(Product item) {
+        String sql = "UPDATE products SET product_name = ?, product_description = ?, purchase_price = ?, retail_price = ?, stock_quantity = ? WHERE product_id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -98,13 +97,12 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
 
-            pstm.setString(1, item.getItemName());
-            pstm.setString(2, item.getItemDescription());
-            pstm.setInt(3, item.getItemQuantity());
-            pstm.setInt(4, item.getItemSales());
-            pstm.setFloat(5, item.getPurchasePrice());
-            pstm.setFloat(6, item.getRetailPrice());
-            pstm.setInt(7, item.getId());
+            pstm.setString(1, item.getProduct_name());
+            pstm.setString(2, item.getProduct_description());
+            pstm.setFloat(3, item.getPurchase_price());
+            pstm.setFloat(4, item.getRetail_price());
+            pstm.setFloat(5, item.getStock_quantity());
+            pstm.setInt(6, item.getProduct_id());
 
             pstm.execute();
 
@@ -127,8 +125,8 @@ public class StockDAO {
         }
     }
 
-    public void deleteItemById(int id) {
-        String sql = "DELETE FROM items WHERE id = ?";
+    public void deleteItemById(int productId) {
+        String sql = "DELETE FROM products WHERE product_id = ?";
         String salesSql = "DELETE FROM sales WHERE product_id = ?";
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -137,11 +135,11 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
 
             pstm = conn.prepareStatement(salesSql);
-            pstm.setInt(1, id);
+            pstm.setInt(1, productId);
             pstm.execute();
 
             pstm = conn.prepareStatement(sql);
-            pstm.setInt(1, id);
+            pstm.setInt(1, productId);
             pstm.execute();
 
 

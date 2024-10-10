@@ -1,6 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
+import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.scene.control.Label;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
@@ -17,26 +17,26 @@ public class ItemDetailController {
     public Label detailUpdatedAtLabel;
     public Label detailSalesLabel;
 
-    public void getItem(Item item) {
-        detailIdLabel.setText(String.valueOf(item.getId()));
+    public void getItem(Product item) {
+        detailIdLabel.setText(String.valueOf(item.getProduct_id()));
 
-        detailNameLabel.setText(item.getItemName());
-        detailDescriptionLabel.setText(item.getItemDescription());
+        detailNameLabel.setText(item.getProduct_name());
+        detailDescriptionLabel.setText(item.getProduct_description());
 
-        detailQuantityLabel.setText(String.valueOf(item.getItemQuantity()));
-        detailSalesLabel.setText(String.valueOf(item.getItemSales()));
+        detailQuantityLabel.setText(String.valueOf(item.getStock_quantity()));
+//        detailSalesLabel.setText(String.valueOf(item.getItemSales()));
 
-        detailPurchasePriceLabel.setText(currencyFormatter.format(item.getPurchasePrice()));
-        detailRetailPriceLabel.setText(currencyFormatter.format(item.getRetailPrice()));
+        detailPurchasePriceLabel.setText(currencyFormatter.format(item.getPurchase_price()));
+        detailRetailPriceLabel.setText(currencyFormatter.format(item.getRetail_price()));
 
-        float profitMargin = ((item.getRetailPrice() - item.getPurchasePrice()) / item.getRetailPrice()) * 100f;
+        float profitMargin = ((item.getRetail_price() - item.getPurchase_price()) / item.getRetail_price()) * 100f;
 
-        String formattedMarginProfit = String.format(getProp().getString("detail.per.unit"), profitMargin, currencyFormatter.format(item.getRetailPrice() - item.getPurchasePrice()));
+        String formattedMarginProfit = String.format(getProp().getString("detail.per.unit"), profitMargin, currencyFormatter.format(item.getRetail_price() - item.getPurchase_price()));
 
         detailProfitMarginLabel.setText(formattedMarginProfit);
 
-        String formattedCreatedAt = item.getCreatedAt().format(dateTimeFormatter);
-        String formattedUpdated = item.getUpdatedAt().format(dateTimeFormatter);
+        String formattedCreatedAt = item.getCreated_at().format(dateTimeFormatter);
+        String formattedUpdated = item.getUpdated_at().format(dateTimeFormatter);
 
         detailCreatedAtLabel.setText(formattedCreatedAt);
         detailUpdatedAtLabel.setText(formattedUpdated);

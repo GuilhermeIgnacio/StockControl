@@ -1,7 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
+import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -21,7 +21,7 @@ public class InsertItemController {
     public Label errorLabel;
     public TextField salesTextField;
 
-    Item item = new Item();
+    Product item = new Product();
 
     boolean editMode = false;
 
@@ -44,26 +44,26 @@ public class InsertItemController {
 
     }
 
-    public void getItem(Item selectedItem) {
+    public void getItem(Product selectedProduct) {
         if (item != null) {
             editMode = true;
 
             salesTextField.setVisible(true);
 
-            item.setId(selectedItem.getId());
-            item.setItemName(selectedItem.getItemName());
-            item.setItemDescription(selectedItem.getItemDescription());
-            item.setItemQuantity(selectedItem.getItemQuantity());
-            item.setItemSales(selectedItem.getItemSales());
-            item.setPurchasePrice(selectedItem.getPurchasePrice());
-            item.setRetailPrice(selectedItem.getRetailPrice());
+            item.setProduct_id(selectedProduct.getProduct_id());
+            item.setProduct_name(selectedProduct.getProduct_name());
+            item.setProduct_description(selectedProduct.getProduct_description());
+            item.setStock_quantity(selectedProduct.getStock_quantity());
+//            item.setItemSales(selectedItem.getItemSales());
+            item.setPurchase_price(selectedProduct.getPurchase_price());
+            item.setRetail_price(selectedProduct.getRetail_price());
 
-            itemNameTextField.setText(item.getItemName());
-            itemDescriptionTextField.setText(item.getItemDescription());
-            itemQuantityTextField.setText(String.valueOf(item.getItemQuantity()));
-            salesTextField.setText(String.valueOf(item.getItemSales()));
-            purchasePriceTextField.setText(String.valueOf(item.getPurchasePrice()));
-            retailPriceTextField.setText(String.valueOf(item.getRetailPrice()));
+            itemNameTextField.setText(item.getProduct_name());
+            itemDescriptionTextField.setText(item.getProduct_description());
+            itemQuantityTextField.setText(String.valueOf(item.getStock_quantity()));
+//            salesTextField.setText(String.valueOf(item.getItemSales()));
+            purchasePriceTextField.setText(String.valueOf(item.getPurchase_price()));
+            retailPriceTextField.setText(String.valueOf(item.getRetail_price()));
 
         }
     }
@@ -86,12 +86,12 @@ public class InsertItemController {
             int itemSales = Integer.parseInt(salesTextField.getText()); // This Field Cannot Be Null
 
 
-            item.setItemName(itemName);
-            item.setItemDescription(itemDescription);
-            item.setPurchasePrice(purchasePrice);
-            item.setRetailPrice(retailPrice);
-            item.setItemQuantity(itemQuantity);
-            item.setItemSales(itemSales);
+            item.setProduct_name(itemName);
+            item.setProduct_description(itemDescription);
+            item.setPurchase_price(purchasePrice);
+            item.setRetail_price(retailPrice);
+            item.setStock_quantity(itemQuantity);
+//            item.setItemSales(itemSales);
 
             try {
 

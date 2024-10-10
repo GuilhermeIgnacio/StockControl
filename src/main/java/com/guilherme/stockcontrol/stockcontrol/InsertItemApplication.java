@@ -1,6 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
+import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -11,7 +11,7 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
 
 public class InsertItemApplication extends Application {
 
-    Item selectedItem;
+    Product selectedItem;
 
     @Override
     public void start(Stage stage) throws Exception {
