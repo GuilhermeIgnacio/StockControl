@@ -33,7 +33,6 @@ public class HomeController implements Initializable {
     public TableColumn<Product, String> nameTableColumn;
     public TableColumn<Product, String> descriptionTableColumn;
     public TableColumn<Product, String> quantityTableColumn;
-//    public TableColumn<Product, String> salesTableColumn;
     public TableColumn<Product, Float> purchasePriceTableColumn;
     public TableColumn<Product, Float> retailPriceTableColumn;
     public TableColumn<Product, LocalDateTime> createdAtTableColumn;
@@ -57,8 +56,7 @@ public class HomeController implements Initializable {
         idTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_id"));
         nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_name"));
         descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_description"));
-        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price")); // Move to under retail_price
-//        salesTableColumn.setCellValueFactory(new PropertyValueFactory<>("itemSales"));
+        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("stock_quantity")); // Move to under retail_price
         purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchase_price"));
         retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price"));
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("created_at"));

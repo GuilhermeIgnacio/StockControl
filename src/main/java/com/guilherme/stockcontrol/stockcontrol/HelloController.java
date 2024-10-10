@@ -38,4 +38,8 @@ public class HelloController implements Initializable {
     public void onHomeBtnClicked(ActionEvent actionEvent) throws Exception {
         loadContent("home-view.fxml", contentArea);
     }
+
+    public void onSalesButtonClicked(ActionEvent actionEvent) throws Exception {
+        loadContent("sales-view.fxml", contentArea);
+    }
 }
