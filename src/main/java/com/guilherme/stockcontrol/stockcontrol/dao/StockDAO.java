@@ -161,8 +161,8 @@ public class StockDAO {
         }
     }
 
-    public void insertSale(int productId, int salesCount) {
-        String sql = "INSERT INTO sales(product_id, sale_date) VALUES (?, ?)";
+    public void insertSale(Product product, int salesCount) {
+        String sql = "INSERT INTO sales(product_id, sale_price, sale_date) VALUES (?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -174,8 +174,9 @@ public class StockDAO {
                 conn = ConnectionFactory.createConnectionToMySql();
                 pstm = conn.prepareStatement(sql);
 
-                pstm.setInt(1, productId);
-                pstm.setDate(2, Date.valueOf(LocalDate.now()));
+                pstm.setInt(1, product.getProduct_id());
+                pstm.setFloat(2, product.getRetail_price());
+                pstm.setDate(3, Date.valueOf(LocalDate.now()));
                 pstm.execute();
 
             } catch (Exception e) {

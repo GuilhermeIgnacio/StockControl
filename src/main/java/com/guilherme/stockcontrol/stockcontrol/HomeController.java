@@ -7,10 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -19,6 +21,8 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -26,15 +30,15 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class HomeController implements Initializable {
 
-    public TableView itemTableView;
+    public TableView productTableView;
 
     //Table Columns
-    public TableColumn<Product, String> idTableColumn;
-    public TableColumn<Product, String> nameTableColumn;
-    public TableColumn<Product, String> descriptionTableColumn;
-    public TableColumn<Product, String> quantityTableColumn;
+    public TableColumn<Product, String> productIdTableColumn;
+    public TableColumn<Product, String> productNameTableColumn;
+    public TableColumn<Product, String> productDescriptionTableColumn;
     public TableColumn<Product, Float> purchasePriceTableColumn;
     public TableColumn<Product, Float> retailPriceTableColumn;
+    public TableColumn<Product, String> stockQuantityTableColumn;
     public TableColumn<Product, LocalDateTime> createdAtTableColumn;
     public TableColumn<Product, LocalDateTime> updatedAtTableColumn;
     //Table Columns
@@ -53,10 +57,10 @@ public class HomeController implements Initializable {
 
         fetchItems();
 
-        idTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_id"));
-        nameTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_name"));
-        descriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_description"));
-        quantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("stock_quantity")); // Move to under retail_price
+        productIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_id"));
+        productNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_name"));
+        productDescriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_description"));
+        stockQuantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("stock_quantity")); // Move to under retail_price
         purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchase_price"));
         retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price"));
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("created_at"));
@@ -130,6 +134,10 @@ public class HomeController implements Initializable {
             }
         });
 
+        productTableView.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
+
     }
 
     public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
@@ -164,7 +172,7 @@ public class HomeController implements Initializable {
 
 
                 itemList.add(newProduct);
-                itemTableView.setItems(itemList);
+                productTableView.setItems(itemList);
 
             }
 
@@ -175,9 +183,9 @@ public class HomeController implements Initializable {
 
     public void onEditBtnClicked(ActionEvent actionEvent) throws Exception {
 
-        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+        if (productTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
+            Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
 
             InsertItemApplication application = new InsertItemApplication();
             Stage stage = new Stage();
@@ -193,9 +201,10 @@ public class HomeController implements Initializable {
     }
 
     public void onDeleteBtnClicked(ActionEvent actionEvent) {
-        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
 
-            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
+        if (productTableView.getSelectionModel().getSelectedItem() != null) {
+
+            Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(getProp().getString("delete.confirm.message"));
@@ -227,8 +236,8 @@ public class HomeController implements Initializable {
 
         if (mouseEvent.getClickCount() == 2) {
 
-            if (itemTableView.getSelectionModel().getSelectedItem() != null) {
-                Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
+            if (productTableView.getSelectionModel().getSelectedItem() != null) {
+                Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
                 loader.setResources(getProp());
@@ -252,29 +261,65 @@ public class HomeController implements Initializable {
 
     public void onRegisterSaleClicked(ActionEvent actionEvent) {
 
-        if (itemTableView.getSelectionModel().getSelectedItem() != null) {
+        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
 
-            Product selectedItem = (Product) itemTableView.getSelectionModel().getSelectedItem();
+            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
 
-            TextInputDialog dialog = new TextInputDialog();
+
+            Dialog<Map<Product, String>> dialog = new Dialog<>();
+            dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
-            dialog.setContentText(getProp().getString("register.sale.content.text"));
+//            dialog.setContentText(getProp().getString("register.sale.content.text"));
 
-            TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
-            dialog.getEditor().setTextFormatter(intTextFormatter);
+            ButtonType confirmButton = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
-            Optional<String> result = dialog.showAndWait();
+            VBox vBox = new VBox();
+            vBox.setSpacing(10);
 
-            if (result.isPresent() && !dialog.getEditor().getText().isEmpty()) {
+            Map<Product, TextField> productQuantityMap = new HashMap<>();
 
-//                selectedItem.setItemSales(Integer.parseInt(dialog.getEditor().getText()) + selectedItem.getItemSales());
+            String prompt = getProp().getString("register.sale.content.text");
 
-                stockDAO.updateItem(selectedItem);
-                stockDAO.insertSale(selectedItem.getProduct_id(), Integer.parseInt(dialog.getEditor().getText()));
+            for (Product product : selectedProducts) {
 
-                fetchItems();
+                TextField soldQuantityField = new TextField();
+                soldQuantityField.setPrefWidth(300);
+                soldQuantityField.setPromptText(prompt + " " + product.getProduct_name());
 
+                TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
+                soldQuantityField.setTextFormatter(intTextFormatter);
+
+                vBox.getChildren().add(soldQuantityField);
+                productQuantityMap.put(product, soldQuantityField);
             }
+
+            dialog.getDialogPane().setContent(vBox);
+
+            dialog.setResultConverter(dialogButton -> {
+                if (dialogButton == confirmButton) {
+                    Map<Product, String> productQuantities = new HashMap<>();
+                    for (Product product : selectedProducts) {
+                        String quantity = productQuantityMap.get(product).getText();
+                        if (!quantity.isEmpty()) {
+                            productQuantities.put(product, quantity);
+                        }
+                    }
+                    return productQuantities;
+                }
+                return null;
+            });
+
+            Optional<Map<Product, String>> result = dialog.showAndWait();
+            result.ifPresent(productQuantities -> {
+                for (Map.Entry<Product, String> entry : productQuantities.entrySet()) {
+                    Product product = entry.getKey();
+                    int quantity = Integer.parseInt(entry.getValue());
+
+                    stockDAO.insertSale(product, quantity);
+                }
+
+            });
 
         }
 
