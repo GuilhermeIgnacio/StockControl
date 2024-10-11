@@ -183,7 +183,7 @@ public class HomeController implements Initializable {
 
     public void onEditBtnClicked(ActionEvent actionEvent) throws Exception {
 
-        if (productTableView.getSelectionModel().getSelectedItem() != null) {
+        if (productTableView.getSelectionModel().getSelectedItem() != null && productTableView.getSelectionModel().getSelectedItems().size() <= 1) {
 
             Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
 
@@ -196,6 +196,11 @@ public class HomeController implements Initializable {
 
             fetchItems();
 
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText(getProp().getString("edit.alert.dialog.content"));
+
+            alert.showAndWait();
         }
 
     }
