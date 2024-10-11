@@ -202,9 +202,9 @@ public class HomeController implements Initializable {
 
     public void onDeleteBtnClicked(ActionEvent actionEvent) {
 
-        if (productTableView.getSelectionModel().getSelectedItem() != null) {
+        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
 
-            Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
+            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(getProp().getString("delete.confirm.message"));
@@ -218,12 +218,12 @@ public class HomeController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonTypeOne) {
 
-                stockDAO.deleteItemById(selectedItem.getProduct_id());
+                selectedProducts.forEach(product ->
+                        stockDAO.deleteItemById(product.getProduct_id())
+                );
+
                 fetchItems();
 
-            } else {
-                //User Cancelled Item Deletion
-                System.out.println("Item Deletion Canceled");
             }
         }
     }
@@ -269,7 +269,6 @@ public class HomeController implements Initializable {
             Dialog<Map<Product, String>> dialog = new Dialog<>();
             dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
-//            dialog.setContentText(getProp().getString("register.sale.content.text"));
 
             ButtonType confirmButton = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
