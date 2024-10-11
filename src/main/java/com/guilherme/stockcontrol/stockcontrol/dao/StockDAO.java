@@ -3,12 +3,14 @@ package com.guilherme.stockcontrol.stockcontrol.dao;
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
+import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +203,7 @@ public class StockDAO {
 
     }
 
-    public List<MonthlySales> fetchSales(String startDate, String endDate) {
+    public List<MonthlySales> fetchMonthlySales(String startDate, String endDate) {
 
         StringBuilder sql = new StringBuilder("SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
                 "COUNT(s.id) AS total_sales, i.itemName, s.product_id " +
@@ -253,6 +255,127 @@ public class StockDAO {
         }
 
         return sales;
+
+    }
+
+    public List<Sale> fetchSales() {
+        String sql = "SELECT * FROM totalIncome";
+
+        List<Sale> sales = new ArrayList<>();
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                Sale sale = new Sale();
+
+                sale.setSaleId(resultSet.getInt("sale_id"));
+                sale.setProductId(resultSet.getInt("product_id"));
+                sale.setSalePrice(resultSet.getFloat("sale_price"));
+                sale.setSaleDate(resultSet.getDate("sale_date"));
+
+                sales.add(sale);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return sales;
+    }
+
+    public float totalIncome() {
+        float total = 0f;
+        String sql = "SELECT SUM(sale_price) FROM sales";
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                total = resultSet.getFloat(1);
+            }
+
+            return total;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return total;
+        }
+
+    }
+
+    public float monthIncome() {
+        float monthIncome = 0;
+        String sql = "SELECT SUM(sale_price) FROM sales WHERE MONTH(sale_date) = ? AND YEAR(sale_date) = ?";
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        java.util.Date date = new java.util.Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setInt(1, localDate.getMonthValue());
+            pstm.setInt(2, localDate.getYear());
+
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                monthIncome = resultSet.getFloat(1);
+            }
+
+            return monthIncome;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return monthIncome;
+        }
+
+    }
+
+    public float yearIncome() {
+        float yearIncome = 0;
+        String sql = "SELECT SUM(sale_price) FROM sales WHERE YEAR(sale_date) = ?";
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        java.util.Date date = new java.util.Date();
+        LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, localDate.getYear());
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                yearIncome = resultSet.getFloat(1);
+            }
+
+            return yearIncome;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return yearIncome;
+        }
 
     }
 

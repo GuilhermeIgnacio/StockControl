@@ -15,7 +15,6 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -33,7 +32,7 @@ public class StatisticsController implements Initializable {
     public XYChart.Series<String, Number> fetchMonthlySales(String startDate, String endDate) {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
-        List<MonthlySales> monthlySales = stockDAO.fetchSales(startDate, endDate);
+        List<MonthlySales> monthlySales = stockDAO.fetchMonthlySales(startDate, endDate);
 
         for (MonthlySales sale : monthlySales) {
             String label = sale.getItemName() + " - " + sale.getFormattedMonth();

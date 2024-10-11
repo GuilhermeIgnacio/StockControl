@@ -1,11 +1,32 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
+import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Sale;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 
-public class SalesController extends Application {
+import java.net.URL;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+public class SalesController implements Initializable {
+
+    public Label totalIncomeLabel;
+    public Label monthIncomeLabel;
+    public Label yearIncomeLabel;
+    StockDAO stockDAO = new StockDAO();
+
     @Override
-    public void start(Stage stage) throws Exception {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance();
+
+        totalIncomeLabel.setText(currencyFormatter.format(stockDAO.totalIncome()));
+        monthIncomeLabel.setText(currencyFormatter.format(stockDAO.monthIncome()));
+        yearIncomeLabel.setText(currencyFormatter.format(stockDAO.yearIncome()));
+
 
     }
 }
