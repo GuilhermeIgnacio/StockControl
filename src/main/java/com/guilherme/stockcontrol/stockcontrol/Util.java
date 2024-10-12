@@ -56,4 +56,5 @@ public class Util {
         Parent newContent = loader.load();
         contentArea.getChildren().setAll(newContent);
     }
+
 }

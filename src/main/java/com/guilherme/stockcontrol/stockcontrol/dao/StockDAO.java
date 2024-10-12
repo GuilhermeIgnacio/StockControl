@@ -4,6 +4,7 @@ import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 import com.guilherme.stockcontrol.stockcontrol.model.Sale;
+import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -287,6 +288,72 @@ public class StockDAO {
         }
 
         return sales;
+    }
+
+    public List<SaleProduct> fetchSaleProduct(String productName, String startDate, String endDate) {
+
+        List<SaleProduct> saleProducts = new ArrayList<>();
+
+        StringBuilder sql = new StringBuilder(
+                "SELECT s.sale_id, p.product_name, p.product_description, s.sale_price, s.sale_date " +
+                        "FROM sales s " +
+                        "JOIN products p ON s.product_id = p.product_id " +
+                        "WHERE 1=1 ");
+
+        if (productName != null && !productName.isEmpty()) {
+            sql.append("AND p.product_name LIKE ? ");
+        }
+        if (startDate != null && !startDate.isEmpty()) {
+            sql.append("AND s.sale_date >= ? ");
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            sql.append("AND s.sale_date <= ? ");
+        }
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql.toString());
+
+            int paramIndex = 1;
+
+            // Definindo os parâmetros dinâmicos
+            if (productName != null && !productName.isEmpty()) {
+                pstm.setString(paramIndex++, "%" + productName + "%"); // Pesquisa com LIKE
+            }
+            if (startDate != null && !startDate.isEmpty()) {
+                pstm.setString(paramIndex++, startDate); // Data de início
+            }
+            if (endDate != null && !endDate.isEmpty()) {
+                pstm.setString(paramIndex++, endDate); // Data de término
+            }
+
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+
+                SaleProduct saleProduct = new SaleProduct();
+
+                saleProduct.setSaleId(resultSet.getInt("sale_id"));
+                saleProduct.setProductName(resultSet.getString("product_name"));
+                saleProduct.setSalePrice(resultSet.getFloat("sale_price"));
+                saleProduct.setSaleDate(resultSet.getDate("sale_date"));
+
+                saleProducts.add(saleProduct);
+
+            }
+
+            return saleProducts;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return saleProducts;
+        }
+
     }
 
     public float totalIncome() {

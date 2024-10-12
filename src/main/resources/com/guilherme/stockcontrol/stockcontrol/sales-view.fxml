@@ -10,7 +10,7 @@
 
 <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.SalesController">
     <center>
-        <VBox minWidth="-Infinity" prefHeight="200.0" BorderPane.alignment="CENTER">
+        <VBox fx:id="vBox" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" spacing="10.0" BorderPane.alignment="CENTER">
             <children>
             <HBox spacing="15.0">
                <children>
@@ -64,6 +64,11 @@
                   </VBox>
                </children>
             </HBox>
+            <Label text="Orders">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
             </children>
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
