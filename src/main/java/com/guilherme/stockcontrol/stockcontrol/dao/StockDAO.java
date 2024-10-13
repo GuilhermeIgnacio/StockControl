@@ -10,10 +10,13 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class StockDAO {
 
@@ -326,10 +329,24 @@ public class StockDAO {
                 pstm.setString(paramIndex++, "%" + productName + "%"); // Pesquisa com LIKE
             }
             if (startDate != null && !startDate.isEmpty()) {
-                pstm.setString(paramIndex++, startDate); // Data de início
+
+                SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                String reformattedStr = myFormat.format(fromUser.parse(startDate));
+
+                pstm.setString(paramIndex++, reformattedStr); // Data de início
+
             }
+
             if (endDate != null && !endDate.isEmpty()) {
-                pstm.setString(paramIndex++, endDate); // Data de término
+
+                SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
+                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                String reformattedStr = myFormat.format(fromUser.parse(endDate));
+
+                pstm.setString(paramIndex++, reformattedStr); // Data de término
             }
 
             resultSet = pstm.executeQuery();
