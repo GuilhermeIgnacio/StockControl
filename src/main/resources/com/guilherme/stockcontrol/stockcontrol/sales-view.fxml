@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -69,6 +71,16 @@
                   <Font name="System Bold" size="20.0" />
                </font>
             </Label>
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0">
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+               <columns>
+                  <TableColumn fx:id="saleDateColumn" prefWidth="75.0" text="Sale Date" />
+                  <TableColumn fx:id="productNameColumn" prefWidth="75.0" text="Product Name" />
+                  <TableColumn fx:id="salePriceColumn" prefWidth="75.0" text="Sale Price" />
+               </columns>
+            </TableView>
             </children>
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
