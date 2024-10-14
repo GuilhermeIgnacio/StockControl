@@ -2,6 +2,7 @@ package com.guilherme.stockcontrol.stockcontrol;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.VBox;
@@ -9,6 +10,8 @@ import javafx.scene.layout.VBox;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -55,6 +58,24 @@ public class Util {
         loader.setResources(getProp());
         Parent newContent = loader.load();
         contentArea.getChildren().setAll(newContent);
+    }
+
+    public static String formatDate(String dateString) {
+
+        try {
+            SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            return myFormat.format(fromUser.parse(dateString));
+
+        } catch (ParseException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Parse Exception");
+            alert.setContentText(e.getMessage());
+            return "";
+        }
+
+
     }
 
 }

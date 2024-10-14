@@ -1,7 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
-import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,21 +10,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 
-import java.awt.*;
 import java.net.URL;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
-import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class SalesController implements Initializable {
 
@@ -41,7 +33,7 @@ public class SalesController implements Initializable {
     public TableColumn<SaleProduct, Float> salePriceColumn;
     public DatePicker fromDatePicker;
     public DatePicker toDatePicker;
-    public ChoiceBox productsChoiceBox;
+    public ComboBox<String> productsComboBox;
 
     ObservableList<SaleProduct> saleProductsList = FXCollections.observableArrayList();
 
@@ -62,7 +54,7 @@ public class SalesController implements Initializable {
 
     private void fetchSales() {
 
-        String productName = (String) productsChoiceBox.getValue();
+        String productName = (String) productsComboBox.getValue();
 
         String startDate = fromDatePicker.getEditor().getText();
 
@@ -129,14 +121,20 @@ public class SalesController implements Initializable {
 
     private void fillProductsChoiceBox() {
 
+        productsComboBox.getItems().add("");
         for (String productName : saleProductsList.stream().map(SaleProduct::getProductName).collect(Collectors.toSet())) {
-            productsChoiceBox.getItems().add(productName);
+            productsComboBox.getItems().add(productName);
         }
 
     }
 
-
     public void onSearchBtnClicked(ActionEvent actionEvent) {
-        createOrdersTable();
+
+        if (!fromDatePicker.getEditor().getText().isEmpty() || !toDatePicker.getEditor().getText().isEmpty()) {
+            createOrdersTable();
+        } else if (productsComboBox.getValue() != null) {
+            createOrdersTable();
+        }
+
     }
 }

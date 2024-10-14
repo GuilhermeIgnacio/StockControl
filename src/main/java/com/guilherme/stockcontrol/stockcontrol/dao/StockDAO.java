@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.formatDate;
+
 public class StockDAO {
 
     public void insertItem(Product product) {
@@ -330,23 +332,12 @@ public class StockDAO {
             }
             if (startDate != null && !startDate.isEmpty()) {
 
-                SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
-                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                String reformattedStr = myFormat.format(fromUser.parse(startDate));
-
-                pstm.setString(paramIndex++, reformattedStr); // Data de início
+                pstm.setString(paramIndex++, formatDate(startDate)); // Data de início
 
             }
 
             if (endDate != null && !endDate.isEmpty()) {
-
-                SimpleDateFormat fromUser = new SimpleDateFormat("dd/MM/yyyy");
-                SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                String reformattedStr = myFormat.format(fromUser.parse(endDate));
-
-                pstm.setString(paramIndex++, reformattedStr); // Data de término
+                pstm.setString(paramIndex++, formatDate(endDate)); // Data de término
             }
 
             resultSet = pstm.executeQuery();
