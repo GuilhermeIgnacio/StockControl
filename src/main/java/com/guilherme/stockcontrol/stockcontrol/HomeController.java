@@ -213,7 +213,12 @@ public class HomeController implements Initializable {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle(getProp().getString("delete.confirm.message"));
-            alert.setHeaderText(getProp().getString("delete.warning"));
+
+            if (selectedProducts.size() <= 1) {
+                alert.setHeaderText(getProp().getString("delete.warning"));
+            } else {
+                alert.setHeaderText(getProp().getString("delete.warning.plural"));
+            }
 
             ButtonType buttonTypeOne = new ButtonType(getProp().getString("delete.confirm.button"));
             ButtonType buttonTypeCancel = new ButtonType(getProp().getString("delete.cancel.button"), ButtonBar.ButtonData.CANCEL_CLOSE);
