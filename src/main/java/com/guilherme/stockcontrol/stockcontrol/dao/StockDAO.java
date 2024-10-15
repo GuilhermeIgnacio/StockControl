@@ -364,6 +364,35 @@ public class StockDAO {
 
     }
 
+    public int getProductTotalSales(int productId) {
+        int total = 0;
+        String sql = "SELECT COUNT(*) FROM sales WHERE product_id = ?";
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setString(1, String.valueOf(productId));
+
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                total = resultSet.getInt(1);
+            }
+
+            return total;
+
+        } catch (Exception e) {
+            return total;
+        }
+
+    }
+
     public float totalIncome() {
         float total = 0f;
         String sql = "SELECT SUM(sale_price) FROM sales";
