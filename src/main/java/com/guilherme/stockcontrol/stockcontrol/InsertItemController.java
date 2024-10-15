@@ -19,7 +19,6 @@ public class InsertItemController {
     public Button clearFieldsBtn;
     public Button cancelBtn;
     public Label errorLabel;
-    public TextField salesTextField;
 
     Product item = new Product();
 
@@ -36,11 +35,7 @@ public class InsertItemController {
         TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
         itemQuantityTextField.setTextFormatter(intTextFormatter);
 
-        TextFormatter<String> salesTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
-        salesTextField.setTextFormatter(salesTextFormatter);
-
         addTextLimiter(itemNameTextField, 100);
-        //Todo: Add Char Counter Under Item Name Text field.
 
     }
 
@@ -48,20 +43,16 @@ public class InsertItemController {
         if (item != null) {
             editMode = true;
 
-            salesTextField.setVisible(true);
-
             item.setProduct_id(selectedProduct.getProduct_id());
             item.setProduct_name(selectedProduct.getProduct_name());
             item.setProduct_description(selectedProduct.getProduct_description());
             item.setStock_quantity(selectedProduct.getStock_quantity());
-//            item.setItemSales(selectedItem.getItemSales());
             item.setPurchase_price(selectedProduct.getPurchase_price());
             item.setRetail_price(selectedProduct.getRetail_price());
 
             itemNameTextField.setText(item.getProduct_name());
             itemDescriptionTextField.setText(item.getProduct_description());
             itemQuantityTextField.setText(String.valueOf(item.getStock_quantity()));
-//            salesTextField.setText(String.valueOf(item.getItemSales()));
             purchasePriceTextField.setText(String.valueOf(item.getPurchase_price()));
             retailPriceTextField.setText(String.valueOf(item.getRetail_price()));
 
@@ -74,8 +65,7 @@ public class InsertItemController {
         if (!itemNameTextField.getText().isEmpty() &&
                 !purchasePriceTextField.getText().isEmpty() &&
                 !retailPriceTextField.getText().isEmpty() &&
-                !itemQuantityTextField.getText().isEmpty() &&
-                !salesTextField.getText().isEmpty()
+                !itemQuantityTextField.getText().isEmpty()
         ) {
 
             String itemName = itemNameTextField.getText(); //This Field Cannot Be Null
@@ -83,7 +73,6 @@ public class InsertItemController {
             float purchasePrice = Float.parseFloat(purchasePriceTextField.getText()); //This Field Cannot Be Null
             float retailPrice = Float.parseFloat(retailPriceTextField.getText()); //This Field Cannot Be Null
             int itemQuantity = Integer.parseInt(itemQuantityTextField.getText()); //This Field Cannot Be Null
-            int itemSales = Integer.parseInt(salesTextField.getText()); // This Field Cannot Be Null
 
 
             item.setProduct_name(itemName);
@@ -91,7 +80,6 @@ public class InsertItemController {
             item.setPurchase_price(purchasePrice);
             item.setRetail_price(retailPrice);
             item.setStock_quantity(itemQuantity);
-//            item.setItemSales(itemSales);
 
             try {
 
@@ -108,7 +96,6 @@ public class InsertItemController {
                 errorLabel.setText("Error: " + e);
             }
         } else {
-            //Todo: Trigger Error Warning
             errorLabel.setVisible(true);
             errorLabel.setText("Make sure you have filled out all the required fields.");
         }
