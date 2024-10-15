@@ -47,6 +47,7 @@ public class HomeController implements Initializable {
     public Button deleteBtn;
     public Button registerSaleBtn;
     public VBox contentArea;
+    public TextField searchTextField;
 
     ObservableList<Product> itemList = FXCollections.observableArrayList();
 
@@ -155,7 +156,7 @@ public class HomeController implements Initializable {
         try {
             itemList.clear();
 
-            for (Product product : stockDAO.fetchItems()) {
+            for (Product product : stockDAO.fetchItems(searchTextField.getText())) {
 
                 Product newProduct = new Product();
                 newProduct.setProduct_id(product.getProduct_id());
@@ -336,5 +337,15 @@ public class HomeController implements Initializable {
 
     public void onAlertsClicked(ActionEvent actionEvent) throws Exception {
         loadContent("alerts-view.fxml", contentArea);
+    }
+
+    public void onSearchChanged(ActionEvent actionEvent) {
+
+        try {
+            fetchItems();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

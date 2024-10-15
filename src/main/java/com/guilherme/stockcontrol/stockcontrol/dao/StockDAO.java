@@ -3,24 +3,59 @@ package com.guilherme.stockcontrol.stockcontrol.dao;
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
-import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.formatDate;
 
 public class StockDAO {
+
+    public List<Product> fetchItems(String productName) {
+        String sql = "SELECT * FROM products WHERE product_name LIKE ?";
+        List<Product> items = new ArrayList<>();
+
+        Connection conn;
+        PreparedStatement pstm;
+        ResultSet resultSet;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setString(1, "%" + productName + "%");
+
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                Product product = new Product();
+
+                product.setProduct_id(resultSet.getInt("product_id"));
+                product.setProduct_name(resultSet.getString("product_name"));
+                product.setProduct_description(resultSet.getString("product_description"));
+                product.setPurchase_price(resultSet.getFloat("purchase_price"));
+                product.setRetail_price(resultSet.getFloat("retail_price"));
+                product.setStock_quantity(resultSet.getInt("stock_quantity"));
+                product.setCreated_at(resultSet.getTimestamp("created_at").toLocalDateTime());
+                product.setUpdated_at(resultSet.getTimestamp("updated_at").toLocalDateTime());
+
+                items.add(product);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return items;
+
+    }
 
     public void insertItem(Product product) {
         String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
@@ -56,42 +91,6 @@ public class StockDAO {
                 System.out.println("Error When Closing Connections " + e);
             }
         }
-
-    }
-
-    public List<Product> fetchItems() {
-        String sql = "SELECT * FROM products";
-        List<Product> items = new ArrayList<>();
-
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
-
-        try {
-            conn = ConnectionFactory.createConnectionToMySql();
-            pstm = conn.prepareStatement(sql);
-            resultSet = pstm.executeQuery();
-
-            while (resultSet.next()) {
-                Product product = new Product();
-
-                product.setProduct_id(resultSet.getInt("product_id"));
-                product.setProduct_name(resultSet.getString("product_name"));
-                product.setProduct_description(resultSet.getString("product_description"));
-                product.setPurchase_price(resultSet.getFloat("purchase_price"));
-                product.setRetail_price(resultSet.getFloat("retail_price"));
-                product.setStock_quantity(resultSet.getInt("stock_quantity"));
-                product.setCreated_at(resultSet.getTimestamp("created_at").toLocalDateTime());
-                product.setUpdated_at(resultSet.getTimestamp("updated_at").toLocalDateTime());
-
-                items.add(product);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return items;
 
     }
 
@@ -262,37 +261,6 @@ public class StockDAO {
 
         return sales;
 
-    }
-
-    public List<Sale> fetchSales() {
-        String sql = "SELECT * FROM totalIncome";
-
-        List<Sale> sales = new ArrayList<>();
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
-
-        try {
-            conn = ConnectionFactory.createConnectionToMySql();
-            pstm = conn.prepareStatement(sql);
-            resultSet = pstm.executeQuery();
-
-            while (resultSet.next()) {
-                Sale sale = new Sale();
-
-                sale.setSaleId(resultSet.getInt("sale_id"));
-                sale.setProductId(resultSet.getInt("product_id"));
-                sale.setSalePrice(resultSet.getFloat("sale_price"));
-                sale.setSaleDate(resultSet.getDate("sale_date"));
-
-                sales.add(sale);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return sales;
     }
 
     public List<SaleProduct> fetchSaleProduct(String productName, String startDate, String endDate) {
