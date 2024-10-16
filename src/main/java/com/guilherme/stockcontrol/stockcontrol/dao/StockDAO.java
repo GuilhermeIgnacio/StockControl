@@ -361,6 +361,49 @@ public class StockDAO {
 
     }
 
+    public float getProductSaleAmount(int productId) {
+        float saleAmount = 0;
+
+        String sql = "SELECT SUM(sale_price) FROM sales WHERE product_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, productId);
+
+            resultSet = pstm.executeQuery();
+
+            while (resultSet.next()) {
+                saleAmount = resultSet.getInt(1);
+            }
+
+            return saleAmount;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return saleAmount;
+        } finally {
+            try {
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
+        }
+
+    }
+
     public float totalIncome() {
         float total = 0f;
         String sql = "SELECT SUM(sale_price) FROM sales";

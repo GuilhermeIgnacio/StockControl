@@ -17,6 +17,7 @@ public class ItemDetailController {
     public Label detailCreatedAtLabel;
     public Label detailUpdatedAtLabel;
     public Label detailSalesLabel;
+    public Label saleAmount;
 
     StockDAO stockDAO = new StockDAO();
 
@@ -37,6 +38,8 @@ public class ItemDetailController {
         String formattedMarginProfit = String.format(getProp().getString("detail.per.unit"), profitMargin, currencyFormatter.format(product.getRetail_price() - product.getPurchase_price()));
 
         detailProfitMarginLabel.setText(formattedMarginProfit);
+
+        saleAmount.setText(currencyFormatter.format(stockDAO.getProductSaleAmount(product.getProduct_id())));
 
         String formattedCreatedAt = product.getCreated_at().format(dateTimeFormatter);
         String formattedUpdated = product.getUpdated_at().format(dateTimeFormatter);
