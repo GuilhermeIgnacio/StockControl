@@ -333,7 +333,7 @@ public class HomeController implements Initializable {
 
     }
 
-    public void onAlertsClicked(ActionEvent actionEvent) throws Exception {
+    public void onAlertsClicked(ActionEvent actionEvent) {
         List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList();
 
         Alert alert;
@@ -347,7 +347,7 @@ public class HomeController implements Initializable {
 
         } else {
             alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Nothing to Worry :D");
+            alert.setHeaderText(getProp().getString("alert.window.title.no.low.stock"));
         }
         alert.show();
 
