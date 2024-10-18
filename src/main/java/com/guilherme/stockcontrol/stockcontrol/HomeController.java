@@ -334,7 +334,23 @@ public class HomeController implements Initializable {
     }
 
     public void onAlertsClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("alerts-view.fxml", contentArea);
+        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList();
+
+        Alert alert;
+        if (!lowStockProducts.isEmpty()) {
+            alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(getProp().getString("alert.window.title"));
+
+            StringBuilder lowStockMessage = new StringBuilder();
+            lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
+            alert.setContentText(lowStockMessage.toString());
+
+        } else {
+            alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Nothing to Worry :D");
+        }
+        alert.show();
+
     }
 
     public void onSearchChanged(ActionEvent actionEvent) {
@@ -357,9 +373,7 @@ public class HomeController implements Initializable {
             alert.setHeaderText(getProp().getString("alert.window.title"));
 
             StringBuilder lowStockMessage = new StringBuilder();
-
             lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
-
             alert.setContentText(lowStockMessage.toString());
 
             alert.show();
