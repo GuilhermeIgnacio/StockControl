@@ -78,4 +78,6 @@ public class Util {
 
     }
 
+    public static boolean dialogShown = false;
+
 }

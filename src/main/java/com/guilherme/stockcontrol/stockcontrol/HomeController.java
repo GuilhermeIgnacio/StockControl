@@ -2,17 +2,16 @@ package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -21,10 +20,7 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
@@ -138,6 +134,8 @@ public class HomeController implements Initializable {
         productTableView.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE
         );
+
+        Platform.runLater(this::lowStockWarning);
 
     }
 
@@ -348,4 +346,28 @@ public class HomeController implements Initializable {
         }
 
     }
+
+    private void lowStockWarning() {
+
+        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList();
+
+        if (!lowStockProducts.isEmpty() && !dialogShown) {
+
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(getProp().getString("alert.window.title"));
+
+            StringBuilder lowStockMessage = new StringBuilder();
+
+            lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
+
+            alert.setContentText(lowStockMessage.toString());
+
+            alert.show();
+
+            dialogShown = true;
+
+        }
+
+    }
+
 }
