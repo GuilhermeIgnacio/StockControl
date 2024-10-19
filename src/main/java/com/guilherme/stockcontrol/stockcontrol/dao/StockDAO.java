@@ -16,8 +16,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.formatDate;
-import static com.guilherme.stockcontrol.stockcontrol.Util.genericAlertDialog;
+import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class StockDAO {
 
@@ -57,7 +56,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Products", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.products.error"), exception.getMessage()));
 
             return items;
         } finally {
@@ -102,7 +101,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Inserting Product", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.product.error"), exception.getMessage()));
         } finally {
             try {
 
@@ -143,7 +142,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Updating Product", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("update.product.error"), exception.getMessage()));
         } finally {
             try {
 
@@ -182,7 +181,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Deleting Product", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("delete.product.error"), exception.getMessage()));
         } finally {
             try {
                 if (conn != null) {
@@ -219,7 +218,7 @@ public class StockDAO {
             } catch (Exception e) {
                 e.printStackTrace();
                 RuntimeException exception = new RuntimeException(e);
-                Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Inserting Sale(s)", exception.getMessage()));
+                Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), exception.getMessage()));
             } finally {
 
                 try {
@@ -289,7 +288,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Monthly Sales", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.monthly.sales.error"), exception.getMessage()));
         } finally {
             try {
 
@@ -379,7 +378,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Sales", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.sales.error"), exception.getMessage()));
 
             return saleProducts;
         } finally {
@@ -430,7 +429,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Product Total Sales", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.total.sales"), exception.getMessage()));
             return total;
         } finally {
             try {
@@ -479,7 +478,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Product Sale Amount", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.sale.amount"), exception.getMessage()));
             return saleAmount;
         } finally {
             try {
@@ -525,7 +524,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Total Income", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.total.income"), exception.getMessage()));
             return total;
         } finally {
             try {
@@ -578,7 +577,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Month Income", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.month.income"), exception.getMessage()));
             return monthIncome;
         } finally {
             try {
@@ -629,7 +628,7 @@ public class StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Year Income", exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.year.income"), exception.getMessage()));
             return yearIncome;
         } finally {
             try {
