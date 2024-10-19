@@ -4,6 +4,8 @@ import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.formatDate;
+import static com.guilherme.stockcontrol.stockcontrol.Util.genericAlertDialog;
 
 public class StockDAO {
 
@@ -22,9 +25,9 @@ public class StockDAO {
         String sql = "SELECT * FROM products WHERE product_name LIKE ?";
         List<Product> items = new ArrayList<>();
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         try {
             conn = ConnectionFactory.createConnectionToMySql();
@@ -49,11 +52,34 @@ public class StockDAO {
                 items.add(product);
             }
 
+            return items;
+
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Products", exception.getMessage()));
+
+            return items;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
-        return items;
 
     }
 
@@ -75,7 +101,8 @@ public class StockDAO {
             pstm.execute();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException(e);
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Inserting Product", exception.getMessage()));
         } finally {
             try {
 
@@ -115,6 +142,8 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Updating Product", exception.getMessage()));
         } finally {
             try {
 
@@ -152,6 +181,8 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Deleting Product", exception.getMessage()));
         } finally {
             try {
                 if (conn != null) {
@@ -174,7 +205,6 @@ public class StockDAO {
         Connection conn = null;
         PreparedStatement pstm = null;
 
-
         for (int i = 0; i < salesCount; i++) {
 
             try {
@@ -188,7 +218,8 @@ public class StockDAO {
 
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException(e);
+                RuntimeException exception = new RuntimeException(e);
+                Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Inserting Sale(s)", exception.getMessage()));
             } finally {
 
                 try {
@@ -257,6 +288,26 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Monthly Sales", exception.getMessage()));
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
         return sales;
@@ -283,9 +334,9 @@ public class StockDAO {
             sql.append("AND s.sale_date <= ? ");
         }
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         try {
 
@@ -327,7 +378,28 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Sales", exception.getMessage()));
+
             return saleProducts;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
     }
@@ -336,9 +408,9 @@ public class StockDAO {
         int total = 0;
         String sql = "SELECT COUNT(*) FROM sales WHERE product_id = ?";
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         try {
 
@@ -356,7 +428,28 @@ public class StockDAO {
             return total;
 
         } catch (Exception e) {
+            e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Product Total Sales", exception.getMessage()));
             return total;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
     }
@@ -368,7 +461,7 @@ public class StockDAO {
 
         Connection conn = null;
         PreparedStatement pstm = null;
-        ResultSet resultSet;
+        ResultSet resultSet = null;
 
         try {
             conn = ConnectionFactory.createConnectionToMySql();
@@ -385,16 +478,22 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Product Sale Amount", exception.getMessage()));
             return saleAmount;
         } finally {
             try {
+
+                if (conn != null) {
+                    conn.close();
+                }
 
                 if (pstm != null) {
                     pstm.close();
                 }
 
-                if (conn != null) {
-                    conn.close();
+                if (resultSet != null) {
+                    resultSet.close();
                 }
 
             } catch (Exception e) {
@@ -408,9 +507,9 @@ public class StockDAO {
         float total = 0f;
         String sql = "SELECT SUM(sale_price) FROM sales";
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         try {
             conn = ConnectionFactory.createConnectionToMySql();
@@ -425,7 +524,27 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Total Income", exception.getMessage()));
             return total;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
     }
@@ -434,9 +553,9 @@ public class StockDAO {
         float monthIncome = 0;
         String sql = "SELECT SUM(sale_price) FROM sales WHERE MONTH(sale_date) = ? AND YEAR(sale_date) = ?";
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         java.util.Date date = new java.util.Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -458,7 +577,27 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Month Income", exception.getMessage()));
             return monthIncome;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
     }
@@ -467,9 +606,9 @@ public class StockDAO {
         float yearIncome = 0;
         String sql = "SELECT SUM(sale_price) FROM sales WHERE YEAR(sale_date) = ?";
 
-        Connection conn;
-        PreparedStatement pstm;
-        ResultSet resultSet;
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet resultSet = null;
 
         java.util.Date date = new java.util.Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -489,7 +628,27 @@ public class StockDAO {
 
         } catch (Exception e) {
             e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Error Fetching Year Income", exception.getMessage()));
             return yearIncome;
+        } finally {
+            try {
+
+                if (conn != null) {
+                    conn.close();
+                }
+
+                if (pstm != null) {
+                    pstm.close();
+                }
+
+                if (resultSet != null) {
+                    resultSet.close();
+                }
+
+            } catch (Exception e) {
+                System.out.println("Error When Closing Connections " + e);
+            }
         }
 
     }

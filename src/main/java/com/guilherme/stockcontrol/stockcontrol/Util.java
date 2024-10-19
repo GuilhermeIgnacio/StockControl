@@ -80,4 +80,23 @@ public class Util {
 
     public static boolean dialogShown = false;
 
+    public static void genericAlertDialog(Alert.AlertType alertType, String title, String headerText, String contentText) {
+        Alert alert = new Alert(alertType);
+
+        if (!title.isEmpty()) {
+            alert.setTitle(title);
+        }
+
+        if (!headerText.isEmpty()) {
+            alert.setHeaderText(headerText);
+        }
+
+        if (!contentText.isEmpty()) {
+            alert.setContentText(contentText);
+        }
+
+        alert.show();
+
+    }
+
 }
