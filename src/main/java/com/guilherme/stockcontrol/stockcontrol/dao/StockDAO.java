@@ -60,30 +60,14 @@ public class StockDAO {
 
             return items;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
-
 
     }
 
     public void insertItem(Product product) {
         String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
+
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -103,19 +87,7 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.product.error"), exception.getMessage()));
         } finally {
-            try {
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, null);
         }
 
     }
@@ -144,25 +116,14 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("update.product.error"), exception.getMessage()));
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            closeConnection(conn, pstm, null);
         }
     }
 
     public void deleteItemById(int productId) {
         String sql = "DELETE FROM products WHERE product_id = ?";
         String salesSql = "DELETE FROM sales WHERE product_id = ?";
+
         Connection conn = null;
         PreparedStatement pstm = null;
 
@@ -183,18 +144,7 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("delete.product.error"), exception.getMessage()));
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            closeConnection(conn, pstm, null);
         }
     }
 
@@ -220,19 +170,7 @@ public class StockDAO {
                 RuntimeException exception = new RuntimeException(e);
                 Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), exception.getMessage()));
             } finally {
-
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-
-                    if (pstm != null) {
-                        pstm.close();
-                    }
-
-                } catch (Exception e) {
-                    System.out.println("Error When Closing Connections.");
-                }
+                closeConnection(conn, pstm, null);
             }
         }
 
@@ -290,23 +228,7 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.monthly.sales.error"), exception.getMessage()));
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
         return sales;
@@ -382,23 +304,7 @@ public class StockDAO {
 
             return saleProducts;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
     }
@@ -432,23 +338,7 @@ public class StockDAO {
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.total.sales"), exception.getMessage()));
             return total;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
     }
@@ -481,23 +371,7 @@ public class StockDAO {
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.sale.amount"), exception.getMessage()));
             return saleAmount;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
     }
@@ -527,23 +401,7 @@ public class StockDAO {
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.total.income"), exception.getMessage()));
             return total;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
     }
@@ -580,23 +438,7 @@ public class StockDAO {
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.month.income"), exception.getMessage()));
             return monthIncome;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
     }
@@ -631,25 +473,29 @@ public class StockDAO {
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.year.income"), exception.getMessage()));
             return yearIncome;
         } finally {
-            try {
-
-                if (conn != null) {
-                    conn.close();
-                }
-
-                if (pstm != null) {
-                    pstm.close();
-                }
-
-                if (resultSet != null) {
-                    resultSet.close();
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error When Closing Connections " + e);
-            }
+            closeConnection(conn, pstm, resultSet);
         }
 
+    }
+
+    private static void closeConnection(Connection conn, PreparedStatement pstm, ResultSet resultSet) {
+        try {
+
+            if (conn != null) {
+                conn.close();
+            }
+
+            if (pstm != null) {
+                pstm.close();
+            }
+
+            if (resultSet != null) {
+                resultSet.close();
+            }
+
+        } catch (Exception e) {
+            System.out.println("Error When Closing Connections " + e);
+        }
     }
 
 }
