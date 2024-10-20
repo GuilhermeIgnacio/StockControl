@@ -16,7 +16,7 @@
                         <Image url="@assets/img/logo-placeholder.jpg" />
                     </image>
                 </ImageView>
-                <Button fx:id="homeBtn" mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%home.nav.btn" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%home.nav.btn" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -26,7 +26,7 @@
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-                <Button fx:id="statisticsBtn" layoutX="10.0" layoutY="150.0" mnemonicParsing="false" onAction="#onStatisticsBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%statistics.nav.btn" textFill="WHITE">
+                <Button layoutX="10.0" layoutY="150.0" mnemonicParsing="false" onAction="#onStatisticsBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%statistics.nav.btn" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>

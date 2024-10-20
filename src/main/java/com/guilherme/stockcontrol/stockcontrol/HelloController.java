@@ -19,9 +19,8 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.loadContent;
 
 public class HelloController implements Initializable {
 
-    public Button statisticsBtn; //Todo: Remove this unused reference
+    @FXML
     public VBox contentArea; // Área de conteúdo onde as views são carregadas
-    public Button homeBtn; //Todo: Remove this unused reference
 
     /**
      * Inicializa o controlador após seu elemento raiz tiver sido completamente processado
@@ -33,9 +32,13 @@ public class HelloController implements Initializable {
         try {
             loadContent("home-view.fxml", contentArea); // Carrega a view inicial
         } catch (Exception e) {
-            //Todo: Extract Error Message to string.properties
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loadign Home View", e.getMessage());
-            throw new RuntimeException(e);
+            RuntimeException runtimeException = new RuntimeException(e);
+
+            // Exibe um alerta de erro para o usuário, informando sobre a falha no carregamento
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loading Home View", runtimeException.getMessage());
+
+            //Lança a exceção
+            throw runtimeException;
         }
 
     }
@@ -47,8 +50,20 @@ public class HelloController implements Initializable {
      * @param actionEvent O evento gerado pelo clique do botão.
      */
 
-    public void onStatisticsBtnClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("statistics-view.fxml", contentArea);
+    public void onStatisticsBtnClicked(ActionEvent actionEvent) {
+
+        try {
+            loadContent("statistics-view.fxml", contentArea);
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+
+            // Exibe um alerta de erro para o usuário, informando sobre a falha no carregamento
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loading Statistics View", runtimeException.getMessage());
+
+            // Lança a exceção
+            throw runtimeException;
+        }
+
     }
 
     /**
@@ -58,8 +73,20 @@ public class HelloController implements Initializable {
      * @param actionEvent O evento gerado pelo clique do botão.
      */
 
-    public void onHomeBtnClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("home-view.fxml", contentArea);
+    public void onHomeBtnClicked(ActionEvent actionEvent) {
+
+        try {
+            loadContent("home-view.fxml", contentArea);
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+
+            // Exibe um alerta de erro para o usuário, informando sobre a falha no carregamento
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loading Home View", runtimeException.getMessage());
+
+            // Lança a exceção
+            throw runtimeException;
+        }
+
     }
 
     /**
@@ -69,7 +96,19 @@ public class HelloController implements Initializable {
      * @param actionEvent O evento gerado pelo clique do botão.
      */
 
-    public void onSalesButtonClicked(ActionEvent actionEvent) throws Exception {
-        loadContent("sales-view.fxml", contentArea);
+    public void onSalesButtonClicked(ActionEvent actionEvent) {
+
+        try {
+            loadContent("sales-view.fxml", contentArea);
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+
+            // Exibe um alerta de erro para o usuário, informando sobre a falha no carregamento
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loading Sales View", runtimeException.getMessage());
+
+            // Lança a exceção
+            throw runtimeException;
+        }
+
     }
 }
