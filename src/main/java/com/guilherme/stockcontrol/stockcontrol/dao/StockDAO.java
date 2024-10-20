@@ -7,10 +7,7 @@ import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -20,7 +17,16 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 public class StockDAO {
 
+    /**
+     * Este metodo busca uma lista de produtos no banco de dados com base no nome do produto fornecido.
+     * O nome do produto é pesquisado utilizando um padrão `LIKE`, o que permite buscar produtos cujo nome contenha a string fornecida.
+     *
+     * @param productName O nome ou parte do nome do produto que será usado para buscar os produtos no banco de dados.
+     * @return Uma lista de objetos do tipo Product que correspondem à pesquisa.
+     */
+
     public List<Product> fetchItems(String productName) {
+        // Consulta SQL que busca todos os produtos cujo nome contenha a string fornecida.
         String sql = "SELECT * FROM products WHERE product_name LIKE ?";
         List<Product> items = new ArrayList<>();
 
@@ -29,16 +35,23 @@ public class StockDAO {
         ResultSet resultSet = null;
 
         try {
+            // Cria uma conexão com o banco de dados
             conn = ConnectionFactory.createConnectionToMySql();
+
+            // Prepara a instrução SQL com a consulta definida
             pstm = conn.prepareStatement(sql);
 
+            // Define o parâmetro para a consulta, adicionando '%' para permitir busca parcial
             pstm.setString(1, "%" + productName + "%");
 
+            // Executa a consulta e obtém os resultados
             resultSet = pstm.executeQuery();
 
+            // Itera sobre os resultados e cria objetos Product para cada registro encontrado
             while (resultSet.next()) {
                 Product product = new Product();
 
+                // Define os valores do produto com base nos dados retornados pelo banco de dados
                 product.setProduct_id(resultSet.getInt("product_id"));
                 product.setProduct_name(resultSet.getString("product_name"));
                 product.setProduct_description(resultSet.getString("product_description"));
@@ -48,24 +61,41 @@ public class StockDAO {
                 product.setCreated_at(resultSet.getTimestamp("created_at").toLocalDateTime());
                 product.setUpdated_at(resultSet.getTimestamp("updated_at").toLocalDateTime());
 
+                // Adiciona o produto à lista de itens
                 items.add(product);
             }
 
+            // Retorna a lista de produtos encontrados
             return items;
 
         } catch (Exception e) {
+            // Impressão da pilha de erros no console
             e.printStackTrace();
+
+            // Lança uma exceção em tempo de execução com a mensagem do erro
             RuntimeException exception = new RuntimeException(e);
+
+            // Exibe um alerta de erro para o usuário em caso de falha ao buscar os produtos
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.products.error"), exception.getMessage()));
 
+            // Retorna a lista de produtos até o momento, que pode estar vazia
             return items;
         } finally {
+            // Fecha a conexão, a instrução e o conjunto de resultados para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Este metodo insere um novo produto no banco de dados.
+     * Os valores do produto são passados como parâmetros e inseridos na tabela `products`.
+     *
+     * @param product O objeto Product que contém as informações do produto a serem inseridas no banco de dados.
+     */
+
     public void insertItem(Product product) {
+        // Consulta SQL para inserir um novo produto no banco de dados.
         String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
 
         Connection conn = null;
@@ -75,40 +105,57 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
 
+            // Define os parâmetros com base nos valores do objeto Product fornecido
             pstm.setString(1, product.getProduct_name());
             pstm.setString(2, product.getProduct_description());
             pstm.setFloat(3, product.getPurchase_price());
             pstm.setFloat(4, product.getRetail_price());
             pstm.setInt(5, product.getStock_quantity());
 
+            // Executa a inserção no banco de dados
             pstm.execute();
+
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.product.error"), exception.getMessage()));
         } finally {
+            // Executa a atualização no banco de dados
             closeConnection(conn, pstm, null);
         }
 
     }
 
-    public void updateItem(Product item) {
+    /**
+     * Este metodo atualiza as informações de um produto existente no banco de dados.
+     * As informações do produto, como nome, descrição, preços e quantidade em estoque, são atualizadas com base no ID do produto.
+     *
+     * @param product O objeto Product que contém as informações atualizadas do produto a serem persistidas no banco de dados.
+     */
+
+    public void updateItem(Product product) {
+        // Consulta SQL para atualizar um produto no banco de dados, identificando-o pelo ID
         String sql = "UPDATE products SET product_name = ?, product_description = ?, purchase_price = ?, retail_price = ?, stock_quantity = ? WHERE product_id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
         try {
+            // Cria uma conexão com o banco de dados
             conn = ConnectionFactory.createConnectionToMySql();
+
+            // Prepara a instrução SQL com a consulta definida
             pstm = conn.prepareStatement(sql);
 
-            pstm.setString(1, item.getProduct_name());
-            pstm.setString(2, item.getProduct_description());
-            pstm.setFloat(3, item.getPurchase_price());
-            pstm.setFloat(4, item.getRetail_price());
-            pstm.setFloat(5, item.getStock_quantity());
-            pstm.setInt(6, item.getProduct_id());
+            // Define os parâmetros com base nos valores do objeto Product fornecido
+            pstm.setString(1, product.getProduct_name());
+            pstm.setString(2, product.getProduct_description());
+            pstm.setFloat(3, product.getPurchase_price());
+            pstm.setFloat(4, product.getRetail_price());
+            pstm.setFloat(5, product.getStock_quantity());
+            pstm.setInt(6, product.getProduct_id());
 
+            // Executa a atualização no banco de dados
             pstm.execute();
 
         } catch (Exception e) {
@@ -116,13 +163,24 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("update.product.error"), exception.getMessage()));
         } finally {
+            // Executa a atualização no banco de dados
             closeConnection(conn, pstm, null);
         }
     }
 
+    /**
+     * Este metodo exclui um produto do banco de dados com base no ID fornecido.
+     * O produto é removido da tabela `products` e também todas as vendas relacionadas a esse produto são removidas da tabela `sales`.
+     *
+     * @param productId O ID do produto que será excluído do banco de dados.
+     */
+
     public void deleteItemById(int productId) {
-        String sql = "DELETE FROM products WHERE product_id = ?";
+        // Consulta SQL para excluir as vendas associadas ao produto na tabela `sales`
         String salesSql = "DELETE FROM sales WHERE product_id = ?";
+
+        // Consulta SQL para excluir o produto da tabela `products`
+        String sql = "DELETE FROM products WHERE product_id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -130,10 +188,12 @@ public class StockDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySql();
 
+            // Prepara e executa a instrução SQL para excluir as vendas associadas ao produto
             pstm = conn.prepareStatement(salesSql);
             pstm.setInt(1, productId);
             pstm.execute();
 
+            // Prepara e executa a instrução SQL para excluir o produto
             pstm = conn.prepareStatement(sql);
             pstm.setInt(1, productId);
             pstm.execute();
@@ -144,55 +204,93 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("delete.product.error"), exception.getMessage()));
         } finally {
+            // Fecha a conexão e a instrução para liberar os recursos
             closeConnection(conn, pstm, null);
         }
     }
 
+    /**
+     * Este metodo insere uma ou mais vendas de um produto no banco de dados.
+     * As vendas são registradas na tabela `sales`, com base na quantidade de vendas especificada.
+     *
+     * @param product O objeto Product contendo o ID e o preço de venda do produto.
+     * @param salesCount A quantidade de vendas que serão registradas no banco de dados.
+     */
+
     public void insertSale(Product product, int salesCount) {
+        // Consulta SQL para inserir uma venda na tabela `sales`
         String sql = "INSERT INTO sales(product_id, sale_price, sale_date) VALUES (?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
-        for (int i = 0; i < salesCount; i++) {
+        try {
+            // Abre a conexão antes do loop
+            conn = ConnectionFactory.createConnectionToMySql();
+            conn.setAutoCommit(false);  // Desativa o autocommit para garantir integridade nas transações
 
-            try {
-                conn = ConnectionFactory.createConnectionToMySql();
-                pstm = conn.prepareStatement(sql);
+            pstm = conn.prepareStatement(sql);
 
+            // Itera sobre o número de vendas a serem registradas
+            for (int i = 0; i < salesCount; i++) {
                 pstm.setInt(1, product.getProduct_id());
                 pstm.setFloat(2, product.getRetail_price());
                 pstm.setDate(3, Date.valueOf(LocalDate.now()));
-                pstm.execute();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                RuntimeException exception = new RuntimeException(e);
-                Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), exception.getMessage()));
-            } finally {
-                closeConnection(conn, pstm, null);
+                pstm.addBatch();  // Adiciona a operação ao batch
             }
-        }
 
+            // Executa todas as operações de uma vez
+            pstm.executeBatch();
+            conn.commit();  // Confirma a transação
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            try {
+                if (conn != null) {
+                    conn.rollback();  // Reverte a transação em caso de erro
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            RuntimeException exception = new RuntimeException(e);
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), exception.getMessage()));
+        } finally {
+            // Fecha a conexão após o loop
+            closeConnection(conn, pstm, null);
+        }
     }
+
+    /**
+     * Este metodo busca as vendas mensais de produtos entre as datas fornecidas.
+     * Retorna uma lista de objetos `MonthlySales` que contêm o mês da venda, o total de vendas,
+     * o nome do item e o ID do produto.
+     *
+     * @param startDate A data de início no formato 'YYYY-MM-DD' para filtrar as vendas.
+     * @param endDate A data de término no formato 'YYYY-MM-DD' para filtrar as vendas.
+     * @return Uma lista de objetos `MonthlySales` contendo o mês, o total de vendas, o nome do item e o ID do produto.
+     */
 
     public List<MonthlySales> fetchMonthlySales(String startDate, String endDate) {
 
+        // Construção da query SQL que busca as vendas por mês, produto e nome do item
         StringBuilder sql = new StringBuilder("SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
                 "COUNT(s.id) AS total_sales, i.itemName, s.product_id " +
                 "FROM sales s " +
                 "JOIN items i ON s.product_id = i.id ");
 
+        // Verifica se as datas de início e término foram fornecidas e se não estão em branco
         if (startDate != null && endDate != null) {
             if (!startDate.isBlank() && !endDate.isBlank()) {
                 sql.append("WHERE s.sale_date BETWEEN ? AND ? ");
             }
         }
 
+        // Agrupa os resultados por mês, produto e nome do item e os ordena
         sql.append("GROUP BY sale_month, s.product_id, i.itemName " +
                 "ORDER BY sale_month, i.itemName");
 
 
+        // Lista para armazenar as vendas mensais
         List<MonthlySales> sales = new ArrayList<>();
 
         Connection conn = null;
@@ -203,6 +301,7 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql.toString());
 
+            // Define os parâmetros de data caso tenham sido fornecidos
             if (startDate != null && endDate != null) {
                 if (!startDate.isEmpty() && !endDate.isEmpty()) {
                     pstm.setString(1, startDate);
@@ -210,8 +309,10 @@ public class StockDAO {
                 }
             }
 
+            // Executa a query e processa os resultados
             resultSet = pstm.executeQuery();
 
+            // Itera sobre os resultados e cria objetos MonthlySales para cada linha
             while (resultSet.next()) {
                 MonthlySales monthlySales = new MonthlySales();
 
@@ -220,6 +321,7 @@ public class StockDAO {
                 monthlySales.setItemName(resultSet.getString("itemName"));
                 monthlySales.setProductId(resultSet.getInt("product_id"));
 
+                // Adiciona o objeto MonthlySales à lista de vendas
                 sales.add(monthlySales);
             }
 
@@ -228,6 +330,7 @@ public class StockDAO {
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.monthly.sales.error"), exception.getMessage()));
         } finally {
+            // Fecha a conexão, a instrução e o resultSet para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
@@ -235,22 +338,40 @@ public class StockDAO {
 
     }
 
+    /**
+     * Este metodo busca as vendas de produtos com base no nome do produto, data de início e data de término fornecidos.
+     * Retorna uma lista de objetos `SaleProduct` contendo informações sobre a venda, como ID da venda, nome do produto,
+     * preço de venda e data da venda.
+     *
+     * @param productName O nome do produto que será usado para filtrar os resultados. Se for nulo ou vazio, não será aplicado o filtro por nome.
+     * @param startDate A data de início no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de início não será aplicado.
+     * @param endDate A data de término no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de término não será aplicado.
+     * @return Uma lista de objetos `SaleProduct` contendo informações sobre as vendas que correspondem aos filtros aplicados.
+     */
+
     public List<SaleProduct> fetchSaleProduct(String productName, String startDate, String endDate) {
 
+        // Lista que armazenará os resultados das vendas filtradas
         List<SaleProduct> saleProducts = new ArrayList<>();
 
+        // Construção da query SQL com possíveis condições dinâmicas (filtros)
         StringBuilder sql = new StringBuilder(
                 "SELECT s.sale_id, p.product_name, p.product_description, s.sale_price, s.sale_date " +
                         "FROM sales s " +
                         "JOIN products p ON s.product_id = p.product_id " +
                         "WHERE 1=1 ");
 
+        // Adiciona o filtro por nome do produto, caso tenha sido fornecido
         if (productName != null && !productName.isEmpty()) {
             sql.append("AND p.product_name LIKE ? ");
         }
+
+        // Adiciona o filtro por data de início, caso tenha sido fornecido
         if (startDate != null && !startDate.isEmpty()) {
             sql.append("AND s.sale_date >= ? ");
         }
+
+        // Adiciona o filtro por data de término, caso tenha sido fornecido
         if (endDate != null && !endDate.isEmpty()) {
             sql.append("AND s.sale_date <= ? ");
         }
@@ -266,26 +387,24 @@ public class StockDAO {
 
             int paramIndex = 1;
 
-            // Definindo os parâmetros dinâmicos
+            // Definindo os parâmetros dinamicamente conforme a entrada do usuário
             if (productName != null && !productName.isEmpty()) {
                 pstm.setString(paramIndex++, "%" + productName + "%"); // Pesquisa com LIKE
             }
             if (startDate != null && !startDate.isEmpty()) {
-
                 pstm.setString(paramIndex++, formatDate(startDate)); // Data de início
-
             }
-
             if (endDate != null && !endDate.isEmpty()) {
                 pstm.setString(paramIndex++, formatDate(endDate)); // Data de término
             }
 
+            // Executa a query e processa os resultados
             resultSet = pstm.executeQuery();
 
+            // Itera sobre os resultados e cria objetos SaleProduct para cada linha
             while (resultSet.next()) {
 
                 SaleProduct saleProduct = new SaleProduct();
-
                 saleProduct.setSaleId(resultSet.getInt("sale_id"));
                 saleProduct.setProductName(resultSet.getString("product_name"));
                 saleProduct.setSalePrice(resultSet.getFloat("sale_price"));
@@ -304,13 +423,25 @@ public class StockDAO {
 
             return saleProducts;
         } finally {
+            // Fecha a conexão, a prepared statement e o resultSet para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Este metodo retorna o total de vendas de um produto específico com base no seu ID.
+     * Ele executa uma consulta SQL que conta o número de registros de vendas associadas ao ID do produto fornecido.
+     *
+     * @param productId O ID do produto para o qual o total de vendas será calculado.
+     * @return O número total de vendas do produto correspondente ao ID fornecido.
+     */
+
     public int getProductTotalSales(int productId) {
+        // Variável para armazenar o total de vendas
         int total = 0;
+
+        // Query SQL que conta o número de vendas de um produto específico
         String sql = "SELECT COUNT(*) FROM sales WHERE product_id = ?";
 
         Connection conn = null;
@@ -326,22 +457,35 @@ public class StockDAO {
 
             resultSet = pstm.executeQuery();
 
+            // Processando o resultado da query
             while (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
 
+            // Retorna o total de vendas do produto
             return total;
 
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.total.sales"), exception.getMessage()));
+
+            // Retorna o total, que será 0 em caso de erro
             return total;
         } finally {
+            // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
+
+    /**
+     * Este metodo retorna o valor total arrecadado em vendas de um produto específico, com base no seu ID.
+     * Ele executa uma consulta SQL que soma os preços de venda associados ao ID do produto fornecido.
+     *
+     * @param productId O ID do produto para o qual o valor total de vendas será calculado.
+     * @return O valor total arrecadado nas vendas do produto correspondente ao ID fornecido.
+     */
 
     public float getProductSaleAmount(int productId) {
         float saleAmount = 0;
@@ -355,29 +499,46 @@ public class StockDAO {
         try {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
+
+            // Definindo o valor do parâmetro productId na query
             pstm.setInt(1, productId);
 
+            // Executando a query
             resultSet = pstm.executeQuery();
 
+            // Processando o resultado da query
             while (resultSet.next()) {
                 saleAmount = resultSet.getInt(1);
             }
 
+            // Retorna o valor total das vendas do produto
             return saleAmount;
 
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.sale.amount"), exception.getMessage()));
+
+            // Retorna o valor total, que será 0 em caso de erro
             return saleAmount;
         } finally {
+            // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Este metodo retorna a receita total obtida a partir de todas as vendas registradas no banco de dados.
+     * Ele executa uma consulta SQL que soma os preços de todas as vendas na tabela de vendas.
+     *
+     * @return O valor total das vendas como um float.
+     */
+
     public float totalIncome() {
         float total = 0f;
+
+        // Query SQL que soma os valores de todas as vendas
         String sql = "SELECT SUM(sale_price) FROM sales";
 
         Connection conn = null;
@@ -389,31 +550,47 @@ public class StockDAO {
             pstm = conn.prepareStatement(sql);
             resultSet = pstm.executeQuery();
 
+            // Processando o resultado da query
             while (resultSet.next()) {
-                total = resultSet.getFloat(1);
+                total = resultSet.getFloat(1); // Obtém a soma dos valores de venda
             }
 
+            // Retorna o valor total da receita
             return total;
 
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.total.income"), exception.getMessage()));
+
+            // Retorna o valor total, que será 0 em caso de erro
             return total;
         } finally {
+            // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Este metodo retorna a receita total obtida no mês atual a partir de todas as vendas registradas no banco de dados.
+     * Ele executa uma consulta SQL que soma os preços de todas as vendas cujo mês e ano correspondem ao mês e ano atuais.
+     *
+     * @return O valor total das vendas do mês atual como um float.
+     */
+
     public float monthIncome() {
+        // Variável para armazenar o valor total da receita do mês
         float monthIncome = 0;
+
+        // Query SQL que soma os valores de vendas no mês e ano atuais
         String sql = "SELECT SUM(sale_price) FROM sales WHERE MONTH(sale_date) = ? AND YEAR(sale_date) = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet resultSet = null;
 
+        // Obtém a data atual
         java.util.Date date = new java.util.Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -421,36 +598,52 @@ public class StockDAO {
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
 
-            pstm.setInt(1, localDate.getMonthValue());
-            pstm.setInt(2, localDate.getYear());
+            // Define os parâmetros de mês e ano para a consulta SQL
+            pstm.setInt(1, localDate.getMonthValue());  // Define o mês atual
+            pstm.setInt(2, localDate.getYear());        // Define o ano atual
 
+            // Executa a consulta SQL
             resultSet = pstm.executeQuery();
 
+            // Processa o resultado da consulta
             while (resultSet.next()) {
-                monthIncome = resultSet.getFloat(1);
+                monthIncome = resultSet.getFloat(1); // Obtém a soma dos valores de venda do mês atual
             }
 
+            // Retorna o valor total da receita do mês
             return monthIncome;
 
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.month.income"), exception.getMessage()));
-            return monthIncome;
+            return monthIncome; // Retorna o valor total (0 em caso de erro)
         } finally {
+            // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Este metodo retorna a receita total obtida no ano atual a partir de todas as vendas registradas no banco de dados.
+     * Ele executa uma consulta SQL que soma os preços de todas as vendas cujo ano corresponde ao ano atual.
+     *
+     * @return O valor total das vendas do ano atual como um float.
+     */
+
     public float yearIncome() {
+        // Variável para armazenar o valor total da receita do ano
         float yearIncome = 0;
+
+        // Query SQL que soma os valores de vendas no ano atual
         String sql = "SELECT SUM(sale_price) FROM sales WHERE YEAR(sale_date) = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
         ResultSet resultSet = null;
 
+        // Obtém a data atual
         java.util.Date date = new java.util.Date();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
@@ -458,45 +651,67 @@ public class StockDAO {
 
             conn = ConnectionFactory.createConnectionToMySql();
             pstm = conn.prepareStatement(sql);
+
+            // Define o ano atual como parâmetro da consulta SQL
             pstm.setInt(1, localDate.getYear());
+
+            // Executa a consulta SQL
             resultSet = pstm.executeQuery();
 
+            // Processa o resultado da consulta
             while (resultSet.next()) {
                 yearIncome = resultSet.getFloat(1);
             }
 
+            // Retorna o valor total da receita do ano
             return yearIncome;
 
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.year.income"), exception.getMessage()));
-            return yearIncome;
+            return yearIncome; // Retorna o valor total (0 em caso de erro)
         } finally {
+            // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
         }
 
     }
 
+    /**
+     * Metodo utilitário responsável por fechar as conexões de banco de dados.
+     * Fecha a conexão com o banco de dados.
+     * Este metodo deve ser chamado no bloco `finally` após a execução de operações com banco de dados
+     * para garantir que os recursos sejam liberados corretamente, evitando vazamentos de memória ou
+     * conexões abertas indevidamente.
+     *
+     * @param conn       A conexão com o banco de dados que será fechada (pode ser nula).
+     * @param pstm       O PreparedStatement que será fechado (pode ser nulo).
+     * @param resultSet  O ResultSet que será fechado (pode ser nulo).
+     */
     private static void closeConnection(Connection conn, PreparedStatement pstm, ResultSet resultSet) {
         try {
-
+            // Fecha a conexão com o banco de dados, se ela não for nula
             if (conn != null) {
                 conn.close();
             }
 
+            // Fecha o PreparedStatement, se ele não for nulo
             if (pstm != null) {
                 pstm.close();
             }
 
+            // Fecha o ResultSet, se ele não for nulo
             if (resultSet != null) {
                 resultSet.close();
             }
 
         } catch (Exception e) {
+            // Em caso de erro ao fechar as conexões, imprime a mensagem de erro
             System.out.println("Error When Closing Connections " + e);
         }
     }
+
 
 }
 
