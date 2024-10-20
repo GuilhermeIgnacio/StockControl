@@ -15,6 +15,12 @@ import java.util.List;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
+/**
+ * Classe responsável pelo acesso aos dados relacionados ao estoque (DAO - Data Access Object).
+ * Esta classe contém métodos para realizar operações no banco de dados,
+ * como inserção, atualização, exclusão e consulta de dados de estoque.
+ */
+
 public class StockDAO {
 
     /**

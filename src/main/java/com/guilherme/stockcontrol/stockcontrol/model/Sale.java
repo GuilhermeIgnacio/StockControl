@@ -2,14 +2,21 @@ package com.guilherme.stockcontrol.stockcontrol.model;
 
 import java.util.Date;
 
+/**
+ * Classe que representa uma venda no sistema.
+ * Contém informações sobre a venda, incluindo ID da venda, ID do produto,
+ * preço da venda e data da venda.
+ */
+
 public class Sale {
-    private int saleId;
-    private int productId;
-    private float salePrice;
-    private Date saleDate;
+    private int saleId;         // ID único da venda
+    private int productId;      // ID do produto vendido
+    private float salePrice;    // Preço pelo qual o produto foi vendido
+    private Date saleDate;      // Data da venda
 
 
     //Getters
+
     public int getSaleId() {
         return saleId;
     }
@@ -25,10 +32,12 @@ public class Sale {
     public Date getSaleDate() {
         return saleDate;
     }
+
     //Getters
 
 
     //Setters
+
     public void setSaleId(int saleId) {
         this.saleId = saleId;
     }
@@ -44,6 +53,7 @@ public class Sale {
     public void setSaleDate(Date saleDate) {
         this.saleDate = saleDate;
     }
+
     //Setters
 
 }
