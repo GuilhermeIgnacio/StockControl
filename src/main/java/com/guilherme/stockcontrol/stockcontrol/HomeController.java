@@ -24,45 +24,115 @@ import java.util.*;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
+/**
+ * A classe HomeController é responsável pelo controle da interface de gerenciamento de produtos no sistema de controle de estoque.
+ * Ela implementa a interface Initializable, que exige a implementação do metodo initialize(), utilizado para inicializar a tabela de produtos
+ * e outros componentes da interface.
+ */
+
 public class HomeController implements Initializable {
 
-    public TableView productTableView;
+    /* Elementos da interface de usuário */
 
-    //Table Columns
-    public TableColumn<Product, String> productIdTableColumn;
-    public TableColumn<Product, String> productNameTableColumn;
-    public TableColumn<Product, String> productDescriptionTableColumn;
-    public TableColumn<Product, Float> purchasePriceTableColumn;
-    public TableColumn<Product, Float> retailPriceTableColumn;
-    public TableColumn<Product, String> stockQuantityTableColumn;
-    public TableColumn<Product, LocalDateTime> createdAtTableColumn;
-    public TableColumn<Product, LocalDateTime> updatedAtTableColumn;
-    //Table Columns
+    public TableView productTableView; // Tabela de produtos exibidos
 
-    public Button editBtn;
-    public Button deleteBtn;
-    public Button registerSaleBtn;
-    public VBox contentArea;
-    public TextField searchTextField;
+    // Colunas da tabela
+    public TableColumn<Product, String> productIdTableColumn; // Coluna de ID do produto
+    public TableColumn<Product, String> productNameTableColumn; // Coluna de Nome do produto
+    public TableColumn<Product, String> productDescriptionTableColumn; // Coluna de descrição do produto
+    public TableColumn<Product, Float> purchasePriceTableColumn; // Coluna de preço de compra
+    public TableColumn<Product, Float> retailPriceTableColumn; // Coluna de preço de venda
+    public TableColumn<Product, String> stockQuantityTableColumn; // Coluna de quantidade em estoque
+    public TableColumn<Product, LocalDateTime> createdAtTableColumn; // Coluna de data de criação
+    public TableColumn<Product, LocalDateTime> updatedAtTableColumn; // Coluna de data de atualização
 
+    public TextField searchTextField; // Campo de busca de produtos
+
+    // Lista observável de produtos que será exibida na tabela
+    // Uma lista observável(ObservableList) é uma lista que pode ser monitorada para mudanças.
     ObservableList<Product> itemList = FXCollections.observableArrayList();
 
+    // Objeto de acesso aos dados de estoque
     StockDAO stockDAO = new StockDAO();
+
+    /**
+     * Metodo de inicialização que é chamado quando a interface é carregada.
+     * Ele configura a tabela de produtos e verifica os alertas de baixo estoque.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        createTable(); // Configura as colunas e popula a tabela com produtos
+        Platform.runLater(this::lowStockWarning); // Executa o alerta de baixo estoque após a inicialização
+    }
 
+    /**
+     * Metodo chamado quando o botão de adicionar novo item é clicado.
+     * Ele abre a janela de inserção de item e atualiza a lista de produtos após a inserção.
+     */
+
+    public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
+
+        InsertItemApplication insertItemApplication = new InsertItemApplication(); // Cria nova instância da aplicação de inserção de item
+        Stage stage = new Stage(); // Cria nova janela
+
+        // Inicia a janela de inserção de item
+        insertItemApplication.start(stage);
+
+        // Atualiza a lista de produtos ao fechar a janela de inserção
         fetchItems();
 
+    }
+
+    /**
+     * Busca e popula a tabela com os itens do estoque.
+     * Filtra os itens com base no texto inserido no campo de busca.
+     */
+    private void fetchItems() {
+        try {
+            itemList.clear(); // Limpa a lista atual
+
+            for (Product product : stockDAO.fetchItems(searchTextField.getText())) {
+
+                Product newProduct = new Product();
+                newProduct.setProduct_id(product.getProduct_id());
+                newProduct.setProduct_name(product.getProduct_name());
+                newProduct.setProduct_description(product.getProduct_description());
+                newProduct.setStock_quantity(product.getStock_quantity());
+                newProduct.setPurchase_price(product.getPurchase_price());
+                newProduct.setRetail_price(product.getRetail_price());
+                newProduct.setCreated_at(product.getCreated_at());
+                newProduct.setUpdated_at(product.getUpdated_at());
+
+                itemList.add(newProduct); // Adiciona cada produto à lista
+                productTableView.setItems(itemList);  // Define a lista como fonte de dados da tabela
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Configura as colunas da tabela com seus respectivos valores e formatações personalizadas.
+     */
+
+    private void createTable() {
+
+        fetchItems(); // Carrega os itens para exibir na tabela
+
+        // Configura os valores de cada coluna da tabela
         productIdTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_id"));
         productNameTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_name"));
         productDescriptionTableColumn.setCellValueFactory(new PropertyValueFactory<>("product_description"));
-        stockQuantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("stock_quantity")); // Move to under retail_price
+        stockQuantityTableColumn.setCellValueFactory(new PropertyValueFactory<>("stock_quantity"));
         purchasePriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("purchase_price"));
         retailPriceTableColumn.setCellValueFactory(new PropertyValueFactory<>("retail_price"));
         createdAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("created_at"));
         updatedAtTableColumn.setCellValueFactory(new PropertyValueFactory<>("updated_at"));
 
+        // Formatação personalizada para exibição de preços
         purchasePriceTableColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Product, Float> call(TableColumn<Product, Float> param) {
@@ -97,6 +167,7 @@ public class HomeController implements Initializable {
             }
         });
 
+        // Formatação para datas de criação e atualização
         createdAtTableColumn.setCellFactory(new Callback<>() {
             @Override
             public TableCell<Product, LocalDateTime> call(TableColumn<Product, LocalDateTime> param) {
@@ -131,71 +202,33 @@ public class HomeController implements Initializable {
             }
         });
 
+        // Permite múltiplas seleções de linhas na tabela
         productTableView.getSelectionModel().setSelectionMode(
                 SelectionMode.MULTIPLE
         );
-
-        Platform.runLater(this::lowStockWarning);
-
     }
 
-    public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
-
-        InsertItemApplication insertItemApplication = new InsertItemApplication();
-        Stage stage = new Stage();
-
-        insertItemApplication.start(stage);
-
-        fetchItems();
-
-    }
-
-    private void fetchItems() {
-        try {
-            itemList.clear();
-
-            for (Product product : stockDAO.fetchItems(searchTextField.getText())) {
-
-                Product newProduct = new Product();
-                newProduct.setProduct_id(product.getProduct_id());
-                newProduct.setProduct_name(product.getProduct_name());
-                newProduct.setProduct_description(product.getProduct_description());
-                newProduct.setStock_quantity(product.getStock_quantity());
-                newProduct.setPurchase_price(product.getPurchase_price());
-                newProduct.setRetail_price(product.getRetail_price());
-                newProduct.setCreated_at(product.getCreated_at());
-                newProduct.setUpdated_at(product.getUpdated_at());
-
-
-                // Custom CellFactory para createdAt
-
-
-                itemList.add(newProduct);
-                productTableView.setItems(itemList);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Metodo chamado quando o botão de edição é clicado.
+     * Abre a janela de edição de um produto selecionado.
+     */
     public void onEditBtnClicked(ActionEvent actionEvent) throws Exception {
 
         if (productTableView.getSelectionModel().getSelectedItem() != null && productTableView.getSelectionModel().getSelectedItems().size() <= 1) {
 
-            Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
+            Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem(); // Obtém o item selecionado
 
             InsertItemApplication application = new InsertItemApplication();
             Stage stage = new Stage();
 
             application.selectedItem = selectedItem;
 
-            application.start(stage);
+            application.start(stage); // Abre a janela de edição
 
-            fetchItems();
+            fetchItems(); // Atualiza a lista de produtos
 
         } else {
+            // Exibe um alerta se mais de um item estiver selecionado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setContentText(getProp().getString("edit.alert.dialog.content"));
 
@@ -203,6 +236,11 @@ public class HomeController implements Initializable {
         }
 
     }
+
+    /**
+     * Metodo chamado quando o botão de exclusão é clicado.
+     * Exclui os produtos selecionados da lista e do banco de dados.
+     */
 
     public void onDeleteBtnClicked(ActionEvent actionEvent) {
 
@@ -227,6 +265,7 @@ public class HomeController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() == buttonTypeOne) {
 
+                // Ao confirmar a ação, deleta os produtos e atualiza a lista
                 selectedProducts.forEach(product ->
                         stockDAO.deleteItemById(product.getProduct_id())
                 );
@@ -237,30 +276,43 @@ public class HomeController implements Initializable {
         }
     }
 
+    /**
+     * Metodo chamado quando o botão de refresh é clicado.
+     * Atualiza a lista de produtos.
+     */
     public void onRefreshBtnClicked(ActionEvent actionEvent) {
         fetchItems();
     }
 
+    /**
+     * Metodo chamado quando um item da tabela é clicado.
+     * Abre a janela de detalhes do item ao detectar um duplo clique.
+     *
+     * @throws IOException Se ocorrer um erro ao carregar o arquivo FXML
+     */
     public void onItemClicked(MouseEvent mouseEvent) throws IOException {
 
-        if (mouseEvent.getClickCount() == 2) {
+        if (mouseEvent.getClickCount() == 2) { // Verifica se houve duplo clique
 
-            if (productTableView.getSelectionModel().getSelectedItem() != null) {
-                Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem();
+            if (productTableView.getSelectionModel().getSelectedItem() != null) { // Verifica se um item foi selecionado
+                Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem(); // Obtém o item selecionado
 
+                // Carrega a interface de detalhes do item
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
                 loader.setResources(getProp());
 
+                // Configura a nova janela de detalhes do item
                 Stage stage = new Stage(StageStyle.DECORATED);
                 stage.setScene(new Scene(loader.load()));
                 stage.setTitle(selectedItem.getProduct_name());
                 stage.setMinWidth(720);
                 stage.setMinHeight(520);
 
+                // Passa o item selecionado para o controlador da tela de detalhes
                 ItemDetailController controller = loader.getController();
                 controller.getItem(selectedItem);
 
-                stage.showAndWait();
+                stage.showAndWait(); // Exibe a janela e espera a ação do usuário
             }
 
         }
@@ -268,17 +320,25 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * Metodo chamado quando o botão de registrar venda é clicado.
+     * Exibe uma janela de diálogo para que o usuário informe a quantidade de produtos vendidos
+     * e registra as vendas no banco de dados.
+     *
+     * @param actionEvent Evento de clique do botão
+     */
     public void onRegisterSaleClicked(ActionEvent actionEvent) {
 
-        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) { // Verifica se há produtos selecionados
 
-            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
+            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems(); // Obtém os produtos selecionados
 
-
+            // Cria uma janela de diálogo para inserir as quantidades vendidas
             Dialog<Map<Product, String>> dialog = new Dialog<>();
             dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
 
+            // Configura os botões de confirmação e cancelamento
             ButtonType confirmButton = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
@@ -287,30 +347,34 @@ public class HomeController implements Initializable {
 
             Map<Product, TextField> productQuantityMap = new HashMap<>();
 
+            // Define o texto de instrução para a venda
             String prompt = getProp().getString("register.sale.content.text");
 
+            // Para cada produto selecionado, cria um campo de texto para inserir a quantidade vendida
             for (Product product : selectedProducts) {
 
                 TextField soldQuantityField = new TextField();
                 soldQuantityField.setPrefWidth(300);
                 soldQuantityField.setPromptText(prompt + " " + product.getProduct_name());
 
+                // Formata o campo de texto para aceitar apenas números inteiros
                 TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
                 soldQuantityField.setTextFormatter(intTextFormatter);
 
                 vBox.getChildren().add(soldQuantityField);
-                productQuantityMap.put(product, soldQuantityField);
+                productQuantityMap.put(product, soldQuantityField); // Mapeia o produto ao campo de texto
             }
 
             dialog.getDialogPane().setContent(vBox);
 
+            // Define o comportamento ao confirmar a venda
             dialog.setResultConverter(dialogButton -> {
                 if (dialogButton == confirmButton) {
                     Map<Product, String> productQuantities = new HashMap<>();
                     for (Product product : selectedProducts) {
                         String quantity = productQuantityMap.get(product).getText();
                         if (!quantity.isEmpty()) {
-                            productQuantities.put(product, quantity);
+                            productQuantities.put(product, quantity); // Mapeia o produto à quantidade vendida
                         }
                     }
                     return productQuantities;
@@ -318,13 +382,14 @@ public class HomeController implements Initializable {
                 return null;
             });
 
+            // Processa as vendas inseridas
             Optional<Map<Product, String>> result = dialog.showAndWait();
             result.ifPresent(productQuantities -> {
                 for (Map.Entry<Product, String> entry : productQuantities.entrySet()) {
                     Product product = entry.getKey();
                     int quantity = Integer.parseInt(entry.getValue());
 
-                    stockDAO.insertSale(product, quantity);
+                    stockDAO.insertSale(product, quantity); // Registra a venda no banco de dados
                 }
 
             });
@@ -333,41 +398,57 @@ public class HomeController implements Initializable {
 
     }
 
+    /**
+     * Metodo chamado quando o botão de alertas é clicado.
+     * Exibe um alerta informando quais produtos estão com estoque baixo (menos de 5 unidades).
+     *
+     * @param actionEvent Evento de clique do botão
+     */
     public void onAlertsClicked(ActionEvent actionEvent) {
-        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList();
+        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList(); // Filtra produtos com menos de 5 unidades em estoque
 
         Alert alert;
         if (!lowStockProducts.isEmpty()) {
-            alert = new Alert(Alert.AlertType.WARNING);
+            alert = new Alert(Alert.AlertType.WARNING); // Alerta de aviso
             alert.setHeaderText(getProp().getString("alert.window.title"));
 
             StringBuilder lowStockMessage = new StringBuilder();
             lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
-            alert.setContentText(lowStockMessage.toString());
+            alert.setContentText(lowStockMessage.toString()); // Adiciona os nomes dos produtos com baixo estoque
 
         } else {
             alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(getProp().getString("alert.window.title.no.low.stock"));
         }
+
         alert.show();
 
     }
 
+    /**
+     * Metodo chamado quando o campo de busca é alterado.
+     * Atualiza a lista de produtos exibidos na tabela com base no texto de busca.
+     * @param actionEvent Evento de alteração do texto de busca
+     */
     public void onSearchChanged(ActionEvent actionEvent) {
 
         try {
-            fetchItems();
+            fetchItems(); // Busca os itens com base no texto atual do campo de busca
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    /**
+     * Exibe um alerta de aviso se houver produtos com baixo estoque (menos de 5 unidades).
+     * O alerta é exibido apenas uma vez por execução do programa.
+     */
     private void lowStockWarning() {
 
-        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList();
+        List<Product> lowStockProducts = itemList.stream().filter(product -> product.getStock_quantity() < 5).toList(); // Filtra produtos com baixo estoque
 
-        if (!lowStockProducts.isEmpty() && !dialogShown) {
+        if (!lowStockProducts.isEmpty() && !dialogShown) { // Verifica se o alerta já foi mostrado
 
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(getProp().getString("alert.window.title"));
@@ -378,7 +459,7 @@ public class HomeController implements Initializable {
 
             alert.show();
 
-            dialogShown = true;
+            dialogShown = true; // Marca o alerta como mostrado
 
         }
 
