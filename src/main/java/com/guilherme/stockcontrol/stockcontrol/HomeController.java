@@ -73,11 +73,11 @@ public class HomeController implements Initializable {
 
     public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
 
-        InsertItemApplication insertItemApplication = new InsertItemApplication(); // Cria nova instância da aplicação de inserção de item
+        InsertProductApplication insertProductApplication = new InsertProductApplication(); // Cria nova instância da aplicação de inserção de item
         Stage stage = new Stage(); // Cria nova janela
 
         // Inicia a janela de inserção de item
-        insertItemApplication.start(stage);
+        insertProductApplication.start(stage);
 
         // Atualiza a lista de produtos ao fechar a janela de inserção
         fetchItems();
@@ -218,10 +218,10 @@ public class HomeController implements Initializable {
 
             Product selectedItem = (Product) productTableView.getSelectionModel().getSelectedItem(); // Obtém o item selecionado
 
-            InsertItemApplication application = new InsertItemApplication();
+            InsertProductApplication application = new InsertProductApplication();
             Stage stage = new Stage();
 
-            application.selectedItem = selectedItem;
+            application.selectedProduct = selectedItem;
 
             application.start(stage); // Abre a janela de edição
 
