@@ -309,8 +309,8 @@ public class HomeController implements Initializable {
                 stage.setMinHeight(520);
 
                 // Passa o item selecionado para o controlador da tela de detalhes
-                ItemDetailController controller = loader.getController();
-                controller.getItem(selectedItem);
+                ProductDetailController controller = loader.getController();
+                controller.getProduct(selectedItem);
 
                 stage.showAndWait(); // Exibe a janela e espera a ação do usuário
             }
