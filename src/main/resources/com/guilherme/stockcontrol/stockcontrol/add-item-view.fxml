@@ -55,7 +55,7 @@
                               <Button fx:id="saveProductBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveProductClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%insert.save.button" textFill="WHITE">
                         </Button>
                               <Region HBox.hgrow="ALWAYS" />
-                              <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" prefWidth="90.0" text="%insert.clear.fields.button">
+                              <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" text="%insert.clear.fields.button">
                                   <HBox.margin>
                                       <Insets right="4.0" />
                                   </HBox.margin>

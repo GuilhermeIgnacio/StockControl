@@ -32,7 +32,7 @@
                             </font>
                         </Button>
                   <Region HBox.hgrow="ALWAYS" />
-                  <Button graphicTextGap="8.0" layoutX="624.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.insert.new.item" textFill="WHITE">
+                  <Button graphicTextGap="8.0" layoutX="624.0" layoutY="10.0" mnemonicParsing="false" onAction="#onAddNewItemBtnClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.insert.new.item" textFill="WHITE">
                      <graphic>
                         <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -46,10 +46,10 @@
                   </Button>
                     </children>
                 </HBox>
-                <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" prefWidth="200.0">
                     <children>
-                  <TextField fx:id="searchTextField" onAction="#onSearchChanged" promptText="Search" />
-                  <Region prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchTextField" onAction="#onSearchChanged" promptText="%search.product.textfield.label" />
+                  <Region HBox.hgrow="ALWAYS" />
                         <Button graphicTextGap="8.0" mnemonicParsing="false" onAction="#onRefreshBtnClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.refresh" textFill="WHITE">
                             <graphic>
                                 <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">

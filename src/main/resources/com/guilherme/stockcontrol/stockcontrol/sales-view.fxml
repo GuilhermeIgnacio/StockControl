@@ -22,7 +22,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                             <children>
-                                <Label text="Total Income" textFill="GREY" />
+                                <Label text="%total.income" textFill="GREY" />
                                 <Label fx:id="totalIncomeLabel" text="R$0">
                                     <font>
                                         <Font size="25.0" />
@@ -58,7 +58,7 @@
                         </VBox>
                     </children>
                 </HBox>
-                <Label text="Orders">
+                <Label text="%orders.header.label">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>

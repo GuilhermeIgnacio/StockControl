@@ -339,7 +339,7 @@ public class HomeController implements Initializable {
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
 
             // Configura os botões de confirmação e cancelamento
-            ButtonType confirmButton = new ButtonType("Confirm", ButtonBar.ButtonData.OK_DONE);
+            ButtonType confirmButton = new ButtonType(getProp().getString("register.sale.confirm.button"), ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
             VBox vBox = new VBox();
@@ -428,6 +428,7 @@ public class HomeController implements Initializable {
     /**
      * Metodo chamado quando o campo de busca é alterado.
      * Atualiza a lista de produtos exibidos na tabela com base no texto de busca.
+     *
      * @param actionEvent Evento de alteração do texto de busca
      */
     public void onSearchChanged(ActionEvent actionEvent) {
