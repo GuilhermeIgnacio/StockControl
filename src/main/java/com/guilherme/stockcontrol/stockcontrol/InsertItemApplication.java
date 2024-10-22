@@ -46,8 +46,8 @@ public class InsertItemApplication extends Application {
 
         // Se um item foi selecionado, passa o item para o controlador
         if (selectedItem != null) {
-            InsertItemController controller = fxmlLoader.getController();
-            controller.getItem(selectedItem); // Preenche os campos com os dados do item selecionado
+            InsertProductController controller = fxmlLoader.getController();
+            controller.getProduct(selectedItem); // Preenche os campos com os dados do item selecionado
         }
 
         stage.showAndWait(); // Exibe a janela e aguarda até que ela seja fechada

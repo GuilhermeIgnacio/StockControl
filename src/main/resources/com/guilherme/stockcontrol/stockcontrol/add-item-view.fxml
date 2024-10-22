@@ -11,22 +11,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.InsertItemController">
+<BorderPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.guilherme.stockcontrol.stockcontrol.InsertProductController">
     <center>
         <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
             <children>
 
-                <TextField fx:id="itemNameTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="%insert.prompt.text.name">
+                <TextField fx:id="productNameTextField" maxWidth="1.7976931348623157E308" minWidth="-Infinity" promptText="%insert.prompt.text.name">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextField>
-                <TextArea fx:id="itemDescriptionTextField" maxWidth="1.7976931348623157E308" prefHeight="100.0" promptText="%insert.prompt.text.description" wrapText="true">
+                <TextArea fx:id="productDescriptionTextField" maxWidth="1.7976931348623157E308" prefHeight="100.0" promptText="%insert.prompt.text.description" wrapText="true">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
                 </TextArea>
-                <TextField fx:id="itemQuantityTextField" layoutX="10.0" layoutY="136.0" maxWidth="1.7976931348623157E308" promptText="%insert.prompt.text.quantity">
+                <TextField fx:id="productQuantityTextField" layoutX="10.0" layoutY="136.0" maxWidth="1.7976931348623157E308" promptText="%insert.prompt.text.quantity">
                     <VBox.margin>
                         <Insets bottom="8.0" />
                     </VBox.margin>
@@ -52,7 +52,7 @@
                <children>
                       <HBox fillHeight="false" minHeight="-Infinity" prefWidth="200.0">
                           <children>
-                              <Button fx:id="saveItemBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveItemClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%insert.save.button" textFill="WHITE">
+                              <Button fx:id="saveProductBtn" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onSaveProductClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%insert.save.button" textFill="WHITE">
                         </Button>
                               <Region HBox.hgrow="ALWAYS" />
                               <Button fx:id="clearFieldsBtn" mnemonicParsing="false" onAction="#onClearFieldsBtnClicked" prefHeight="29.0" prefWidth="90.0" text="%insert.clear.fields.button">

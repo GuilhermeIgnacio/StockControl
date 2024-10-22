@@ -100,7 +100,7 @@ public class StockDAO {
      * @param product O objeto Product que contém as informações do produto a serem inseridas no banco de dados.
      */
 
-    public void insertItem(Product product) {
+    public void insertProduct(Product product) {
         // Consulta SQL para inserir um novo produto no banco de dados.
         String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
 
@@ -139,7 +139,7 @@ public class StockDAO {
      * @param product O objeto Product que contém as informações atualizadas do produto a serem persistidas no banco de dados.
      */
 
-    public void updateItem(Product product) {
+    public void updateProduct(Product product) {
         // Consulta SQL para atualizar um produto no banco de dados, identificando-o pelo ID
         String sql = "UPDATE products SET product_name = ?, product_description = ?, purchase_price = ?, retail_price = ?, stock_quantity = ? WHERE product_id = ?";
 

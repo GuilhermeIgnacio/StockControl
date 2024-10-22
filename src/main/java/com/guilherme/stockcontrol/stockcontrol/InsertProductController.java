@@ -13,18 +13,18 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.getChangeUnaryOperato
  * Controlador para a interface de inserção e edição de itens.
  * Esta classe gerencia as interações do usuário na janela de adição ou edição de produtos.
  */
-public class InsertItemController {
-    public TextField itemNameTextField;         // Campo de texto para o nome do produto
-    public TextArea itemDescriptionTextField;   // Área de texto para a descrição do produto
-    public TextField purchasePriceTextField;    // Campo de texto para o preço de compra do produto
-    public TextField retailPriceTextField;      // Campo de texto para o preço de venda do produto
-    public TextField itemQuantityTextField;     // Campo de texto para a quantidade de produto
-    public Button saveItemBtn;                  // Botão para salvar o produto
-    public Button clearFieldsBtn;               // BOtão para limpar os campos
-    public Button cancelBtn;                    // Botão para cancelar a operação
-    public Label errorLabel;                    // Label para exibir mensagens de erro
+public class InsertProductController {
+    public TextField productNameTextField;          // Campo de texto para o nome do produto
+    public TextArea productDescriptionTextField;    // Área de texto para a descrição do produto
+    public TextField purchasePriceTextField;        // Campo de texto para o preço de compra do produto
+    public TextField retailPriceTextField;          // Campo de texto para o preço de venda do produto
+    public TextField productQuantityTextField;      // Campo de texto para a quantidade de produto
+    public Button saveProductBtn;                   // Botão para salvar o produto
+    public Button clearFieldsBtn;                   // BOtão para limpar os campos
+    public Button cancelBtn;                        // Botão para cancelar a operação
+    public Label errorLabel;                        // Label para exibir mensagens de erro
 
-    Product item = new Product(); // Produto que está sendo adicionado
+    Product product = new Product(); // Produto que está sendo adicionado
 
     boolean editMode = false; // Flag para verificar se está em modo de edição
 
@@ -44,33 +44,34 @@ public class InsertItemController {
 
         // Formata o campo de quantidade para aceitar apenas números inteiros
         TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^-?\\d*$"));
-        itemQuantityTextField.setTextFormatter(intTextFormatter);
+        productQuantityTextField.setTextFormatter(intTextFormatter);
 
         // Limita o número de caracteres no campo de nome do produto
-        addTextLimiter(itemNameTextField, 100);
+        addTextLimiter(productNameTextField, 100);
 
     }
 
     /**
      * Preenche os campos do formulário com os dados do produto selecionado.
+     *
      * @param selectedProduct O produto que será editado
      */
-    public void getItem(Product selectedProduct) {
-        if (item != null) {
+    public void getProduct(Product selectedProduct) {
+        if (product != null) {
             editMode = true;
 
-            item.setProduct_id(selectedProduct.getProduct_id());
-            item.setProduct_name(selectedProduct.getProduct_name());
-            item.setProduct_description(selectedProduct.getProduct_description());
-            item.setStock_quantity(selectedProduct.getStock_quantity());
-            item.setPurchase_price(selectedProduct.getPurchase_price());
-            item.setRetail_price(selectedProduct.getRetail_price());
+            product.setProduct_id(selectedProduct.getProduct_id());
+            product.setProduct_name(selectedProduct.getProduct_name());
+            product.setProduct_description(selectedProduct.getProduct_description());
+            product.setStock_quantity(selectedProduct.getStock_quantity());
+            product.setPurchase_price(selectedProduct.getPurchase_price());
+            product.setRetail_price(selectedProduct.getRetail_price());
 
-            itemNameTextField.setText(item.getProduct_name());
-            itemDescriptionTextField.setText(item.getProduct_description());
-            itemQuantityTextField.setText(String.valueOf(item.getStock_quantity()));
-            purchasePriceTextField.setText(String.valueOf(item.getPurchase_price()));
-            retailPriceTextField.setText(String.valueOf(item.getRetail_price()));
+            productNameTextField.setText(product.getProduct_name());
+            productDescriptionTextField.setText(product.getProduct_description());
+            productQuantityTextField.setText(String.valueOf(product.getStock_quantity()));
+            purchasePriceTextField.setText(String.valueOf(product.getPurchase_price()));
+            retailPriceTextField.setText(String.valueOf(product.getRetail_price()));
 
         }
     }
@@ -78,41 +79,41 @@ public class InsertItemController {
     /**
      * Metodo chamado quando o botão de salvar é clicado.
      * Valida os campos e salva o produto no banco de dados.
+     *
      * @param actionEvent O evento de ação do clique no botão
      */
-    public void onSaveItemClicked(ActionEvent actionEvent) {
+    public void onSaveProductClicked(ActionEvent actionEvent) {
         StockDAO stockDao = new StockDAO();
 
         // Verifica se todos os campos obrigatórios foram preenchidos
-        if (!itemNameTextField.getText().isEmpty() &&
+        if (!productNameTextField.getText().isEmpty() &&
                 !purchasePriceTextField.getText().isEmpty() &&
                 !retailPriceTextField.getText().isEmpty() &&
-                !itemQuantityTextField.getText().isEmpty()
+                !productQuantityTextField.getText().isEmpty()
         ) {
             // Obtém os valores dos campos
-            String itemName = itemNameTextField.getText(); //This Field Cannot Be Null
-            String itemDescription = itemDescriptionTextField.getText();
+            String productName = productNameTextField.getText(); //This Field Cannot Be Null
+            String productDescription = productDescriptionTextField.getText();
             float purchasePrice = Float.parseFloat(purchasePriceTextField.getText()); //This Field Cannot Be Null
             float retailPrice = Float.parseFloat(retailPriceTextField.getText()); //This Field Cannot Be Null
-            int itemQuantity = Integer.parseInt(itemQuantityTextField.getText()); //This Field Cannot Be Null
+            int productQuantity = Integer.parseInt(productQuantityTextField.getText()); //This Field Cannot Be Null
 
-
-            item.setProduct_name(itemName);
-            item.setProduct_description(itemDescription);
-            item.setPurchase_price(purchasePrice);
-            item.setRetail_price(retailPrice);
-            item.setStock_quantity(itemQuantity);
+            product.setProduct_name(productName);
+            product.setProduct_description(productDescription);
+            product.setPurchase_price(purchasePrice);
+            product.setRetail_price(retailPrice);
+            product.setStock_quantity(productQuantity);
 
             try {
-                // Se estiver em modo de edição, atualiza o item, senão, insere um novo
+                // Se estiver em modo de edição, atualiza o produto, senão, insere um novo
                 if (editMode) {
-                    stockDao.updateItem(item);
+                    stockDao.updateProduct(product);
                 } else {
-                    stockDao.insertItem(item);
+                    stockDao.insertProduct(product);
                 }
 
                 // Fecha a janela após salvar
-                Stage stage = (Stage) saveItemBtn.getScene().getWindow();
+                Stage stage = (Stage) saveProductBtn.getScene().getWindow();
                 stage.close();
             } catch (Exception e) {
                 // Exibe mensagem de erro em caso de exceção
@@ -125,25 +126,26 @@ public class InsertItemController {
             errorLabel.setText("Make sure you have filled out all the required fields.");
         }
 
-
     }
 
     /**
      * Metodo chamado quando o botão de limpar é clicado.
      * Limpa todos os campos do formulário.
+     *
      * @param actionEvent O evento de ação do clique no botão
      */
     public void onClearFieldsBtnClicked(ActionEvent actionEvent) {
-        itemNameTextField.clear();
-        itemDescriptionTextField.clear();
+        productNameTextField.clear();
+        productDescriptionTextField.clear();
         purchasePriceTextField.clear();
         retailPriceTextField.clear();
-        itemQuantityTextField.clear();
+        productQuantityTextField.clear();
     }
 
     /**
      * Metodo chamado quando o botão de cancelar é clicado.
      * Fecha a janela sem salvar.
+     *
      * @param actionEvent O evento de ação do clique no botão
      */
     public void onCancelBtnClicked(ActionEvent actionEvent) {
