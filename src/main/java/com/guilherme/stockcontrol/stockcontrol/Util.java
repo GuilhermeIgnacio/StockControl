@@ -18,6 +18,7 @@ import java.util.function.UnaryOperator;
 
 public class Util {
 
+    // Metodo para carregar o arquivo de propriedades (strings.properties) para internacionalização (i18n)
     public static ResourceBundle getProp() {
         FileInputStream file;
         try {
@@ -28,6 +29,7 @@ public class Util {
         }
     }
 
+    // Metodo para limitar o número de caracteres de um TextField
     public static void addTextLimiter(final TextField textField, final int maxLength) {
         textField.textProperty().addListener((observableValue, oldValue, newValue) -> {
             if (textField.getText().length() > maxLength) {
@@ -37,6 +39,7 @@ public class Util {
         });
     }
 
+    // Metodo para retornar um operador que valida a entrada de texto com base em uma expressão regular (regex)
     public static UnaryOperator<TextFormatter.Change> getChangeUnaryOperator(String regex) {
         return change -> {
 
@@ -49,10 +52,16 @@ public class Util {
         };
     }
 
+    // Formatter para datas, configurado para o padrão "dd/MM/yyyy HH:mm"
     public static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    // Localização configurada para o Brasil (pt-BR)
     public static Locale locale = new Locale.Builder().setLanguage("pt").setRegion("BR").build();
+
+    // Formatação monetária configurada para o Brasil
     public static NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
 
+    // Metodo para carregar um arquivo FXML em um VBox específico
     public static void loadContent(String fxml, VBox contentArea) throws Exception {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(Util.class.getResource(fxml)));
         loader.setResources(getProp());
@@ -60,6 +69,7 @@ public class Util {
         contentArea.getChildren().setAll(newContent);
     }
 
+    // Metodo para formatar uma data string (de "dd/MM/yyyy" para "yyyy-MM-dd")
     public static String formatDate(String dateString) {
 
         try {
@@ -78,8 +88,10 @@ public class Util {
 
     }
 
+    // Variável para controlar se um diálogo já foi exibido (para evitar repetições)
     public static boolean dialogShown = false;
 
+    // Metodo para exibir um diálogo de alerta genérico
     public static void genericAlertDialog(Alert.AlertType alertType, String title, String headerText, String contentText) {
         Alert alert = new Alert(alertType);
 
