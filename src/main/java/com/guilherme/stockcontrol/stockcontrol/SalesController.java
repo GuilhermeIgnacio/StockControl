@@ -26,18 +26,19 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.*;
  */
 public class SalesController implements Initializable {
 
-    public Label totalIncomeLabel;                              // Exibe a receita total
-    public Label monthIncomeLabel;                              // Exibe a receita mensal
-    public Label yearIncomeLabel;                               // Exibe a receita anual
+    public Label totalIncomeLabel;                                  // Exibe a receita total
+    public Label monthIncomeLabel;                                  // Exibe a receita mensal
+    public Label yearIncomeLabel;                                   // Exibe a receita anual
 
-    public TableView tableView;                                 // Tabela que exibe as vendas
-    public TableColumn<SaleProduct, Date> saleDateColumn;       // Coluna da data da venda
-    public TableColumn<SaleProduct, String> productNameColumn;  // Coluna do nome do produto vendido
-    public TableColumn<SaleProduct, Float> salePriceColumn;     // Coluna do preço da venda
+    public TableView tableView;                                     // Tabela que exibe as vendas
+    public TableColumn<SaleProduct, Date> saleDateColumn;           // Coluna da data da venda
+    public TableColumn<SaleProduct, String> productNameColumn;      // Coluna do nome do produto vendido
+    public TableColumn<SaleProduct, Integer> soldQuantityColumn;    // Coluna da quantidade de produtos vendidos naquela venda
+    public TableColumn<SaleProduct, Float> salePriceColumn;         // Coluna do preço da venda
 
-    public DatePicker fromDatePicker;                           // Filtro para a data inicial
-    public DatePicker toDatePicker;                             // Filtro para a data final
-    public ComboBox<String> productsComboBox;                   // ComboBox para selecionar o produto a ser filtrado
+    public DatePicker fromDatePicker;                               // Filtro para a data inicial
+    public DatePicker toDatePicker;                                 // Filtro para a data final
+    public ComboBox<String> productsComboBox;                       // ComboBox para selecionar o produto a ser filtrado
 
     ObservableList<SaleProduct> saleProductsList = FXCollections.observableArrayList(); // Lista observável de vendas
 
@@ -76,6 +77,7 @@ public class SalesController implements Initializable {
                 SaleProduct newSaleProduct = new SaleProduct();
                 newSaleProduct.setSaleId(saleProduct.getSaleId());
                 newSaleProduct.setProductName(saleProduct.getProductName());
+                newSaleProduct.setQuantity(saleProduct.getQuantity());
                 newSaleProduct.setSalePrice(saleProduct.getSalePrice());
                 newSaleProduct.setSaleDate(saleProduct.getSaleDate());
 
@@ -99,6 +101,7 @@ public class SalesController implements Initializable {
         // Configura as colunas da tabela
         saleDateColumn.setCellValueFactory(new PropertyValueFactory<>("saleDate"));
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        soldQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         salePriceColumn.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
 
         // Formata a coluna da data da venda

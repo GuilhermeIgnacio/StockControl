@@ -77,6 +77,7 @@
                     <columns>
                         <TableColumn fx:id="saleDateColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sale.date" />
                         <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%product.name" />
+                  <TableColumn fx:id="soldQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sold.quantity" />
                         <TableColumn fx:id="salePriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sale.price" />
                     </columns>
                 </TableView>

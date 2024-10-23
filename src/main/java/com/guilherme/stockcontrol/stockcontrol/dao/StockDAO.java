@@ -356,7 +356,7 @@ public class StockDAO {
 
         // Construção da query SQL com possíveis condições dinâmicas (filtros)
         StringBuilder sql = new StringBuilder(
-                "SELECT s.sale_id, p.product_name, p.product_description, s.sale_price, s.sale_date " +
+                "SELECT s.sale_id, p.product_name, p.product_description, s.quantity, s.sale_price, s.sale_date " +
                         "FROM sales s " +
                         "JOIN products p ON s.product_id = p.product_id " +
                         "WHERE 1=1 ");
@@ -407,6 +407,7 @@ public class StockDAO {
                 SaleProduct saleProduct = new SaleProduct();
                 saleProduct.setSaleId(resultSet.getInt("sale_id"));
                 saleProduct.setProductName(resultSet.getString("product_name"));
+                saleProduct.setQuantity(resultSet.getInt("quantity"));
                 saleProduct.setSalePrice(resultSet.getFloat("sale_price"));
                 saleProduct.setSaleDate(resultSet.getDate("sale_date"));
 

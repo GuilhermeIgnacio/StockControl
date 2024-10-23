@@ -12,6 +12,7 @@ public class SaleProduct {
 
     private int saleId;         //ID único da venda
     private String productName; // Nome do produto vendido
+    private int quantity;       // Quantidade vendida
     private float salePrice;    // Preço pelo qual o produto foi vendido
     private Date saleDate;      // Data da venda
 
@@ -22,6 +23,10 @@ public class SaleProduct {
 
     public String getProductName() {
         return productName;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public float getSalePrice() {
@@ -40,6 +45,10 @@ public class SaleProduct {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setSalePrice(float salePrice) {
