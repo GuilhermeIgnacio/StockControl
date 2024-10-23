@@ -9,11 +9,12 @@ import java.util.Date;
  */
 
 public class Sale {
+
     private int saleId;         // ID único da venda
     private int productId;      // ID do produto vendido
+    private int quantity;       // Quantidade que foi vendida
     private float salePrice;    // Preço pelo qual o produto foi vendido
     private Date saleDate;      // Data da venda
-
 
     //Getters
 
@@ -23,6 +24,10 @@ public class Sale {
 
     public int getProductId() {
         return productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
     }
 
     public float getSalePrice() {
@@ -44,6 +49,10 @@ public class Sale {
 
     public void setProductId(int productId) {
         this.productId = productId;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setSalePrice(float salePrice) {

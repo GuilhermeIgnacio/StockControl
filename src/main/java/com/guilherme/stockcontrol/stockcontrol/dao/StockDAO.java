@@ -3,6 +3,7 @@ package com.guilherme.stockcontrol.stockcontrol.dao;
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
+import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -219,49 +220,42 @@ public class StockDAO {
      * Este metodo insere uma ou mais vendas de um produto no banco de dados.
      * As vendas são registradas na tabela `sales`, com base na quantidade de vendas especificada.
      *
-     * @param product O objeto Product contendo o ID e o preço de venda do produto.
+     * @param product    O objeto Product contendo o ID e o preço de venda do produto.
      * @param salesCount A quantidade de vendas que serão registradas no banco de dados.
      */
-
-    public void insertSale(Product product, int salesCount) {
-        // Consulta SQL para inserir uma venda na tabela `sales`
-        String sql = "INSERT INTO sales(product_id, sale_price, sale_date) VALUES (?, ?, ?)";
+    public void insertSale(List<Sale> saleList) {
+        String sql = "INSERT INTO sales (product_id, quantity, sale_price) VALUES (?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
 
         try {
-            // Abre a conexão antes do loop
             conn = ConnectionFactory.createConnectionToMySql();
-            conn.setAutoCommit(false);  // Desativa o autocommit para garantir integridade nas transações
+            conn.setAutoCommit(false);  // Desativa o commit automático para controle manual
 
             pstm = conn.prepareStatement(sql);
 
-            // Itera sobre o número de vendas a serem registradas
-            for (int i = 0; i < salesCount; i++) {
-                pstm.setInt(1, product.getProduct_id());
-                pstm.setFloat(2, product.getRetail_price());
-                pstm.setDate(3, Date.valueOf(LocalDate.now()));
-                pstm.addBatch();  // Adiciona a operação ao batch
+            for (Sale sale : saleList) {
+                pstm.setInt(1, sale.getProductId());
+                pstm.setInt(2, sale.getQuantity());
+                pstm.setFloat(3, sale.getSalePrice());
+                pstm.addBatch();  // Adiciona ao batch em vez de executar imediatamente
             }
 
-            // Executa todas as operações de uma vez
-            pstm.executeBatch();
-            conn.commit();  // Confirma a transação
+            pstm.executeBatch();  // Executa todos os comandos em lote
+            conn.commit();  // Efetua o commit da transação
 
         } catch (Exception e) {
-            e.printStackTrace();
-            try {
-                if (conn != null) {
-                    conn.rollback();  // Reverte a transação em caso de erro
+            if (conn != null) {
+                try {
+                    conn.rollback();  // Faz rollback em caso de erro
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();  // Adiciona um log mais apropriado aqui
                 }
-            } catch (SQLException rollbackEx) {
-                rollbackEx.printStackTrace();
             }
-            RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), e.getMessage()));
+            e.printStackTrace();
         } finally {
-            // Fecha a conexão após o loop
             closeConnection(conn, pstm, null);
         }
     }
@@ -272,7 +266,7 @@ public class StockDAO {
      * o nome do item e o ID do produto.
      *
      * @param startDate A data de início no formato 'YYYY-MM-DD' para filtrar as vendas.
-     * @param endDate A data de término no formato 'YYYY-MM-DD' para filtrar as vendas.
+     * @param endDate   A data de término no formato 'YYYY-MM-DD' para filtrar as vendas.
      * @return Uma lista de objetos `MonthlySales` contendo o mês, o total de vendas, o nome do item e o ID do produto.
      */
 
@@ -350,8 +344,8 @@ public class StockDAO {
      * preço de venda e data da venda.
      *
      * @param productName O nome do produto que será usado para filtrar os resultados. Se for nulo ou vazio, não será aplicado o filtro por nome.
-     * @param startDate A data de início no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de início não será aplicado.
-     * @param endDate A data de término no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de término não será aplicado.
+     * @param startDate   A data de início no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de início não será aplicado.
+     * @param endDate     A data de término no formato 'YYYY-MM-DD' para filtrar as vendas. Se for nula ou vazia, o filtro de data de término não será aplicado.
      * @return Uma lista de objetos `SaleProduct` contendo informações sobre as vendas que correspondem aos filtros aplicados.
      */
 
@@ -691,9 +685,9 @@ public class StockDAO {
      * para garantir que os recursos sejam liberados corretamente, evitando vazamentos de memória ou
      * conexões abertas indevidamente.
      *
-     * @param conn       A conexão com o banco de dados que será fechada (pode ser nula).
-     * @param pstm       O PreparedStatement que será fechado (pode ser nulo).
-     * @param resultSet  O ResultSet que será fechado (pode ser nulo).
+     * @param conn      A conexão com o banco de dados que será fechada (pode ser nula).
+     * @param pstm      O PreparedStatement que será fechado (pode ser nulo).
+     * @param resultSet O ResultSet que será fechado (pode ser nulo).
      */
     private static void closeConnection(Connection conn, PreparedStatement pstm, ResultSet resultSet) {
         try {

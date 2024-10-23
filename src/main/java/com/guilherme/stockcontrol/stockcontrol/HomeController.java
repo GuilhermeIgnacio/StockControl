@@ -2,6 +2,7 @@ package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
+import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -329,12 +330,13 @@ public class HomeController implements Initializable {
      */
     public void onRegisterSaleClicked(ActionEvent actionEvent) {
 
-        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) { // Verifica se há produtos selecionados
-
-            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems(); // Obtém os produtos selecionados
+        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+            // Verifica se há produtos selecionados
+            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
+            List<Sale> saleList = new ArrayList<>();
 
             // Cria uma janela de diálogo para inserir as quantidades vendidas
-            Dialog<Map<Product, String>> dialog = new Dialog<>();
+            Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
 
@@ -342,59 +344,50 @@ public class HomeController implements Initializable {
             ButtonType confirmButton = new ButtonType(getProp().getString("register.sale.confirm.button"), ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
+            // VBox para os campos de texto
             VBox vBox = new VBox();
             vBox.setSpacing(10);
 
-            Map<Product, TextField> productQuantityMap = new HashMap<>();
+            // Map para armazenar os campos de texto correspondentes aos produtos
+            Map<Product, TextField> textFieldMap = new HashMap<>();
 
-            // Define o texto de instrução para a venda
-            String prompt = getProp().getString("register.sale.content.text");
-
-            // Para cada produto selecionado, cria um campo de texto para inserir a quantidade vendida
             for (Product product : selectedProducts) {
+                Label productLabel = new Label(product.getProduct_name());
 
-                TextField soldQuantityField = new TextField();
-                soldQuantityField.setPrefWidth(300);
-                soldQuantityField.setPromptText(prompt + " " + product.getProduct_name());
+                TextField soldQuantityTextField = new TextField();
+                soldQuantityTextField.setPromptText("Quantidade vendida");
+                soldQuantityTextField.setPrefWidth(300);
 
-                // Formata o campo de texto para aceitar apenas números inteiros
-                TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
-                soldQuantityField.setTextFormatter(intTextFormatter);
+                vBox.getChildren().addAll(productLabel, soldQuantityTextField);
 
-                vBox.getChildren().add(soldQuantityField);
-                productQuantityMap.put(product, soldQuantityField); // Mapeia o produto ao campo de texto
+                // Armazena o campo de texto no Map para posterior recuperação
+                textFieldMap.put(product, soldQuantityTextField);
             }
 
             dialog.getDialogPane().setContent(vBox);
 
-            // Define o comportamento ao confirmar a venda
-            dialog.setResultConverter(dialogButton -> {
-                if (dialogButton == confirmButton) {
-                    Map<Product, String> productQuantities = new HashMap<>();
-                    for (Product product : selectedProducts) {
-                        String quantity = productQuantityMap.get(product).getText();
-                        if (!quantity.isEmpty()) {
-                            productQuantities.put(product, quantity); // Mapeia o produto à quantidade vendida
-                        }
+            // Processa o resultado após o usuário confirmar
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                // Processa cada produto e campo de texto
+                for (Product product : selectedProducts) {
+                    TextField soldQuantityTextField = textFieldMap.get(product);
+                    if (soldQuantityTextField != null && !soldQuantityTextField.getText().isEmpty()) {
+                        // Cria a venda para cada produto
+                        Sale sale = new Sale();
+                        sale.setProductId(product.getProduct_id());
+                        sale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
+                        sale.setSalePrice(product.getRetail_price());
+
+                        // Adiciona a venda à lista
+                        saleList.add(sale);
                     }
-                    return productQuantities;
-                }
-                return null;
-            });
-
-            // Processa as vendas inseridas
-            Optional<Map<Product, String>> result = dialog.showAndWait();
-            result.ifPresent(productQuantities -> {
-                for (Map.Entry<Product, String> entry : productQuantities.entrySet()) {
-                    Product product = entry.getKey();
-                    int quantity = Integer.parseInt(entry.getValue());
-
-                    stockDAO.insertSale(product, quantity); // Registra a venda no banco de dados
                 }
 
-            });
-
+                stockDAO.insertSale(saleList);
+            }
         }
+
 
     }
 
