@@ -1,6 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Classe que representa uma venda no sistema.
@@ -10,12 +10,12 @@ import java.util.Date;
 
 public class Sale {
 
-    private int saleId;         // ID único da venda
-    private int productId;      // ID do produto vendido
-    private int quantity;       // Quantidade que foi vendida
-    private float salePrice;    // Preço pelo qual o produto foi vendido
-    private float priceUnit;    // Preço da unidade do produto daquela venda
-    private Date saleDate;      // Data da venda
+    private int saleId;             // ID único da venda
+    private int productId;          // ID do produto vendido
+    private int quantity;           // Quantidade que foi vendida
+    private float salePrice;        // Preço pelo qual o produto foi vendido
+    private float priceUnit;        // Preço da unidade do produto daquela venda
+    private LocalDateTime saleDate; // Data da venda
 
     //Getters
 
@@ -39,7 +39,7 @@ public class Sale {
         return priceUnit;
     }
 
-    public Date getSaleDate() {
+    public LocalDateTime getSaleDate() {
         return saleDate;
     }
 
@@ -68,7 +68,7 @@ public class Sale {
         this.priceUnit = priceUnit;
     }
 
-    public void setSaleDate(Date saleDate) {
+    public void setSaleDate(LocalDateTime saleDate) {
         this.saleDate = saleDate;
     }
 

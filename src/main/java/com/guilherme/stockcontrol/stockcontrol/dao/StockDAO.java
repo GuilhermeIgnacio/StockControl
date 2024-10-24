@@ -337,7 +337,7 @@ public class StockDAO {
                 saleProduct.setQuantity(resultSet.getInt("quantity"));
                 saleProduct.setSalePrice(resultSet.getFloat("sale_price"));
                 saleProduct.setPriceUnit(resultSet.getFloat("price_unit"));
-                saleProduct.setSaleDate(resultSet.getDate("sale_date"));
+                saleProduct.setSaleDate(resultSet.getTimestamp("sale_date").toLocalDateTime());
 
                 saleProducts.add(saleProduct);
 

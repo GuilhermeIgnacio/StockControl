@@ -1,5 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -10,12 +11,12 @@ import java.util.Date;
 
 public class SaleProduct {
 
-    private int saleId;         //ID único da venda
-    private String productName; // Nome do produto vendido
-    private int quantity;       // Quantidade vendida
-    private float salePrice;    // Preço pelo qual o produto foi vendido
-    private float priceUnit;    // Preço da unidade daquela venda
-    private Date saleDate;      // Data da venda
+    private int saleId;             //ID único da venda
+    private String productName;     // Nome do produto vendido
+    private int quantity;           // Quantidade vendida
+    private float salePrice;        // Preço pelo qual o produto foi vendido
+    private float priceUnit;        // Preço da unidade daquela venda
+    private LocalDateTime saleDate; // Data da venda
 
     //Getter
     public int getSaleId() {
@@ -38,7 +39,7 @@ public class SaleProduct {
         return priceUnit;
     }
 
-    public Date getSaleDate() {
+    public LocalDateTime getSaleDate() {
         return saleDate;
     }
     //Getter
@@ -64,7 +65,7 @@ public class SaleProduct {
         this.priceUnit = priceUnit;
     }
 
-    public void setSaleDate(Date saleDate) {
+    public void setSaleDate(LocalDateTime saleDate) {
         this.saleDate = saleDate;
     }
     //Setter

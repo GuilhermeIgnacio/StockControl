@@ -12,6 +12,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class SalesController implements Initializable {
     public Label yearIncomeLabel;                                   // Exibe a receita anual
 
     public TableView tableView;                                     // Tabela que exibe as vendas
-    public TableColumn<SaleProduct, Date> saleDateColumn;           // Coluna da data da venda
+    public TableColumn<SaleProduct, LocalDateTime> saleDateColumn;           // Coluna da data da venda
     public TableColumn<SaleProduct, String> productNameColumn;      // Coluna do nome do produto vendido
     public TableColumn<SaleProduct, Integer> soldQuantityColumn;    // Coluna da quantidade de produtos vendidos naquela venda
     public TableColumn<SaleProduct, Float> salePriceColumn;         // Coluna do preço da venda
@@ -108,15 +109,14 @@ public class SalesController implements Initializable {
 
         // Formata a coluna da data da venda
         saleDateColumn.setCellFactory(_ -> new TableCell<>() {
-            private final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
             @Override
-            protected void updateItem(Date item, boolean empty) {
+            protected void updateItem(LocalDateTime item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(formatter.format(item));
+                    setText(item.format(dateTimeFormatter));
                 }
             }
         });
