@@ -9,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -35,7 +34,7 @@ public class SalesController implements Initializable {
     public TableColumn<SaleProduct, String> productNameColumn;      // Coluna do nome do produto vendido
     public TableColumn<SaleProduct, Integer> soldQuantityColumn;    // Coluna da quantidade de produtos vendidos naquela venda
     public TableColumn<SaleProduct, Float> salePriceColumn;         // Coluna do preço da venda
-    public TableColumn<SaleProduct, Float> priceUnitTable;          // Coluna do preço da unidade daquela venda
+    public TableColumn<SaleProduct, Float> priceUnitColumn;          // Coluna do preço da unidade daquela venda
 
     public DatePicker fromDatePicker;                               // Filtro para a data inicial
     public DatePicker toDatePicker;                                 // Filtro para a data final
@@ -105,7 +104,7 @@ public class SalesController implements Initializable {
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
         soldQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         salePriceColumn.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
-        priceUnitTable.setCellValueFactory(new PropertyValueFactory<>("priceUnit"));
+        priceUnitColumn.setCellValueFactory(new PropertyValueFactory<>("priceUnit"));
 
         // Formata a coluna da data da venda
         saleDateColumn.setCellFactory(_ -> new TableCell<>() {
@@ -135,7 +134,7 @@ public class SalesController implements Initializable {
             }
         });
 
-        priceUnitTable.setCellFactory(_ -> new TableCell<>() {
+        priceUnitColumn.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Float item, boolean empty) {
                 super.updateItem(item, empty);

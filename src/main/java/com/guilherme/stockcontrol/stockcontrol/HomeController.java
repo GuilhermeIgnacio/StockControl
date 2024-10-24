@@ -358,6 +358,10 @@ public class HomeController implements Initializable {
                 soldQuantityTextField.setPromptText("Quantidade vendida");
                 soldQuantityTextField.setPrefWidth(300);
 
+                // Formata o campo de texto para aceitar apenas números inteiros
+                TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
+                soldQuantityTextField.setTextFormatter(intTextFormatter);
+
                 vBox.getChildren().addAll(productLabel, soldQuantityTextField);
 
                 // Armazena o campo de texto no Map para posterior recuperação
@@ -373,20 +377,38 @@ public class HomeController implements Initializable {
                 for (Product product : selectedProducts) {
                     TextField soldQuantityTextField = textFieldMap.get(product);
                     if (soldQuantityTextField != null && !soldQuantityTextField.getText().isEmpty()) {
-                        // Cria a venda para cada produto
-                        Sale sale = new Sale();
-                        sale.setProductId(product.getProduct_id());
-                        sale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
-                        sale.setSalePrice(product.getRetail_price() * Integer.parseInt(soldQuantityTextField.getText()));
-                        sale.setPriceUnit(product.getRetail_price());
 
-                        // Adiciona a venda à lista
-                        saleList.add(sale);
+                        // Convertendo o valor do campo soldQuantityTextField para inteiro
+                        int soldQuantityInt = Integer.parseInt(soldQuantityTextField.getText());
+
+                        if (soldQuantityInt > 0) { // Só registra a venda caso ela seja maior que zero
+
+                            if (product.getStock_quantity() - soldQuantityInt >= 0) { // Não Inserir venda caso a quantidade que deseja ser vendida seja maior do que o disponível no estoque
+
+                                // Cria a venda para cada produto
+                                Sale sale = new Sale();
+                                sale.setProductId(product.getProduct_id());
+                                sale.setQuantity(soldQuantityInt);
+                                sale.setSalePrice(product.getRetail_price() * soldQuantityInt);
+                                sale.setPriceUnit(product.getRetail_price());
+
+                                // Adiciona a venda à lista
+                                saleList.add(sale);
+
+                                product.setStock_quantity(product.getStock_quantity() - soldQuantityInt);
+                                stockDAO.updateProduct(product);
+                            } else {
+                                genericAlertDialog(Alert.AlertType.INFORMATION, "", "Erro ao Registrar Venda de " + product.getProduct_name(), "A quantidade informada para venda é maior do que a disponível no estoque.");
+                            }
+                        }
                     }
                 }
 
-                stockDAO.insertSale(saleList);
+                stockDAO.insertSale(saleList); // Inserte as vendas
+                fetchItems(); // Atualiza a tabela
             }
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de registrar uma venda", "");
         }
 
 

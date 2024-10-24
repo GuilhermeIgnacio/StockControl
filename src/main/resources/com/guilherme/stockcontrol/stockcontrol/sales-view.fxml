@@ -79,7 +79,7 @@
                         <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%product.name" />
                   <TableColumn fx:id="soldQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sold.quantity" />
                         <TableColumn fx:id="salePriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sale.price" />
-                  <TableColumn fx:id="priceUnitTable" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Price Unit" />
+                  <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Price Unit" />
                     </columns>
                 </TableView>
             </children>
