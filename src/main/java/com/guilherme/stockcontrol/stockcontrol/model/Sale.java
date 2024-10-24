@@ -14,6 +14,7 @@ public class Sale {
     private int productId;      // ID do produto vendido
     private int quantity;       // Quantidade que foi vendida
     private float salePrice;    // Preço pelo qual o produto foi vendido
+    private float priceUnit;    // Preço da unidade do produto daquela venda
     private Date saleDate;      // Data da venda
 
     //Getters
@@ -32,6 +33,10 @@ public class Sale {
 
     public float getSalePrice() {
         return salePrice;
+    }
+
+    public float getPriceUnit() {
+        return priceUnit;
     }
 
     public Date getSaleDate() {
@@ -57,6 +62,10 @@ public class Sale {
 
     public void setSalePrice(float salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public void setPriceUnit(float priceUnit) {
+        this.priceUnit = priceUnit;
     }
 
     public void setSaleDate(Date saleDate) {

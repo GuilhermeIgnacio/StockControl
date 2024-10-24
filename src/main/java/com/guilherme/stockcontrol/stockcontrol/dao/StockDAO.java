@@ -224,7 +224,7 @@ public class StockDAO {
      * @param salesCount A quantidade de vendas que serão registradas no banco de dados.
      */
     public void insertSale(List<Sale> saleList) {
-        String sql = "INSERT INTO sales (product_id, quantity, sale_price) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO sales (product_id, quantity, sale_price, price_unit) VALUES (?, ?, ?, ?)";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -239,6 +239,7 @@ public class StockDAO {
                 pstm.setInt(1, sale.getProductId());
                 pstm.setInt(2, sale.getQuantity());
                 pstm.setFloat(3, sale.getSalePrice());
+                pstm.setFloat(4, sale.getPriceUnit());
                 pstm.addBatch();  // Adiciona ao batch em vez de executar imediatamente
             }
 
@@ -356,7 +357,7 @@ public class StockDAO {
 
         // Construção da query SQL com possíveis condições dinâmicas (filtros)
         StringBuilder sql = new StringBuilder(
-                "SELECT s.sale_id, p.product_name, p.product_description, s.quantity, s.sale_price, s.sale_date " +
+                "SELECT s.sale_id, p.product_name, p.product_description, s.quantity, s.sale_price, s.price_unit, s.sale_date " +
                         "FROM sales s " +
                         "JOIN products p ON s.product_id = p.product_id " +
                         "WHERE 1=1 ");
@@ -409,6 +410,7 @@ public class StockDAO {
                 saleProduct.setProductName(resultSet.getString("product_name"));
                 saleProduct.setQuantity(resultSet.getInt("quantity"));
                 saleProduct.setSalePrice(resultSet.getFloat("sale_price"));
+                saleProduct.setPriceUnit(resultSet.getFloat("price_unit"));
                 saleProduct.setSaleDate(resultSet.getDate("sale_date"));
 
                 saleProducts.add(saleProduct);
@@ -443,7 +445,7 @@ public class StockDAO {
         int total = 0;
 
         // Query SQL que conta o número de vendas de um produto específico
-        String sql = "SELECT COUNT(*) FROM sales WHERE product_id = ?";
+        String sql = "SELECT SUM(quantity) from sales where product_id = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -459,7 +461,7 @@ public class StockDAO {
             resultSet = pstm.executeQuery();
 
             // Processando o resultado da query
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 total = resultSet.getInt(1);
             }
 

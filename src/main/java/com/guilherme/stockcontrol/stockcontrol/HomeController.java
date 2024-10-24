@@ -377,7 +377,8 @@ public class HomeController implements Initializable {
                         Sale sale = new Sale();
                         sale.setProductId(product.getProduct_id());
                         sale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
-                        sale.setSalePrice(product.getRetail_price());
+                        sale.setSalePrice(product.getRetail_price() * Integer.parseInt(soldQuantityTextField.getText()));
+                        sale.setPriceUnit(product.getRetail_price());
 
                         // Adiciona a venda à lista
                         saleList.add(sale);

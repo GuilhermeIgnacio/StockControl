@@ -35,6 +35,7 @@ public class SalesController implements Initializable {
     public TableColumn<SaleProduct, String> productNameColumn;      // Coluna do nome do produto vendido
     public TableColumn<SaleProduct, Integer> soldQuantityColumn;    // Coluna da quantidade de produtos vendidos naquela venda
     public TableColumn<SaleProduct, Float> salePriceColumn;         // Coluna do preço da venda
+    public TableColumn<SaleProduct, Float> priceUnitTable;          // Coluna do preço da unidade daquela venda
 
     public DatePicker fromDatePicker;                               // Filtro para a data inicial
     public DatePicker toDatePicker;                                 // Filtro para a data final
@@ -79,6 +80,7 @@ public class SalesController implements Initializable {
                 newSaleProduct.setProductName(saleProduct.getProductName());
                 newSaleProduct.setQuantity(saleProduct.getQuantity());
                 newSaleProduct.setSalePrice(saleProduct.getSalePrice());
+                newSaleProduct.setPriceUnit(saleProduct.getPriceUnit());
                 newSaleProduct.setSaleDate(saleProduct.getSaleDate());
 
                 // Adiciona a venda à lista e define-a na tabela
@@ -103,6 +105,7 @@ public class SalesController implements Initializable {
         productNameColumn.setCellValueFactory(new PropertyValueFactory<>("productName"));
         soldQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
         salePriceColumn.setCellValueFactory(new PropertyValueFactory<>("salePrice"));
+        priceUnitTable.setCellValueFactory(new PropertyValueFactory<>("priceUnit"));
 
         // Formata a coluna da data da venda
         saleDateColumn.setCellFactory(_ -> new TableCell<>() {
@@ -121,7 +124,18 @@ public class SalesController implements Initializable {
 
         // Formata a coluna do preço da venda com o formato de moeda
         salePriceColumn.setCellFactory(_ -> new TableCell<>() {
+            @Override
+            protected void updateItem(Float item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(currencyFormatter.format(item));
+                }
+            }
+        });
 
+        priceUnitTable.setCellFactory(_ -> new TableCell<>() {
             @Override
             protected void updateItem(Float item, boolean empty) {
                 super.updateItem(item, empty);
