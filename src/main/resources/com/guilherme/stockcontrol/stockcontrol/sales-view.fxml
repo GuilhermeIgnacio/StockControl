@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -82,6 +86,42 @@
                   <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="%sale.price.unit" />
                     </columns>
                 </TableView>
+                <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
+                    <children>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="editBtn" alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.edit.item" textFill="WHITE">
+                            <graphic>
+                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@assets/icons/pen-to-square-solid.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets right="8.0" />
+                            </HBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onDeleteSaleClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #e40001; -fx-border-color: transparent;" text="%button.delete.item" textFill="WHITE">
+                            <graphic>
+                                <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@assets/icons/trash-can-solid.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                            <font>
+                                <Font name="System Bold" size="13.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+
             </children>
             <padding>
                 <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />

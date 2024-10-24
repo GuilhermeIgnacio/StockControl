@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
@@ -219,7 +220,7 @@ public class StockDAO {
      * Insere uma lista de vendas no banco de dados.
      * Este metodo realiza a inserção em lote de múltiplas vendas, onde cada venda inclui:
      * o ID do produto, a quantidade vendida, o valor total da venda e o preço por unidade.
-     *
+     * <p>
      * O metodo desativa o commit automático, adiciona cada venda ao batch e, em seguida,
      * executa todas as inserções em um único comando. Em caso de erro, um rollback é
      * realizado para desfazer as alterações. Uma mensagem de erro é exibida ao usuário
@@ -603,6 +604,34 @@ public class StockDAO {
         } finally {
             // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
+        }
+
+    }
+
+    public void deleteSale(List<Integer> saleIds) {
+        String sql = "DELETE FROM sales WHERE sale_id IN (" +
+                saleIds.stream().map(id -> "?").collect(Collectors.joining(", ")) +
+                ")";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            for (int i = 0; i < saleIds.size(); i++) {
+                pstm.setInt(i + 1, saleIds.get(i));
+            }
+
+            pstm.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao excluir venda(s)", exception.getMessage());
+        } finally {
+            closeConnection(conn, pstm, null);
         }
 
     }

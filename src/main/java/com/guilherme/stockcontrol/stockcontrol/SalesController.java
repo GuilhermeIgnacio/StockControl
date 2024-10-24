@@ -1,6 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,6 +15,8 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -145,6 +148,11 @@ public class SalesController implements Initializable {
                 }
             }
         });
+
+        tableView.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
+
     }
 
     /**
@@ -173,6 +181,36 @@ public class SalesController implements Initializable {
             // Se algum produto estiver selecionado, recria a tabela filtrando por produto
         } else if (productsComboBox.getValue() != null) {
             createOrdersTable();
+        }
+
+    }
+
+    public void onDeleteSaleClicked(ActionEvent actionEvent) {
+
+        if (!tableView.getSelectionModel().getSelectedItems().isEmpty()) {
+
+            ObservableList<SaleProduct> selectedSales = tableView.getSelectionModel().getSelectedItems();
+
+            List<Integer> saleIds = selectedSales.stream().map(SaleProduct::getSaleId).toList();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            if (saleIds.size() == 1) {
+                alert.setHeaderText(getProp().getString("sale.delete.header.confirmation"));
+            } else {
+                alert.setHeaderText(getProp().getString("sale.delete.header.confirmation.plural"));
+            }
+            alert.setContentText(getProp().getString("sale.delete.content.confirmation"));
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                stockDAO.deleteSale(saleIds);
+                createOrdersTable();
+            }
+
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION,"","Selecione ao menos um produto antes de excluir.","");
         }
 
     }
