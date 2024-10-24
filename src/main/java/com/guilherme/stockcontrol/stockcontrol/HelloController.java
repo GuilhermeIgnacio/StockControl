@@ -3,7 +3,7 @@ package com.guilherme.stockcontrol.stockcontrol;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -16,7 +16,6 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.loadContent;
  * Controlador da interface do usuário para a aplicação Hello.
  * Esta classe é responsável por gerenciar eventos e a lógica de navegação entre as diferentes telas.
  */
-
 public class HelloController implements Initializable {
 
     @FXML
@@ -25,7 +24,6 @@ public class HelloController implements Initializable {
     /**
      * Inicializa o controlador após seu elemento raiz tiver sido completamente processado
      */
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -44,35 +42,11 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Manipulador de eventos para o botão de estatísticas.
-     * Carrega a view de estatísticas na área de conteúdo.
-     *
-     * @param actionEvent O evento gerado pelo clique do botão.
-     */
-
-    public void onStatisticsBtnClicked(ActionEvent actionEvent) {
-
-        try {
-            loadContent("statistics-view.fxml", contentArea);
-        } catch (Exception e) {
-            RuntimeException runtimeException = new RuntimeException(e);
-
-            // Exibe um alerta de erro para o usuário, informando sobre a falha no carregamento
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Error Loading Statistics View", runtimeException.getMessage());
-
-            // Lança a exceção
-            throw runtimeException;
-        }
-
-    }
-
-    /**
      * Manipulador de eventos para o botão inicial.
      * Carrega a view inicial na área de conteúdo.
      *
      * @param actionEvent O evento gerado pelo clique do botão.
      */
-
     public void onHomeBtnClicked(ActionEvent actionEvent) {
 
         try {
@@ -95,7 +69,6 @@ public class HelloController implements Initializable {
      *
      * @param actionEvent O evento gerado pelo clique do botão.
      */
-
     public void onSalesButtonClicked(ActionEvent actionEvent) {
 
         try {

@@ -2,7 +2,6 @@ package com.guilherme.stockcontrol.stockcontrol.dao;
 
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
-import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.application.Platform;
@@ -217,11 +216,16 @@ public class StockDAO {
     }
 
     /**
-     * Este metodo insere uma ou mais vendas de um produto no banco de dados.
-     * As vendas são registradas na tabela `sales`, com base na quantidade de vendas especificada.
+     * Insere uma lista de vendas no banco de dados.
+     * Este metodo realiza a inserção em lote de múltiplas vendas, onde cada venda inclui:
+     * o ID do produto, a quantidade vendida, o valor total da venda e o preço por unidade.
      *
-     * @param product    O objeto Product contendo o ID e o preço de venda do produto.
-     * @param salesCount A quantidade de vendas que serão registradas no banco de dados.
+     * O metodo desativa o commit automático, adiciona cada venda ao batch e, em seguida,
+     * executa todas as inserções em um único comando. Em caso de erro, um rollback é
+     * realizado para desfazer as alterações. Uma mensagem de erro é exibida ao usuário
+     * através de um alerta genérico.
+     *
+     * @param saleList Lista de vendas a serem inseridas no banco de dados.
      */
     public void insertSale(List<Sale> saleList) {
         String sql = "INSERT INTO sales (product_id, quantity, sale_price, price_unit) VALUES (?, ?, ?, ?)";
@@ -259,84 +263,6 @@ public class StockDAO {
         } finally {
             closeConnection(conn, pstm, null);
         }
-    }
-
-    /**
-     * Este metodo busca as vendas mensais de produtos entre as datas fornecidas.
-     * Retorna uma lista de objetos `MonthlySales` que contêm o mês da venda, o total de vendas,
-     * o nome do item e o ID do produto.
-     *
-     * @param startDate A data de início no formato 'YYYY-MM-DD' para filtrar as vendas.
-     * @param endDate   A data de término no formato 'YYYY-MM-DD' para filtrar as vendas.
-     * @return Uma lista de objetos `MonthlySales` contendo o mês, o total de vendas, o nome do item e o ID do produto.
-     */
-
-    public List<MonthlySales> fetchMonthlySales(String startDate, String endDate) {
-
-        // Construção da query SQL que busca as vendas por mês, produto e nome do item
-        StringBuilder sql = new StringBuilder("SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
-                "COUNT(s.id) AS total_sales, i.itemName, s.product_id " +
-                "FROM sales s " +
-                "JOIN items i ON s.product_id = i.id ");
-
-        // Verifica se as datas de início e término foram fornecidas e se não estão em branco
-        if (startDate != null && endDate != null) {
-            if (!startDate.isBlank() && !endDate.isBlank()) {
-                sql.append("WHERE s.sale_date BETWEEN ? AND ? ");
-            }
-        }
-
-        // Agrupa os resultados por mês, produto e nome do item e os ordena
-        sql.append("GROUP BY sale_month, s.product_id, i.itemName " +
-                "ORDER BY sale_month, i.itemName");
-
-
-        // Lista para armazenar as vendas mensais
-        List<MonthlySales> sales = new ArrayList<>();
-
-        Connection conn = null;
-        PreparedStatement pstm = null;
-        ResultSet resultSet = null;
-
-        try {
-            conn = ConnectionFactory.createConnectionToMySql();
-            pstm = conn.prepareStatement(sql.toString());
-
-            // Define os parâmetros de data caso tenham sido fornecidos
-            if (startDate != null && endDate != null) {
-                if (!startDate.isEmpty() && !endDate.isEmpty()) {
-                    pstm.setString(1, startDate);
-                    pstm.setString(2, endDate);
-                }
-            }
-
-            // Executa a query e processa os resultados
-            resultSet = pstm.executeQuery();
-
-            // Itera sobre os resultados e cria objetos MonthlySales para cada linha
-            while (resultSet.next()) {
-                MonthlySales monthlySales = new MonthlySales();
-
-                monthlySales.setMonth(resultSet.getString("sale_month"));
-                monthlySales.setTotalSales(resultSet.getInt("total_sales"));
-                monthlySales.setItemName(resultSet.getString("itemName"));
-                monthlySales.setProductId(resultSet.getInt("product_id"));
-
-                // Adiciona o objeto MonthlySales à lista de vendas
-                sales.add(monthlySales);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.monthly.sales.error"), exception.getMessage()));
-        } finally {
-            // Fecha a conexão, a instrução e o resultSet para liberar os recursos
-            closeConnection(conn, pstm, resultSet);
-        }
-
-        return sales;
-
     }
 
     /**
