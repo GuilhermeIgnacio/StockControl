@@ -10,6 +10,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -210,8 +212,71 @@ public class SalesController implements Initializable {
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION,"","Selecione ao menos um produto antes de excluir.","");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de excluir.", "");
         }
 
+    }
+
+
+    public void onEditSaleClicked(ActionEvent actionEvent) {
+        if (tableView.getSelectionModel().getSelectedItem() != null && tableView.getSelectionModel().getSelectedItems().size() == 1) {
+
+            SaleProduct selectedSale = (SaleProduct) tableView.getSelectionModel().getSelectedItem();
+
+            Dialog dialog = new Dialog();
+
+            dialog.setHeaderText("Editar venda de " + selectedSale.getProductName());
+            dialog.setTitle("Editar Venda");
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+
+            VBox vBox = new VBox();
+
+            vBox.setSpacing(10);
+            vBox.setMinWidth(400);
+            vBox.setMaxWidth(400);
+
+            TextField soldQuantityTextField = new TextField();
+            TextFormatter<String> soldQuantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
+            soldQuantityTextField.setTextFormatter(soldQuantityFormatter);
+            soldQuantityTextField.setPromptText("Quantidade Vendida");
+            soldQuantityTextField.setText(String.valueOf(selectedSale.getQuantity()));
+
+            TextField salePriceTextField = new TextField();
+            TextFormatter<String> salePriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
+            salePriceTextField.setTextFormatter(salePriceFormatter);
+            salePriceTextField.setPromptText("Valor da Venda");
+            salePriceTextField.setText(String.valueOf(selectedSale.getSalePrice()));
+
+            TextField unitPriceTextField = new TextField();
+            TextFormatter<String> unitPriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
+            unitPriceTextField.setTextFormatter(unitPriceFormatter);
+            unitPriceTextField.setPromptText("Valor por Unidade");
+            unitPriceTextField.setText(String.valueOf(selectedSale.getPriceUnit()));
+
+            vBox.getChildren().addAll(soldQuantityTextField, salePriceTextField, unitPriceTextField);
+
+            dialog.getDialogPane().setContent(vBox);
+
+            Optional result = dialog.showAndWait();
+
+            if (result.get() == ButtonType.OK) {
+                //Todo: Resolver a falta de concordância de dados quando um campo é editado e os outros não são apropriadamente atualizados
+                selectedSale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
+                selectedSale.setSalePrice(Float.parseFloat(salePriceTextField.getText()));
+                selectedSale.setPriceUnit(Float.parseFloat(unitPriceTextField.getText()));
+
+                stockDAO.updateSale(selectedSale);
+
+                fetchSales();
+
+            }
+
+
+        } else if (tableView.getSelectionModel().getSelectedItems().size() > 1) {
+
+        } else if (tableView.getSelectionModel() == null || tableView.getSelectionModel().getSelectedItems().isEmpty()) {
+
+        }
     }
 }

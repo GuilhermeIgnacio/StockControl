@@ -181,7 +181,6 @@ public class StockDAO {
      *
      * @param productId O ID do produto que será excluído do banco de dados.
      */
-
     public void deleteItemById(int productId) {
         // Consulta SQL para excluir as vendas associadas ao produto na tabela `sales`
         String salesSql = "DELETE FROM sales WHERE product_id = ?";
@@ -604,6 +603,31 @@ public class StockDAO {
         } finally {
             // Fecha a conexão, a prepared statement e o result set para liberar os recursos
             closeConnection(conn, pstm, resultSet);
+        }
+
+    }
+
+    public void updateSale(SaleProduct saleProduct) {
+        String sql = "UPDATE sales SET quantity = ?, sale_price = ?, price_unit = ? WHERE sale_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setInt(1, saleProduct.getQuantity());
+            pstm.setFloat(2, saleProduct.getSalePrice());
+            pstm.setFloat(3, saleProduct.getPriceUnit());
+            pstm.setInt(4, saleProduct.getSaleId());
+
+            pstm.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(conn, pstm, null);
         }
 
     }

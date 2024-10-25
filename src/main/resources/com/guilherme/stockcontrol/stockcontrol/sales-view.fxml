@@ -89,7 +89,7 @@
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                     <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button fx:id="editBtn" alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.edit.item" textFill="WHITE">
+                        <Button alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditSaleClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.edit.item" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
