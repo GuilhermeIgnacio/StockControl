@@ -99,7 +99,7 @@ public class StockDAO {
      * @param product O objeto Product que contém as informações do produto a serem inseridas no banco de dados.
      */
 
-    /*public void insertProduct(Product product) {
+    public void insertProduct(Product product) {
         // Consulta SQL para inserir um novo produto no banco de dados.
         String sql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";
 
@@ -129,7 +129,7 @@ public class StockDAO {
             closeConnection(conn, pstm, null);
         }
 
-    }*/
+    }
 
     /**
      * Este metodo atualiza as informações de um produto existente no banco de dados.
@@ -690,6 +690,33 @@ public class StockDAO {
             // Em caso de erro ao fechar as conexões, imprime a mensagem de erro
             System.out.println("Error When Closing Connections " + e);
         }
+    }
+
+    public void insertBuy(Buy buy) {
+        String sql = "INSERT INTO buy (product_id, quantity, buy_price, buy_price_unit) VALUES (?, ?, ?, ?)";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setInt(1, buy.getProductId());
+            pstm.setInt(2, buy.getQuantity());
+            pstm.setFloat(3, buy.getBuyPrice());
+            pstm.setFloat(4, buy.getBuyPriceUnit());
+
+            pstm.execute();
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            runtimeException.printStackTrace();
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Inserir Compra.", runtimeException.getMessage());
+        } finally {
+            closeConnection(conn, pstm, null);
+        }
+
     }
 
     public void insertProductAndBuy(Product product, Buy buy) {

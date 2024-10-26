@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
@@ -48,6 +49,7 @@
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <CheckBox fx:id="registerBuyCheckBox" mnemonicParsing="false" text="%buy.register.checkbox" />
             <VBox alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                <children>
                       <HBox fillHeight="false" minHeight="-Infinity" prefWidth="200.0">

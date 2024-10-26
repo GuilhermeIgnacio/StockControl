@@ -24,6 +24,7 @@ public class InsertProductController {
     public Button clearFieldsBtn;                   // BOtão para limpar os campos
     public Button cancelBtn;                        // Botão para cancelar a operação
     public Label errorLabel;                        // Label para exibir mensagens de erro
+    public CheckBox registerBuyCheckBox;
 
     Product product = new Product(); // Produto que está sendo adicionado
 
@@ -106,18 +107,27 @@ public class InsertProductController {
             product.setStock_quantity(productQuantity);
 
             try {
+
+                Buy buy = new Buy();
+                buy.setProductId(product.getProduct_id());
+                buy.setQuantity(product.getStock_quantity());
+                buy.setBuyPrice(product.getStock_quantity() * product.getPurchase_price());
+                buy.setBuyPriceUnit(product.getPurchase_price());
+
                 // Se estiver em modo de edição, atualiza o produto, senão, insere um novo
                 if (editMode) {
-                    stockDao.updateProduct(product);
+                    if (registerBuyCheckBox.isSelected()) {
+                        stockDao.updateProduct(product);
+                        stockDao.insertBuy(buy);
+                    } else {
+                        stockDao.updateProduct(product);
+                    }
                 } else {
-
-                    Buy buy = new Buy();
-                    buy.setProductId(product.getProduct_id());
-                    buy.setQuantity(product.getStock_quantity());
-                    buy.setBuyPrice(product.getStock_quantity() * product.getPurchase_price());
-                    buy.setBuyPriceUnit(product.getPurchase_price());
-
-                    stockDao.insertProductAndBuy(product, buy);
+                    if (registerBuyCheckBox.isSelected()) {
+                        stockDao.insertProductAndBuy(product, buy);
+                    } else {
+                        stockDao.insertProduct(product);
+                    }
                 }
 
                 // Fecha a janela após salvar
