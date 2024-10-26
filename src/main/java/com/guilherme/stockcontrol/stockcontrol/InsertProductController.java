@@ -1,6 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
@@ -109,7 +110,14 @@ public class InsertProductController {
                 if (editMode) {
                     stockDao.updateProduct(product);
                 } else {
-                    stockDao.insertProduct(product);
+
+                    Buy buy = new Buy();
+                    buy.setProductId(product.getProduct_id());
+                    buy.setQuantity(product.getStock_quantity());
+                    buy.setBuyPrice(product.getStock_quantity() * product.getPurchase_price());
+                    buy.setBuyPriceUnit(product.getPurchase_price());
+
+                    stockDao.insertProductAndBuy(product, buy);
                 }
 
                 // Fecha a janela após salvar
