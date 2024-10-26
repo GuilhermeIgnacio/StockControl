@@ -796,6 +796,34 @@ public class StockDAO {
 
     }
 
+    public void deleteBuy(List<Integer> buyIds) {
+        String sql = "DELETE FROM buy WHERE buy_id IN (" +
+                buyIds.stream().map(id -> "?").collect(Collectors.joining(", ")) +
+                ")";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            for (int i = 0; i < buyIds.size(); i++) {
+                pstm.setInt(i + 1, buyIds.get(i));
+            }
+
+            pstm.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            RuntimeException exception = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao excluir compras(s)", exception.getMessage());
+        } finally {
+            closeConnection(conn, pstm, null);
+        }
+
+    }
+
 
 }
 

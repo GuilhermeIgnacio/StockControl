@@ -2,20 +2,24 @@ package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.BuyDetails;
-import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.currencyFormatter;
-import static com.guilherme.stockcontrol.stockcontrol.Util.dateTimeFormatter;
+import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
+/**
+ * Todo: Comentário nesta classe e seus métodos
+ */
 public class BuysController implements Initializable {
 
     public TableView tableView;
@@ -39,11 +43,17 @@ public class BuysController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        fetchBuys();
+
+        createBuysTable();
+
+    }
+
+    private void fetchBuys() {
         buyDetailsList.clear();
 
         for (BuyDetails buyDetails : stockDAO.fetchBuys()) {
             BuyDetails newBuyDetails = new BuyDetails();
-            System.out.println(buyDetails.getProductName());
 
             newBuyDetails.setBuyId(buyDetails.getBuyId());
             newBuyDetails.setProductId(buyDetails.getProductId());
@@ -56,7 +66,9 @@ public class BuysController implements Initializable {
             buyDetailsList.add(newBuyDetails);
 
         }
+    }
 
+    private void createBuysTable() {
         tableView.setItems(buyDetailsList);
 
         buyDateColumn.setCellValueFactory(new PropertyValueFactory<>("buyDate"));
@@ -103,6 +115,41 @@ public class BuysController implements Initializable {
                 }
             }
         });
+
+        tableView.getSelectionModel().setSelectionMode(
+                SelectionMode.MULTIPLE
+        );
+
+    }
+
+    public void onDeleteBuyButtonClicked(ActionEvent actionEvent) {
+
+        ObservableList<BuyDetails> selectedBuys = tableView.getSelectionModel().getSelectedItems();
+
+        if (!selectedBuys.isEmpty()) {
+
+            List<Integer> buyIds = selectedBuys.stream().map(BuyDetails::getBuyId).toList();
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+            if (selectedBuys.size() > 1) {
+                alert.setHeaderText(getProp().getString("buy.delete.header.message.plural"));
+            } else if (selectedBuys.size() == 1) {
+                alert.setHeaderText(getProp().getString("buy.delete.header.message"));
+            }
+
+            alert.setContentText(getProp().getString("buy.delete.content.message"));
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                stockDAO.deleteBuy(buyIds);
+                fetchBuys();
+            }
+
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("empty.list.warning"), "");
+        }
 
     }
 }
