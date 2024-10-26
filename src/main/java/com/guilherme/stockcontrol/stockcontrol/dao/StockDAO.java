@@ -1,10 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol.dao;
 
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
-import com.guilherme.stockcontrol.stockcontrol.model.Buy;
-import com.guilherme.stockcontrol.stockcontrol.model.Product;
-import com.guilherme.stockcontrol.stockcontrol.model.Sale;
-import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
+import com.guilherme.stockcontrol.stockcontrol.model.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -751,6 +748,52 @@ public class StockDAO {
             closeConnection(conn, productStmt, rs);
             closeConnection(null, buyStmt, null);
         }
+    }
+
+    public List<BuyDetails> fetchBuys() {
+
+        List<BuyDetails> buyDetailsList = new ArrayList<>();
+
+        String sql = "SELECT buy.buy_id, buy.product_id, buy.quantity, buy.buy_price, buy.buy_price_unit, buy.buy_date, products.product_name " +
+                "FROM buy " +
+                "JOIN products ON buy.product_id = products.product_id";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            rs = pstm.executeQuery();
+
+            while (rs.next()) {
+
+                BuyDetails buyDetails = new BuyDetails();
+                buyDetails.setBuyId(rs.getInt("buy_id"));
+                buyDetails.setProductId(rs.getInt("product_id"));
+                buyDetails.setProductName(rs.getString("product_name"));
+                buyDetails.setQuantity(rs.getInt("quantity"));
+                buyDetails.setBuyPrice(rs.getFloat("buy_price"));
+                buyDetails.setBuyPriceUnit(rs.getFloat("buy_price_unit"));
+                buyDetails.setBuyDate(rs.getTimestamp("buy_date").toLocalDateTime());
+
+                buyDetailsList.add(buyDetails);
+
+            }
+
+            return buyDetailsList;
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            runtimeException.printStackTrace();
+            return buyDetailsList;
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+
     }
 
 

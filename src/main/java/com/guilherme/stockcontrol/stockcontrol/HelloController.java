@@ -64,6 +64,21 @@ public class HelloController implements Initializable {
     }
 
     /**
+     * Todo: Comentário Aqui
+     */
+    public void onBuysButtonClicked(ActionEvent actionEvent) {
+        try {
+            loadContent("buys-view.fxml", contentArea);
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao carregar compras", e.getMessage());
+
+            throw runtimeException;
+        }
+    }
+
+    /**
      * Manipulador de eventos para o botão de vendas.
      * Carrega a view de vendas na área de conteúdo.
      *
@@ -84,4 +99,6 @@ public class HelloController implements Initializable {
         }
 
     }
+
+
 }
