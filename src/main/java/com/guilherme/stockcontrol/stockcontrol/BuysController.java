@@ -1,6 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.BuyDetails;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.time.LocalDateTime;
@@ -149,6 +151,64 @@ public class BuysController implements Initializable {
 
         } else {
             genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("empty.list.warning"), "");
+        }
+
+    }
+
+    public void onEditBuyClicked(ActionEvent actionEvent) {
+
+        if (tableView.getSelectionModel().getSelectedItems().size() == 1) {
+            BuyDetails selectedBuy = (BuyDetails) tableView.getSelectionModel().getSelectedItem();
+
+            Dialog dialog = new Dialog();
+            dialog.setTitle("Editar Compra");
+            dialog.setHeaderText("Editar compra de " + selectedBuy.getProductName());
+
+            Label quantityLabel = new Label("Quantidade");
+
+            TextField quantityTextField = new TextField(String.valueOf(selectedBuy.getQuantity()));
+            TextFormatter<String> quantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
+            quantityTextField.setTextFormatter(quantityFormatter);
+
+            Label buyPriceUnitLabel = new Label("Preço por Unidade:");
+
+            TextField buyPriceUnityTextField = new TextField(String.valueOf(selectedBuy.getBuyPriceUnit()));
+            TextFormatter<String> buyPriceUnityFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
+            buyPriceUnityTextField.setTextFormatter(buyPriceUnityFormatter);
+
+            VBox vBox = new VBox();
+            vBox.getChildren().addAll(quantityLabel, quantityTextField, buyPriceUnitLabel, buyPriceUnityTextField);
+            vBox.setSpacing(10);
+
+            vBox.setMinWidth(400);
+
+            dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            dialog.getDialogPane().setContent(vBox);
+
+            Optional<ButtonType> result = dialog.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+
+                if (!quantityTextField.getText().isEmpty() && !buyPriceUnityTextField.getText().isEmpty()) {
+
+
+                    Buy buy = new Buy();
+                    buy.setBuyId(selectedBuy.getBuyId());
+                    buy.setProductId(selectedBuy.getProductId());
+                    buy.setQuantity(Integer.parseInt(quantityTextField.getText()));
+                    buy.setBuyPrice(Integer.parseInt(quantityTextField.getText()) * Float.parseFloat(buyPriceUnityTextField.getText()));
+                    buy.setBuyPriceUnit(Float.parseFloat(buyPriceUnityTextField.getText()));
+                    buy.setBuyDate(selectedBuy.getBuyDate());
+
+                    stockDAO.updateBuy(buy);
+                    fetchBuys();
+                } else {
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As Alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
+                }
+            }
+
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma compra para editar", "");
         }
 
     }

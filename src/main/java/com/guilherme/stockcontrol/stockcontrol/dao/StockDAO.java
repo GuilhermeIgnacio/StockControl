@@ -851,6 +851,32 @@ public class StockDAO {
 
     }
 
+    public void updateBuy(Buy buy) {
+        String sql = "UPDATE buy SET quantity = ?, buy_price = ?, buy_price_unit = ? WHERE buy_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setInt(1, buy.getQuantity());
+            pstm.setFloat(2, buy.getBuyPrice());
+            pstm.setFloat(3, buy.getBuyPriceUnit());
+            pstm.setInt(4, buy.getBuyId());
+
+            pstm.execute();
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao atualizar compra", runtimeException.getMessage());
+        } finally {
+            closeConnection(conn, pstm, null);
+        }
+
+    }
+
 
 }
 
