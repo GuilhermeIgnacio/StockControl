@@ -57,7 +57,11 @@ public class BuysController implements Initializable {
     private void fetchBuys() {
         buyDetailsList.clear();
 
-        for (BuyDetails buyDetails : stockDAO.fetchBuys()) {
+        String productName = (String) productsComboBox.getValue();
+        String startDate = fromDatePicker.getEditor().getText();
+        String endDate = toDatePicker.getEditor().getText();
+
+        for (BuyDetails buyDetails : stockDAO.fetchBuys(productName, startDate, endDate)) {
             BuyDetails newBuyDetails = new BuyDetails();
 
             newBuyDetails.setBuyId(buyDetails.getBuyId());
@@ -214,5 +218,15 @@ public class BuysController implements Initializable {
             genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma compra para editar", "");
         }
 
+    }
+
+    public void onFilterChanged(ActionEvent actionEvent) {
+        if (!fromDatePicker.getEditor().getText().isEmpty() || !toDatePicker.getEditor().getText().isEmpty()) {
+            fetchBuys();
+
+            // Se algum produto estiver selecionado, recria a tabela filtrando por produto
+        } else if (productsComboBox.getValue() != null) {
+            fetchBuys();
+        }
     }
 }

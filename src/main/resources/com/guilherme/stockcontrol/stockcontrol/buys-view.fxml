@@ -69,9 +69,9 @@
                 </Label>
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <children>
-                        <DatePicker fx:id="fromDatePicker" editable="false" maxWidth="1.7976931348623157E308" promptText="%start.date" HBox.hgrow="ALWAYS" />
-                        <DatePicker fx:id="toDatePicker" editable="false" maxWidth="1.7976931348623157E308" promptText="%end.date" HBox.hgrow="ALWAYS" />
-                        <ComboBox fx:id="productsComboBox" maxWidth="1.7976931348623157E308" prefWidth="150.0" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="fromDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="%start.date" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="toDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="%end.date" HBox.hgrow="ALWAYS" />
+                        <ComboBox fx:id="productsComboBox" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
                 <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
