@@ -46,9 +46,12 @@ public class BuysController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         fetchBuys();
-
         createBuysTable();
 
+        //Todo: Atualizar quando uma compra for atualizada ou deletada
+        totalExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchTotalExpense()));
+        monthExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchMonthExpense()));
+        yearExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchYearExpense()));
     }
 
     private void fetchBuys() {

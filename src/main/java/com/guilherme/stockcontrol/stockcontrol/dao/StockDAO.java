@@ -7,8 +7,10 @@ import javafx.scene.control.Alert;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -877,6 +879,109 @@ public class StockDAO {
 
     }
 
+    public float fetchTotalExpense() {
+        float totalExpense = 0;
+        String sql = "SELECT SUM(buy_price) FROM buy";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                totalExpense = rs.getFloat(1);
+            }
+
+            return totalExpense;
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total", runtimeException.getMessage());
+            return totalExpense;
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+
+    }
+
+    public float fetchMonthExpense() {
+        float monthExpense = 0;
+        String sql = "SELECT SUM(buy_price) FROM buy WHERE MONTH(buy_date) = ? AND YEAR(buy_date) = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            pstm.setInt(1, localDate.getMonthValue());
+            pstm.setInt(2, localDate.getYear());
+
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                monthExpense = rs.getFloat(1);
+            }
+
+            return monthExpense;
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total do mês", runtimeException.getMessage());
+            return monthExpense;
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+    }
+
+    public float fetchYearExpense() {
+        float yearExpense = 0;
+        String sql = "SELECT SUM(buy_price) FROM buy WHERE YEAR(buy_date) = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            Date date = new Date();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            pstm.setInt(1, localDate.getYear());
+
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                yearExpense = rs.getFloat(1);
+            }
+
+            return yearExpense;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total do ano", runtimeException.getMessage());
+            return yearExpense;
+
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+
+    }
 
 }
 
