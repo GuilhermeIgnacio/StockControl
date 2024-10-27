@@ -177,6 +177,9 @@ public class ProductDAO extends StockDAO {
         // Consulta SQL para excluir as vendas associadas ao produto na tabela `sales`
         String salesSql = "DELETE FROM sales WHERE product_id = ?";
 
+        //Consulta SQL para excluir compras associadas ao produto na tabela `buy`
+        String buySql = "DELETE FROM buy where product_id = ?";
+
         // Consulta SQL para excluir o produto da tabela `products`
         String sql = "DELETE FROM products WHERE product_id = ?";
 
@@ -188,6 +191,11 @@ public class ProductDAO extends StockDAO {
 
             // Prepara e executa a instrução SQL para excluir as vendas associadas ao produto
             pstm = conn.prepareStatement(salesSql);
+            pstm.setInt(1, productId);
+            pstm.execute();
+
+            //Prepara e executa a instrução SQL para excluir a compra associada ao produto
+            pstm = conn.prepareStatement(buySql);
             pstm.setInt(1, productId);
             pstm.execute();
 
