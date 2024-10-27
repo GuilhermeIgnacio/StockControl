@@ -53,12 +53,18 @@ public class SalesController implements Initializable {
         // Inicializa a tabela de vendas e a comboBox de produtos
         createOrdersTable();
         fillProductsChoiceBox();
+        displayIncomeSummary();
 
+    }
+
+    /**
+     * Todo: Comentário Aqui
+     */
+    private void displayIncomeSummary() {
         // Define as receitas total, mensal e anual
         totalIncomeLabel.setText(currencyFormatter.format(salesDAO.totalIncome()));
         monthIncomeLabel.setText(currencyFormatter.format(salesDAO.monthIncome()));
         yearIncomeLabel.setText(currencyFormatter.format(salesDAO.yearIncome()));
-
     }
 
     /**
@@ -206,6 +212,7 @@ public class SalesController implements Initializable {
             if (result.get() == ButtonType.OK) {
                 salesDAO.deleteSale(saleIds);
                 createOrdersTable();
+                displayIncomeSummary();
             }
 
         } else {
@@ -213,7 +220,6 @@ public class SalesController implements Initializable {
         }
 
     }
-
 
     public void onEditSaleClicked(ActionEvent actionEvent) {
         if (tableView.getSelectionModel().getSelectedItem() != null && tableView.getSelectionModel().getSelectedItems().size() == 1) {
@@ -258,6 +264,7 @@ public class SalesController implements Initializable {
                     salesDAO.updateSale(selectedSale);
 
                     fetchSales();
+                    displayIncomeSummary();
                 } else {
                     genericAlertDialog(Alert.AlertType.INFORMATION, "", "As Alterações não foram salvas", "Certifique-se de preencher todos os campos e tente novamente.");
                 }

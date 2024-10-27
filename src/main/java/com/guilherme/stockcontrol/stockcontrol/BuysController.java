@@ -50,8 +50,10 @@ public class BuysController implements Initializable {
         fetchBuys();
         createBuysTable();
         fillProductsChoiceBox();
+        displayExpenseSummary();
+    }
 
-        //Todo: Atualizar quando uma compra for atualizada ou deletada
+    private void displayExpenseSummary() {
         totalExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchTotalExpense()));
         monthExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchMonthExpense()));
         yearExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchYearExpense()));
@@ -157,6 +159,7 @@ public class BuysController implements Initializable {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 buyDAO.deleteBuy(buyIds);
                 fetchBuys();
+                displayExpenseSummary();
             }
 
         } else {
@@ -212,6 +215,7 @@ public class BuysController implements Initializable {
 
                     buyDAO.updateBuy(buy);
                     fetchBuys();
+                    displayExpenseSummary();
                 } else {
                     genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
                 }

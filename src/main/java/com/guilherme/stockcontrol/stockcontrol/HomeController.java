@@ -54,7 +54,7 @@ public class HomeController implements Initializable {
     // Uma lista observável(ObservableList) é uma lista que pode ser monitorada para mudanças.
     ObservableList<Product> itemList = FXCollections.observableArrayList();
 
-    // Objeto de acesso aos dados de estoque
+    // Objetos de acesso aos dados de estoque
     ProductDAO productDAO = new ProductDAO();
     SalesDAO salesDAO = new SalesDAO();
 
@@ -62,7 +62,6 @@ public class HomeController implements Initializable {
      * Metodo de inicialização que é chamado quando a interface é carregada.
      * Ele configura a tabela de produtos e verifica os alertas de baixo estoque.
      */
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createTable(); // Configura as colunas e popula a tabela com produtos
@@ -73,7 +72,6 @@ public class HomeController implements Initializable {
      * Metodo chamado quando o botão de adicionar novo item é clicado.
      * Ele abre a janela de inserção de item e atualiza a lista de produtos após a inserção.
      */
-
     public void onAddNewItemBtnClicked(ActionEvent actionEvent) throws Exception {
 
         InsertProductApplication insertProductApplication = new InsertProductApplication(); // Cria nova instância da aplicação de inserção de item
@@ -276,6 +274,8 @@ public class HomeController implements Initializable {
                 fetchItems();
 
             }
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de excluir.", "");
         }
     }
 
