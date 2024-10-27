@@ -213,7 +213,7 @@ public class BuysController implements Initializable {
                     stockDAO.updateBuy(buy);
                     fetchBuys();
                 } else {
-                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As Alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
                 }
             }
 

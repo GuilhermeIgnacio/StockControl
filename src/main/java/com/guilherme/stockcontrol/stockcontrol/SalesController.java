@@ -212,7 +212,7 @@ public class SalesController implements Initializable {
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de excluir.", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda antes de excluir.", "");
         }
 
     }
@@ -229,54 +229,49 @@ public class SalesController implements Initializable {
             dialog.setTitle("Editar Venda");
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
+            Label soldQuantityLabel = new Label("Quantidade Vendida");
+            Label unitPriceLabel = new Label("Preço da Unidade");
 
-            VBox vBox = new VBox();
-
-            vBox.setSpacing(10);
-            vBox.setMinWidth(400);
-            vBox.setMaxWidth(400);
-
-            TextField soldQuantityTextField = new TextField();
+            TextField soldQuantityTextField = new TextField(String.valueOf(selectedSale.getQuantity()));
             TextFormatter<String> soldQuantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             soldQuantityTextField.setTextFormatter(soldQuantityFormatter);
-            soldQuantityTextField.setPromptText("Quantidade Vendida");
-            soldQuantityTextField.setText(String.valueOf(selectedSale.getQuantity()));
 
-            TextField salePriceTextField = new TextField();
+            TextField unitPriceTextField = new TextField(String.valueOf(selectedSale.getPriceUnit()));
             TextFormatter<String> salePriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
-            salePriceTextField.setTextFormatter(salePriceFormatter);
-            salePriceTextField.setPromptText("Valor da Venda");
-            salePriceTextField.setText(String.valueOf(selectedSale.getSalePrice()));
+            unitPriceTextField.setTextFormatter(salePriceFormatter);
 
-            TextField unitPriceTextField = new TextField();
-            TextFormatter<String> unitPriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
-            unitPriceTextField.setTextFormatter(unitPriceFormatter);
-            unitPriceTextField.setPromptText("Valor por Unidade");
-            unitPriceTextField.setText(String.valueOf(selectedSale.getPriceUnit()));
-
-            vBox.getChildren().addAll(soldQuantityTextField, salePriceTextField, unitPriceTextField);
+            VBox vBox = new VBox(soldQuantityLabel, soldQuantityTextField, unitPriceLabel, unitPriceTextField);
+            vBox.setSpacing(10);
+            vBox.setMinWidth(400);
 
             dialog.getDialogPane().setContent(vBox);
 
             Optional result = dialog.showAndWait();
 
-            if (result.get() == ButtonType.OK) {
-                //Todo: Resolver a falta de concordância de dados quando um campo é editado e os outros não são apropriadamente atualizados
-                selectedSale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
-                selectedSale.setSalePrice(Float.parseFloat(salePriceTextField.getText()));
-                selectedSale.setPriceUnit(Float.parseFloat(unitPriceTextField.getText()));
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                if (!soldQuantityTextField.getText().isEmpty() && !unitPriceTextField.getText().isEmpty()) {
+                    //Todo: Resolver a falta de concordância de dados quando um campo é editado e os outros não são apropriadamente atualizados
+                    selectedSale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
+                    selectedSale.setPriceUnit(Float.parseFloat(unitPriceTextField.getText()));
 
-                stockDAO.updateSale(selectedSale);
+                    float buyPrice = Integer.parseInt(soldQuantityTextField.getText()) * Float.parseFloat(unitPriceTextField.getText());
 
-                fetchSales();
+                    selectedSale.setSalePrice(buyPrice);
+
+                    stockDAO.updateSale(selectedSale);
+
+                    fetchSales();
+                } else {
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As Alterações não foram salvas", "Certifique-se de preencher todos os campos e tente novamente.");
+                }
 
             }
 
 
         } else if (tableView.getSelectionModel().getSelectedItems().size() > 1) {
-
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma venda para editar", "");
         } else if (tableView.getSelectionModel() == null || tableView.getSelectionModel().getSelectedItems().isEmpty()) {
-
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda para editar", "");
         }
     }
 }

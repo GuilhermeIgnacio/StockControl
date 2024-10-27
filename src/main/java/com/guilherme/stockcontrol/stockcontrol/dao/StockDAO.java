@@ -322,7 +322,7 @@ public class StockDAO {
                 pstm.setString(paramIndex++, formatDate(startDate)); // Data de início
             }
             if (endDate != null && !endDate.isEmpty()) {
-                pstm.setString(paramIndex++, formatDate(endDate)); // Data de término
+                pstm.setString(paramIndex++, formatDate(endDate) + " 23:59:59"); // Data de término
             }
 
             // Executa a query e processa os resultados
