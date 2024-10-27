@@ -1,9 +1,9 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.BuyDAO;
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.BuyDetails;
-import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -42,7 +42,7 @@ public class BuysController implements Initializable {
 
     ObservableList<BuyDetails> buyDetailsList = FXCollections.observableArrayList();
 
-    StockDAO stockDAO = new StockDAO();
+    BuyDAO buyDAO = new BuyDAO();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -52,9 +52,9 @@ public class BuysController implements Initializable {
         fillProductsChoiceBox();
 
         //Todo: Atualizar quando uma compra for atualizada ou deletada
-        totalExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchTotalExpense()));
-        monthExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchMonthExpense()));
-        yearExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchYearExpense()));
+        totalExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchTotalExpense()));
+        monthExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchMonthExpense()));
+        yearExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchYearExpense()));
     }
 
     private void fetchBuys() {
@@ -64,7 +64,7 @@ public class BuysController implements Initializable {
         String startDate = fromDatePicker.getEditor().getText();
         String endDate = toDatePicker.getEditor().getText();
 
-        for (BuyDetails buyDetails : stockDAO.fetchBuys(productName, startDate, endDate)) {
+        for (BuyDetails buyDetails : buyDAO.fetchBuys(productName, startDate, endDate)) {
             BuyDetails newBuyDetails = new BuyDetails();
 
             newBuyDetails.setBuyId(buyDetails.getBuyId());
@@ -155,7 +155,7 @@ public class BuysController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                stockDAO.deleteBuy(buyIds);
+                buyDAO.deleteBuy(buyIds);
                 fetchBuys();
             }
 
@@ -210,7 +210,7 @@ public class BuysController implements Initializable {
                     buy.setBuyPriceUnit(Float.parseFloat(buyPriceUnityTextField.getText()));
                     buy.setBuyDate(selectedBuy.getBuyDate());
 
-                    stockDAO.updateBuy(buy);
+                    buyDAO.updateBuy(buy);
                     fetchBuys();
                 } else {
                     genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");

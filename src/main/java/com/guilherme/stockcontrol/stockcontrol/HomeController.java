@@ -1,6 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.dao.ProductDAO;
+import com.guilherme.stockcontrol.stockcontrol.dao.SalesDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import javafx.application.Platform;
@@ -54,7 +55,8 @@ public class HomeController implements Initializable {
     ObservableList<Product> itemList = FXCollections.observableArrayList();
 
     // Objeto de acesso aos dados de estoque
-    StockDAO stockDAO = new StockDAO();
+    ProductDAO productDAO = new ProductDAO();
+    SalesDAO salesDAO = new SalesDAO();
 
     /**
      * Metodo de inicialização que é chamado quando a interface é carregada.
@@ -93,7 +95,7 @@ public class HomeController implements Initializable {
         try {
             itemList.clear(); // Limpa a lista atual
 
-            for (Product product : stockDAO.fetchItems(searchTextField.getText())) {
+            for (Product product : productDAO.fetchItems(searchTextField.getText())) {
 
                 Product newProduct = new Product();
                 newProduct.setProduct_id(product.getProduct_id());
@@ -268,7 +270,7 @@ public class HomeController implements Initializable {
 
                 // Ao confirmar a ação, deleta os produtos e atualiza a lista
                 selectedProducts.forEach(product ->
-                        stockDAO.deleteItemById(product.getProduct_id())
+                        productDAO.deleteItemById(product.getProduct_id())
                 );
 
                 fetchItems();
@@ -396,7 +398,7 @@ public class HomeController implements Initializable {
                                 saleList.add(sale);
 
                                 product.setStock_quantity(product.getStock_quantity() - soldQuantityInt);
-                                stockDAO.updateProduct(product);
+                                productDAO.updateProduct(product);
                             } else {
                                 genericAlertDialog(Alert.AlertType.INFORMATION, "", "Erro ao Registrar Venda de " + product.getProduct_name(), "A quantidade informada para venda é maior do que a disponível no estoque.");
                             }
@@ -404,7 +406,7 @@ public class HomeController implements Initializable {
                     }
                 }
 
-                stockDAO.insertSale(saleList); // Inserte as vendas
+                salesDAO.insertSale(saleList); // Inserte as vendas
                 fetchItems(); // Atualiza a tabela
             }
         } else {

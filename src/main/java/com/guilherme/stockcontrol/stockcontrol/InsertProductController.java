@@ -1,6 +1,8 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
-import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
+import com.guilherme.stockcontrol.stockcontrol.dao.BuyDAO;
+import com.guilherme.stockcontrol.stockcontrol.dao.ProductDAO;
+import com.guilherme.stockcontrol.stockcontrol.dao.TransactionService;
 import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.event.ActionEvent;
@@ -25,6 +27,10 @@ public class InsertProductController {
     public Button cancelBtn;                        // Botão para cancelar a operação
     public Label errorLabel;                        // Label para exibir mensagens de erro
     public CheckBox registerBuyCheckBox;
+
+    ProductDAO productDAO = new ProductDAO();
+    BuyDAO buyDAO = new BuyDAO();
+    TransactionService transactionService = new TransactionService(productDAO,buyDAO);
 
     Product product = new Product(); // Produto que está sendo adicionado
 
@@ -85,7 +91,7 @@ public class InsertProductController {
      * @param actionEvent O evento de ação do clique no botão
      */
     public void onSaveProductClicked(ActionEvent actionEvent) {
-        StockDAO stockDao = new StockDAO();
+
 
         // Verifica se todos os campos obrigatórios foram preenchidos
         if (!productNameTextField.getText().isEmpty() &&
@@ -117,16 +123,16 @@ public class InsertProductController {
                 // Se estiver em modo de edição, atualiza o produto, senão, insere um novo
                 if (editMode) {
                     if (registerBuyCheckBox.isSelected()) {
-                        stockDao.updateProduct(product);
-                        stockDao.insertBuy(buy);
+                        productDAO.updateProduct(product);
+                        buyDAO.insertBuy(buy);
                     } else {
-                        stockDao.updateProduct(product);
+                        productDAO.updateProduct(product);
                     }
                 } else {
                     if (registerBuyCheckBox.isSelected()) {
-                        stockDao.insertProductAndBuy(product, buy);
+                        transactionService.insertProductAndBuy(product, buy);
                     } else {
-                        stockDao.insertProduct(product);
+                        productDAO.insertProduct(product);
                     }
                 }
 

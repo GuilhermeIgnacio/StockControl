@@ -1,7 +1,7 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.SalesDAO;
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
-import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,12 +11,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.util.Pair;
 
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -48,7 +45,7 @@ public class SalesController implements Initializable {
 
     ObservableList<SaleProduct> saleProductsList = FXCollections.observableArrayList(); // Lista observável de vendas
 
-    StockDAO stockDAO = new StockDAO(); // Instância de acesso ao banco de dados
+    SalesDAO salesDAO = new SalesDAO(); // Instância de acesso ao banco de dados
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -58,9 +55,9 @@ public class SalesController implements Initializable {
         fillProductsChoiceBox();
 
         // Define as receitas total, mensal e anual
-        totalIncomeLabel.setText(currencyFormatter.format(stockDAO.totalIncome()));
-        monthIncomeLabel.setText(currencyFormatter.format(stockDAO.monthIncome()));
-        yearIncomeLabel.setText(currencyFormatter.format(stockDAO.yearIncome()));
+        totalIncomeLabel.setText(currencyFormatter.format(salesDAO.totalIncome()));
+        monthIncomeLabel.setText(currencyFormatter.format(salesDAO.monthIncome()));
+        yearIncomeLabel.setText(currencyFormatter.format(salesDAO.yearIncome()));
 
     }
 
@@ -79,7 +76,7 @@ public class SalesController implements Initializable {
             saleProductsList.clear();
 
             // Busca as vendas do banco de dados com base nos filtros
-            for (SaleProduct saleProduct : stockDAO.fetchSaleProduct(productName, startDate, endDate)) {
+            for (SaleProduct saleProduct : salesDAO.fetchSaleProduct(productName, startDate, endDate)) {
                 SaleProduct newSaleProduct = new SaleProduct();
                 newSaleProduct.setSaleId(saleProduct.getSaleId());
                 newSaleProduct.setProductName(saleProduct.getProductName());
@@ -207,7 +204,7 @@ public class SalesController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.OK) {
-                stockDAO.deleteSale(saleIds);
+                salesDAO.deleteSale(saleIds);
                 createOrdersTable();
             }
 
@@ -258,7 +255,7 @@ public class SalesController implements Initializable {
 
                     selectedSale.setSalePrice(buyPrice);
 
-                    stockDAO.updateSale(selectedSale);
+                    salesDAO.updateSale(selectedSale);
 
                     fetchSales();
                 } else {

@@ -1,5 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.SalesDAO;
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import javafx.scene.control.Label;
@@ -23,7 +24,7 @@ public class ProductDetailController {
     public Label detailSalesLabel;          // Label para exibir a quantidade total de vendas do produto
     public Label saleAmount;                // Label para exibir o valor total em vendas do produto em Reais
 
-    StockDAO stockDAO = new StockDAO();     // Instância do DAO para acessar dados do estoque
+    SalesDAO salesDAO = new SalesDAO();     // Instância do DAO para acessar dados do estoque
 
     /**
      * Preenche os detalhes do produto na tela.
@@ -39,7 +40,7 @@ public class ProductDetailController {
 
         // Exibe a quantidade em estoque e o total de vendas do produto
         detailQuantityLabel.setText(String.valueOf(product.getStock_quantity()));
-        detailSalesLabel.setText(String.valueOf(stockDAO.getProductTotalSales(product.getProduct_id())));
+        detailSalesLabel.setText(String.valueOf(salesDAO.getProductTotalSales(product.getProduct_id())));
 
         // Formata e exibe o preço de compra e de varejo do produto
         detailPurchasePriceLabel.setText(currencyFormatter.format(product.getPurchase_price()));
@@ -51,7 +52,7 @@ public class ProductDetailController {
         detailProfitMarginLabel.setText(formattedMarginProfit);
 
         // Exibe o valor total em vendas do produto
-        saleAmount.setText(currencyFormatter.format(stockDAO.getProductSaleAmount(product.getProduct_id())));
+        saleAmount.setText(currencyFormatter.format(salesDAO.getProductSaleAmount(product.getProduct_id())));
 
         // Formata e exibe as datas de criação e última atualização do produto
         String formattedCreatedAt = product.getCreated_at().format(dateTimeFormatter);
