@@ -3,6 +3,7 @@ package com.guilherme.stockcontrol.stockcontrol;
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.BuyDetails;
+import com.guilherme.stockcontrol.stockcontrol.model.SaleProduct;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
@@ -36,7 +38,7 @@ public class BuysController implements Initializable {
     public Label yearExpenseLabel;
     public DatePicker fromDatePicker;
     public DatePicker toDatePicker;
-    public ComboBox productsComboBox;
+    public ComboBox<String> productsComboBox;
 
     ObservableList<BuyDetails> buyDetailsList = FXCollections.observableArrayList();
 
@@ -47,6 +49,7 @@ public class BuysController implements Initializable {
 
         fetchBuys();
         createBuysTable();
+        fillProductsChoiceBox();
 
         //Todo: Atualizar quando uma compra for atualizada ou deletada
         totalExpenseLabel.setText(currencyFormatter.format(stockDAO.fetchTotalExpense()));
@@ -57,7 +60,7 @@ public class BuysController implements Initializable {
     private void fetchBuys() {
         buyDetailsList.clear();
 
-        String productName = (String) productsComboBox.getValue();
+        String productName = productsComboBox.getValue();
         String startDate = fromDatePicker.getEditor().getText();
         String endDate = toDatePicker.getEditor().getText();
 
@@ -229,4 +232,16 @@ public class BuysController implements Initializable {
             fetchBuys();
         }
     }
+
+    private void fillProductsChoiceBox() {
+
+        productsComboBox.getItems().add("");
+
+        // Preenche a comboBox com os nomes dos produtos únicos
+        for (String productName : buyDetailsList.stream().map(BuyDetails::getProductName).collect(Collectors.toSet())) {
+            productsComboBox.getItems().add(productName);
+        }
+
+    }
+
 }
