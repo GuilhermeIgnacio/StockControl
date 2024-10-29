@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 /**
- * Todo: Comentários Aqui
+ * Classe DAO responsável pelas operações de banco de dados relacionadas às vendas (sales) no sistema de controle de estoque.
  */
 public class SalesDAO extends StockDAO {
     /**
@@ -165,7 +165,10 @@ public class SalesDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentário Aqui
+     * Atualiza os dados de uma venda específica no banco de dados.
+     *
+     * @param saleProduct Objeto SaleProduct contendo as informações atualizadas da venda,
+     *                    como quantidade, preço total e preço unitário.
      */
     public void updateSale(SaleProduct saleProduct) {
         String sql = "UPDATE sales SET quantity = ?, sale_price = ?, price_unit = ? WHERE sale_id = ?";
@@ -193,7 +196,9 @@ public class SalesDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentário Aqui
+     * Exclui uma ou mais vendas do banco de dados com base em uma lista de IDs.
+     *
+     * @param saleIds Lista de IDs das vendas a serem excluídas.
      */
     public void deleteSale(List<Integer> saleIds) {
         String sql = "DELETE FROM sales WHERE sale_id IN (" +

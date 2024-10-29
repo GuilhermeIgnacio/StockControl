@@ -58,7 +58,7 @@ public class SalesController implements Initializable {
     }
 
     /**
-     * Todo: Comentário Aqui
+     * Preenche os elementos com dados de renda, total, mensal e anual
      */
     private void displayIncomeSummary() {
         // Define as receitas total, mensal e anual
@@ -190,6 +190,13 @@ public class SalesController implements Initializable {
 
     }
 
+    /**
+     * Metodo para deletar uma ou mais vendas selecionadas da tabela.
+     * Solicita a confirmação do usuário antes de deletar as vendas, e, em caso positivo,
+     * remove os registros do banco de dados e atualiza a tabela de vendas.
+     *
+     * @param actionEvent evento que dispara a ação de deleção.
+     */
     public void onDeleteSaleClicked(ActionEvent actionEvent) {
 
         if (!tableView.getSelectionModel().getSelectedItems().isEmpty()) {
@@ -221,6 +228,13 @@ public class SalesController implements Initializable {
 
     }
 
+    /**
+     * Metodo para editar os detalhes de uma venda selecionada. Permite ao usuário modificar
+     * a quantidade vendida e o preço unitário de uma venda, atualizando os valores no banco de dados
+     * após a confirmação.
+     *
+     * @param actionEvent evento que dispara a ação de edição.
+     */
     public void onEditSaleClicked(ActionEvent actionEvent) {
         if (tableView.getSelectionModel().getSelectedItem() != null && tableView.getSelectionModel().getSelectedItems().size() == 1) {
 

@@ -7,7 +7,8 @@ import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import java.sql.*;
 
 /**
- * Todo: Comentário Aqui
+ * Serviço responsável por operações de transação envolvendo múltiplas inserções relacionadas a produtos e compras.
+ * Realiza operações que necessitam de consistência entre tabelas, garantindo integridade dos dados com transações.
  */
 public class TransactionService extends StockDAO {
 
@@ -20,7 +21,13 @@ public class TransactionService extends StockDAO {
     }
 
     /**
-     * Todo: Comentário Aqui
+     * Insere um novo produto e registra uma compra associada em uma transação única.
+     *
+     * @param product Objeto Product que contém as informações do produto a ser inserido.
+     * @param buy Objeto Buy que contém os detalhes da compra associada ao produto inserido.
+     *
+     * Este metodo inicia uma transação para garantir que tanto o produto quanto a compra
+     * sejam inseridos com sucesso. Em caso de erro, a transação é revertida para manter a integridade dos dados.
      */
     public void insertProductAndBuy(Product product, Buy buy) {
         String productSql = "INSERT INTO products(product_name, product_description, purchase_price, retail_price, stock_quantity) VALUES (?, ?, ?, ?, ?)";

@@ -19,12 +19,17 @@ import java.util.stream.Collectors;
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 /**
- * Todo: Comentários Aqui
+ * Classe DAO responsável pelas operações de banco de dados relacionadas às compras (buy).
  */
 public class BuyDAO extends StockDAO {
 
     /**
-     * Todo: Comentários Aqui
+     * Busca uma lista de compras filtradas pelo nome do produto, data de início e data de término.
+     *
+     * @param productName Nome do produto para filtrar (opcional).
+     * @param startDate   Data de início para filtrar as compras (opcional).
+     * @param endDate     Data de término para filtrar as compras (opcional).
+     * @return Lista de objetos BuyDetails contendo os detalhes das compras que atendem aos filtros fornecidos.
      */
     public List<BuyDetails> fetchBuys(String productName, String startDate, String endDate) {
 
@@ -109,7 +114,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Insere uma nova compra no banco de dados.
+     *
+     * @param buy Objeto Buy contendo as informações da compra a serem inseridas.
      */
     public void insertBuy(Buy buy) {
         String sql = "INSERT INTO buy (product_id, quantity, buy_price, buy_price_unit) VALUES (?, ?, ?, ?)";
@@ -139,7 +146,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Atualiza uma compra existente no banco de dados.
+     *
+     * @param buy Objeto Buy com os dados atualizados da compra.
      */
     public void updateBuy(Buy buy) {
         String sql = "UPDATE buy SET quantity = ?, buy_price = ?, buy_price_unit = ? WHERE buy_id = ?";
@@ -168,7 +177,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Deleta uma ou mais compras do banco de dados com base em seus IDs.
+     *
+     * @param buyIds Lista de IDs das compras a serem deletadas.
      */
     public void deleteBuy(List<Integer> buyIds) {
         String sql = "DELETE FROM buy WHERE buy_id IN (" +
@@ -199,7 +210,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Obtém o gasto total com compras.
+     *
+     * @return O valor total de todas as compras realizadas.
      */
     public float fetchTotalExpense() {
         float totalExpense = 0;
@@ -232,7 +245,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Obtém o gasto total com compras do mês atual.
+     *
+     * @return O valor total de compras do mês atual.
      */
     public float fetchMonthExpense() {
         float monthExpense = 0;
@@ -272,7 +287,9 @@ public class BuyDAO extends StockDAO {
     }
 
     /**
-     * Todo: Comentários Aqui
+     * Obtém o gasto total com compras do ano atual.
+     *
+     * @return O valor total de compras do ano atual.
      */
     public float fetchYearExpense() {
         float yearExpense = 0;

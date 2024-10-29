@@ -42,8 +42,8 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Manipulador de eventos para o botão inicial.
-     * Carrega a view inicial na área de conteúdo.
+     * Manipulador de eventos para o botão home.
+     * Carrega a view home na área de conteúdo.
      *
      * @param actionEvent O evento gerado pelo clique do botão.
      */
@@ -64,7 +64,7 @@ public class HelloController implements Initializable {
     }
 
     /**
-     * Todo: Comentário Aqui
+     * Carrega a view de compras
      */
     public void onBuysButtonClicked(ActionEvent actionEvent) {
         try {

@@ -15,7 +15,7 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.genericAlertDialog;
 import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
 
 /**
- * Todo: Comentário Aqui
+ * Classe DAO responsável pelas operações de banco de dados relacionadas aos produtos (products) no sistema de controle de estoque.
  */
 public class ProductDAO extends StockDAO {
 

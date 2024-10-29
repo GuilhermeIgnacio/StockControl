@@ -21,28 +21,31 @@ import java.util.stream.Collectors;
 import static com.guilherme.stockcontrol.stockcontrol.Util.*;
 
 /**
- * Todo: Comentário nesta classe e seus métodos
+ * Este controlador permite visualizar, filtrar, editar e excluir registros de compras.
+ * Ele também exibe um resumo de despesas total, mensal e anual.
  */
 public class BuysController implements Initializable {
 
-    public TableView tableView;
-    public TableColumn<BuyDetails, LocalDateTime> buyDateColumn;
-    public TableColumn<BuyDetails, String> productNameColumn;
-    public TableColumn<BuyDetails, Integer> buyQuantityColumn;
-    public TableColumn<BuyDetails, Float> buyPriceColumn;
-    public TableColumn<BuyDetails, Float> priceUnitColumn;
+    public TableView<BuyDetails> tableView; // Tabela de exibição de detalhes de compra
+    public TableColumn<BuyDetails, LocalDateTime> buyDateColumn; // Coluna para a data da compra
+    public TableColumn<BuyDetails, String> productNameColumn; // Coluna para o nome do produto
+    public TableColumn<BuyDetails, Integer> buyQuantityColumn; // Coluna para a quantidade comprada
+    public TableColumn<BuyDetails, Float> buyPriceColumn; // Coluna para o preço total da compra
+    public TableColumn<BuyDetails, Float> priceUnitColumn; // Coluna para o preço unitário do produto
 
-    public Label totalExpenseLabel;
-    public Label monthExpenseLabel;
-    public Label yearExpenseLabel;
-    public DatePicker fromDatePicker;
-    public DatePicker toDatePicker;
-    public ComboBox<String> productsComboBox;
+    public Label totalExpenseLabel; // Exibe o total gasto em compras
+    public Label monthExpenseLabel; // Exibe o total gasto no mês corrente
+    public Label yearExpenseLabel; // Exibe o total gasto no ano corrente
+    public DatePicker fromDatePicker; // Permite filtrar compras a partir de uma data
+    public DatePicker toDatePicker; // Permite filtrar compras até uma data
+    public ComboBox<String> productsComboBox; // Filtro para seleção de produto
 
-    ObservableList<BuyDetails> buyDetailsList = FXCollections.observableArrayList();
+    ObservableList<BuyDetails> buyDetailsList = FXCollections.observableArrayList(); // Lista observável para armazenar detalhes de compra
+    BuyDAO buyDAO = new BuyDAO(); // Data Access Object para operações de compra
 
-    BuyDAO buyDAO = new BuyDAO();
-
+    /**
+     * Inicializa a interface com os dados de compra, configurando a tabela e filtros.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -52,12 +55,18 @@ public class BuysController implements Initializable {
         displayExpenseSummary();
     }
 
+    /**
+     * Preenche os dados das despesas de compra
+     */
     private void displayExpenseSummary() {
         totalExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchTotalExpense()));
         monthExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchMonthExpense()));
         yearExpenseLabel.setText(currencyFormatter.format(buyDAO.fetchYearExpense()));
     }
 
+    /**
+     * Busca e filtra registros de compra com base nos filtros selecionados e preenche `buyDetailsList`.
+     */
     private void fetchBuys() {
         buyDetailsList.clear();
 
@@ -81,6 +90,9 @@ public class BuysController implements Initializable {
         }
     }
 
+    /**
+     * Configura a tabela para exibir dados de compra e define formatação para algumas colunas.
+     */
     private void createBuysTable() {
         tableView.setItems(buyDetailsList);
 
@@ -135,6 +147,12 @@ public class BuysController implements Initializable {
 
     }
 
+    /**
+     * Trata o evento do botão de exclusão de compra. Solicita confirmação ao usuário e,
+     * se confirmada, exclui as compras selecionadas.
+     *
+     * @param actionEvent Evento de clique no botão
+     */
     public void onDeleteBuyButtonClicked(ActionEvent actionEvent) {
 
         ObservableList<BuyDetails> selectedBuys = tableView.getSelectionModel().getSelectedItems();
@@ -167,6 +185,11 @@ public class BuysController implements Initializable {
 
     }
 
+    /**
+     * Trata o evento de edição de compra, abrindo um diálogo para editar a quantidade e o preço unitário.
+     *
+     * @param actionEvent Evento de clique no botão de edição
+     */
     public void onEditBuyClicked(ActionEvent actionEvent) {
 
         if (tableView.getSelectionModel().getSelectedItems().size() == 1) {
@@ -229,6 +252,11 @@ public class BuysController implements Initializable {
 
     }
 
+    /**
+     * Atualiza a tabela de compras com base nos filtros selecionados.
+     *
+     * @param actionEvent Evento de alteração nos filtros
+     */
     public void onFilterChanged(ActionEvent actionEvent) {
         if (!fromDatePicker.getEditor().getText().isEmpty() || !toDatePicker.getEditor().getText().isEmpty()) {
             fetchBuys();
@@ -239,6 +267,9 @@ public class BuysController implements Initializable {
         }
     }
 
+    /**
+     * Preenche a ComboBox de produtos com nomes de produtos únicos obtidos da lista de detalhes de compra.
+     */
     private void fillProductsChoiceBox() {
 
         productsComboBox.getItems().add("");
