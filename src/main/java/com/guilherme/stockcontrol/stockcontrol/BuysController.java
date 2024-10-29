@@ -173,17 +173,17 @@ public class BuysController implements Initializable {
             BuyDetails selectedBuy = (BuyDetails) tableView.getSelectionModel().getSelectedItem();
 
             Dialog dialog = new Dialog();
-            dialog.setTitle("Editar Compra");
-            dialog.setHeaderText("Editar compra de " + selectedBuy.getProductName());
+            dialog.setTitle(getProp().getString("buy.edit.title"));
+            dialog.setHeaderText(getProp().getString("buy.edit.header") + selectedBuy.getProductName());
 
-            Label quantityLabel = new Label("Quantidade");
+            Label quantityLabel = new Label(getProp().getString("buy.quantity.label"));
 
             TextField quantityTextField = new TextField(String.valueOf(selectedBuy.getQuantity()));
             TextFormatter<String> quantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             quantityTextField.setTextFormatter(quantityFormatter);
             addTextLimiter(quantityTextField, 7);
 
-            Label buyPriceUnitLabel = new Label("Preço por Unidade:");
+            Label buyPriceUnitLabel = new Label(getProp().getString("buy.price.unit.label"));
 
             TextField buyPriceUnityTextField = new TextField();
             TextFormatter<String> buyPriceUnityFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));

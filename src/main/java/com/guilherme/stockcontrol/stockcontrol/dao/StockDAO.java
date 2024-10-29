@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+
 /**
  * Classe responsável pelo acesso aos dados relacionados ao estoque (DAO - Data Access Object).
  * Esta classe contém métodos para realizar operações no banco de dados,
@@ -42,7 +44,7 @@ public abstract class StockDAO {
 
         } catch (Exception e) {
             // Em caso de erro ao fechar as conexões, imprime a mensagem de erro
-            System.out.println("Error When Closing Connections " + e);
+            System.out.println(getProp().getString("close.connection.error") + e);
         }
     }
 
