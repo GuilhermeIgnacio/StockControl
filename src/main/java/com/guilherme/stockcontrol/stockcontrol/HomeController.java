@@ -10,6 +10,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -340,7 +342,7 @@ public class HomeController implements Initializable {
 
             // Cria uma janela de diálogo para inserir as quantidades vendidas
             Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setWidth(300);
+//            dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
 
             // Configura os botões de confirmação e cancelamento
@@ -358,8 +360,8 @@ public class HomeController implements Initializable {
                 Label productLabel = new Label(product.getProduct_name());
 
                 TextField soldQuantityTextField = new TextField();
-                soldQuantityTextField.setPromptText("Quantidade vendida");
-                soldQuantityTextField.setPrefWidth(300);
+                soldQuantityTextField.setPromptText(getProp().getString("register.sale.prompt.text"));
+                soldQuantityTextField.setPrefWidth(570);
 
                 // Formata o campo de texto para aceitar apenas números inteiros
                 TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
@@ -371,7 +373,10 @@ public class HomeController implements Initializable {
                 textFieldMap.put(product, soldQuantityTextField);
             }
 
-            dialog.getDialogPane().setContent(vBox);
+            ScrollPane scrollPane = new ScrollPane(vBox);
+            scrollPane.setPrefSize(600,200);
+            scrollPane.setStyle("-fx-background-color:transparent;");
+            dialog.getDialogPane().setContent(scrollPane);
 
             // Processa o resultado após o usuário confirmar
             Optional<ButtonType> result = dialog.showAndWait();
@@ -431,9 +436,18 @@ public class HomeController implements Initializable {
             alert = new Alert(Alert.AlertType.WARNING); // Alerta de aviso
             alert.setHeaderText(getProp().getString("alert.window.title"));
 
-            StringBuilder lowStockMessage = new StringBuilder();
-            lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
-            alert.setContentText(lowStockMessage.toString()); // Adiciona os nomes dos produtos com baixo estoque
+            VBox vBox = new VBox();
+            vBox.setSpacing(5);
+            for (Product product : lowStockProducts) {
+                Label productLabel = new Label(product.getProduct_name());
+                vBox.getChildren().add(productLabel);
+            }
+
+            ScrollPane scrollPane = new ScrollPane(vBox);
+            scrollPane.setStyle("-fx-background-color:transparent;");
+            scrollPane.setPrefSize(600, 120);
+
+            alert.getDialogPane().setContent(scrollPane);
 
         } else {
             alert = new Alert(Alert.AlertType.INFORMATION);
@@ -470,12 +484,21 @@ public class HomeController implements Initializable {
 
         if (!lowStockProducts.isEmpty() && !dialogShown) { // Verifica se o alerta já foi mostrado
 
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            Alert alert = new Alert(Alert.AlertType.WARNING); // Alerta de aviso
             alert.setHeaderText(getProp().getString("alert.window.title"));
 
-            StringBuilder lowStockMessage = new StringBuilder();
-            lowStockProducts.forEach(product -> lowStockMessage.append(product.getProduct_name()).append("\n"));
-            alert.setContentText(lowStockMessage.toString());
+            VBox vBox = new VBox();
+            vBox.setSpacing(5);
+            for (Product product : lowStockProducts) {
+                Label productLabel = new Label(product.getProduct_name());
+                vBox.getChildren().add(productLabel);
+            }
+
+            ScrollPane scrollPane = new ScrollPane(vBox);
+            scrollPane.setStyle("-fx-background-color:transparent;");
+            scrollPane.setPrefSize(600, 120);
+
+            alert.getDialogPane().setContent(scrollPane);
 
             alert.show();
 
