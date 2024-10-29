@@ -30,7 +30,7 @@ public class InsertProductController {
 
     ProductDAO productDAO = new ProductDAO();
     BuyDAO buyDAO = new BuyDAO();
-    TransactionService transactionService = new TransactionService(productDAO,buyDAO);
+    TransactionService transactionService = new TransactionService(productDAO, buyDAO);
 
     Product product = new Product(); // Produto que está sendo adicionado
 
@@ -56,6 +56,15 @@ public class InsertProductController {
 
         // Limita o número de caracteres no campo de nome do produto
         addTextLimiter(productNameTextField, 100);
+
+        //Limita os dígitos no campo de preço de compra
+        addTextLimiter(purchasePriceTextField ,7);
+
+        //Limita os dígitos no campo de preço de varejo
+        addTextLimiter(retailPriceTextField ,7);
+
+        //Limita os dígitos no campo de quantidade
+        addTextLimiter(productQuantityTextField, 7);
 
     }
 

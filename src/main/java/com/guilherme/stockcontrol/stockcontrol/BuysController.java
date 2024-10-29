@@ -181,12 +181,15 @@ public class BuysController implements Initializable {
             TextField quantityTextField = new TextField(String.valueOf(selectedBuy.getQuantity()));
             TextFormatter<String> quantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             quantityTextField.setTextFormatter(quantityFormatter);
+            addTextLimiter(quantityTextField, 7);
 
             Label buyPriceUnitLabel = new Label("Preço por Unidade:");
 
-            TextField buyPriceUnityTextField = new TextField(String.valueOf(selectedBuy.getBuyPriceUnit()));
+            TextField buyPriceUnityTextField = new TextField();
             TextFormatter<String> buyPriceUnityFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
             buyPriceUnityTextField.setTextFormatter(buyPriceUnityFormatter);
+            addTextLimiter(buyPriceUnityTextField, 7);
+            buyPriceUnityTextField.setText(String.valueOf(selectedBuy.getBuyPriceUnit()));
 
             VBox vBox = new VBox();
             vBox.getChildren().addAll(quantityLabel, quantityTextField, buyPriceUnitLabel, buyPriceUnityTextField);

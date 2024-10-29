@@ -238,10 +238,12 @@ public class SalesController implements Initializable {
             TextField soldQuantityTextField = new TextField(String.valueOf(selectedSale.getQuantity()));
             TextFormatter<String> soldQuantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             soldQuantityTextField.setTextFormatter(soldQuantityFormatter);
+            addTextLimiter(soldQuantityTextField, 7);
 
             TextField unitPriceTextField = new TextField(String.valueOf(selectedSale.getPriceUnit()));
             TextFormatter<String> salePriceFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
             unitPriceTextField.setTextFormatter(salePriceFormatter);
+            addTextLimiter(unitPriceTextField, 7);
 
             VBox vBox = new VBox(soldQuantityLabel, soldQuantityTextField, unitPriceLabel, unitPriceTextField);
             vBox.setSpacing(10);
