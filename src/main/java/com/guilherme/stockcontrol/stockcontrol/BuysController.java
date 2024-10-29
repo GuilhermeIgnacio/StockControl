@@ -1,7 +1,6 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.BuyDAO;
-import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
 import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.BuyDetails;
 import javafx.collections.FXCollections;
@@ -217,12 +216,12 @@ public class BuysController implements Initializable {
                     fetchBuys();
                     displayExpenseSummary();
                 } else {
-                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("changes.not.saved.warning"), getProp().getString("empty.fields.warning"));
                 }
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma compra para editar", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("buy.edit.many.items.warning"), "");
         }
 
     }

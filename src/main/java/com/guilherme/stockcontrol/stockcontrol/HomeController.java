@@ -257,6 +257,7 @@ public class HomeController implements Initializable {
             } else {
                 alert.setHeaderText(getProp().getString("delete.warning.plural"));
             }
+            alert.setContentText(getProp().getString("delete.content.warning"));
 
             ButtonType buttonTypeOne = new ButtonType(getProp().getString("delete.confirm.button"));
             ButtonType buttonTypeCancel = new ButtonType(getProp().getString("delete.cancel.button"), ButtonBar.ButtonData.CANCEL_CLOSE);
@@ -275,7 +276,7 @@ public class HomeController implements Initializable {
 
             }
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de excluir.", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("delete.empty.list"), "");
         }
     }
 
@@ -400,7 +401,7 @@ public class HomeController implements Initializable {
                                 product.setStock_quantity(product.getStock_quantity() - soldQuantityInt);
                                 productDAO.updateProduct(product);
                             } else {
-                                genericAlertDialog(Alert.AlertType.INFORMATION, "", "Erro ao Registrar Venda de " + product.getProduct_name(), "A quantidade informada para venda é maior do que a disponível no estoque.");
+                                genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("register.sale.error") + product.getProduct_name(), getProp().getString("register.sale.unavailable.quantity"));
                             }
                         }
                     }
@@ -410,7 +411,7 @@ public class HomeController implements Initializable {
                 fetchItems(); // Atualiza a tabela
             }
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de registrar uma venda", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("register.sale.empty.list"), "");
         }
 
 

@@ -216,7 +216,7 @@ public class SalesController implements Initializable {
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda antes de excluir.", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.delete.empty.list"), "");
         }
 
     }
@@ -228,12 +228,12 @@ public class SalesController implements Initializable {
 
             Dialog dialog = new Dialog();
 
-            dialog.setHeaderText("Editar venda de " + selectedSale.getProductName());
-            dialog.setTitle("Editar Venda");
+            dialog.setTitle(getProp().getString("sale.edit.title"));
+            dialog.setHeaderText(getProp().getString("sale.edit.header") + selectedSale.getProductName());
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-            Label soldQuantityLabel = new Label("Quantidade Vendida");
-            Label unitPriceLabel = new Label("Preço da Unidade");
+            Label soldQuantityLabel = new Label(getProp().getString("sale.sold.quantity.label"));
+            Label unitPriceLabel = new Label(getProp().getString("sale.unit.price.label"));
 
             TextField soldQuantityTextField = new TextField(String.valueOf(selectedSale.getQuantity()));
             TextFormatter<String> soldQuantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
@@ -253,7 +253,6 @@ public class SalesController implements Initializable {
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 if (!soldQuantityTextField.getText().isEmpty() && !unitPriceTextField.getText().isEmpty()) {
-                    //Todo: Resolver a falta de concordância de dados quando um campo é editado e os outros não são apropriadamente atualizados
                     selectedSale.setQuantity(Integer.parseInt(soldQuantityTextField.getText()));
                     selectedSale.setPriceUnit(Float.parseFloat(unitPriceTextField.getText()));
 
@@ -266,16 +265,16 @@ public class SalesController implements Initializable {
                     fetchSales();
                     displayIncomeSummary();
                 } else {
-                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As Alterações não foram salvas", "Certifique-se de preencher todos os campos e tente novamente.");
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("changes.not.saved.warning"), getProp().getString("empty.fields.warning"));
                 }
 
             }
 
 
         } else if (tableView.getSelectionModel().getSelectedItems().size() > 1) {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma venda para editar", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.edit.many.items.warning"), "");
         } else if (tableView.getSelectionModel() == null || tableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda para editar", "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.edit.empty.list"), "");
         }
     }
 }
