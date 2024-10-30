@@ -26,7 +26,6 @@ public class InsertProductController {
     public Button clearFieldsBtn;                   // BOtão para limpar os campos
     public Button cancelBtn;                        // Botão para cancelar a operação
     public Label errorLabel;                        // Label para exibir mensagens de erro
-    public CheckBox registerBuyCheckBox;
 
     ProductDAO productDAO = new ProductDAO();
     BuyDAO buyDAO = new BuyDAO();
@@ -131,18 +130,9 @@ public class InsertProductController {
 
                 // Se estiver em modo de edição, atualiza o produto, senão, insere um novo
                 if (editMode) {
-                    if (registerBuyCheckBox.isSelected()) {
-                        productDAO.updateProduct(product);
-                        buyDAO.insertBuy(buy);
-                    } else {
-                        productDAO.updateProduct(product);
-                    }
+                    productDAO.updateProduct(product);
                 } else {
-                    if (registerBuyCheckBox.isSelected()) {
-                        transactionService.insertProductAndBuy(product, buy);
-                    } else {
-                        productDAO.insertProduct(product);
-                    }
+                    transactionService.insertProductAndBuy(product, buy);
                 }
 
                 // Fecha a janela após salvar

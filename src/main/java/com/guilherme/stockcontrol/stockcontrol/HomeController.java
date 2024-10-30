@@ -1,7 +1,9 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
+import com.guilherme.stockcontrol.stockcontrol.dao.BuyDAO;
 import com.guilherme.stockcontrol.stockcontrol.dao.ProductDAO;
 import com.guilherme.stockcontrol.stockcontrol.dao.SalesDAO;
+import com.guilherme.stockcontrol.stockcontrol.model.Buy;
 import com.guilherme.stockcontrol.stockcontrol.model.Product;
 import com.guilherme.stockcontrol.stockcontrol.model.Sale;
 import javafx.application.Platform;
@@ -58,6 +60,7 @@ public class HomeController implements Initializable {
 
     // Objetos de acesso aos dados de estoque
     ProductDAO productDAO = new ProductDAO();
+    BuyDAO buyDAO = new BuyDAO();
     SalesDAO salesDAO = new SalesDAO();
 
     /**
@@ -342,7 +345,6 @@ public class HomeController implements Initializable {
 
             // Cria uma janela de diálogo para inserir as quantidades vendidas
             Dialog<ButtonType> dialog = new Dialog<>();
-//            dialog.setWidth(300);
             dialog.setHeaderText(getProp().getString("register.sale.header.text"));
 
             // Configura os botões de confirmação e cancelamento
@@ -374,7 +376,7 @@ public class HomeController implements Initializable {
             }
 
             ScrollPane scrollPane = new ScrollPane(vBox);
-            scrollPane.setPrefSize(600,200);
+            scrollPane.setPrefSize(600, 200);
             scrollPane.setStyle("-fx-background-color:transparent;");
             dialog.getDialogPane().setContent(scrollPane);
 
@@ -508,4 +510,97 @@ public class HomeController implements Initializable {
 
     }
 
+    public void onRegisterBuyClicked(ActionEvent actionEvent) {
+        if (!productTableView.getSelectionModel().getSelectedItems().isEmpty()) {
+            // Verifica se há produtos selecionados
+            ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
+            List<Buy> buyList = new ArrayList<>();
+
+            // Cria uma janela de diálogo para inserir a quantidade comprada e o preço por unidade
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setTitle(getProp().getString("register.buy"));
+            dialog.setHeaderText(getProp().getString("register.buy"));
+
+            // Configura os botões de confirmação e cancelamento
+            ButtonType confirmButton = new ButtonType(getProp().getString("confirm.buy"), ButtonBar.ButtonData.OK_DONE);
+            dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
+
+            // VBox para os campos de texto
+            VBox vBox = new VBox();
+            vBox.setSpacing(10);
+
+            // Map para armazenar os campos de texto correspondentes aos produtos
+            Map<Product, TextField[]> textFieldMap = new HashMap<>();
+
+            for (Product product : selectedProducts) {
+                Label productLabel = new Label(product.getProduct_name());
+
+                // Campo para quantidade comprada
+                TextField boughtQuantityTextField = new TextField();
+                boughtQuantityTextField.setPromptText(getProp().getString("buy.quantity"));
+                boughtQuantityTextField.setPrefWidth(570);
+                TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
+                boughtQuantityTextField.setTextFormatter(intTextFormatter);
+                addTextLimiter(boughtQuantityTextField, 7);
+
+                // Campo para preço por unidade
+                TextField pricePerUnitTextField = new TextField();
+                pricePerUnitTextField.setPromptText("Preço por unidade");
+                pricePerUnitTextField.setPrefWidth(570);
+                TextFormatter<String> decimalTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*(\\.\\d{0,2})?$"));
+                pricePerUnitTextField.setTextFormatter(decimalTextFormatter);
+                addTextLimiter(pricePerUnitTextField, 7);
+
+                vBox.getChildren().addAll(productLabel, boughtQuantityTextField, pricePerUnitTextField);
+
+                // Armazena os campos de texto no Map para posterior recuperação
+                textFieldMap.put(product, new TextField[]{boughtQuantityTextField, pricePerUnitTextField});
+            }
+
+            ScrollPane scrollPane = new ScrollPane(vBox);
+            scrollPane.setPrefSize(600, 200);
+            scrollPane.setStyle("-fx-background-color:transparent;");
+
+            dialog.getDialogPane().setContent(scrollPane);
+
+            // Processa o resultado após o usuário confirmar
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                // Processa cada produto e campo de texto
+                for (Product product : selectedProducts) {
+                    TextField[] textFields = textFieldMap.get(product);
+                    if (textFields != null && !textFields[0].getText().isEmpty() && !textFields[1].getText().isEmpty()) {
+
+                        // Convertendo os valores dos campos de texto para inteiros e decimais
+                        int boughtQuantityInt = Integer.parseInt(textFields[0].getText());
+                        float pricePerUnit = Float.parseFloat(textFields[1].getText());
+
+                        if (boughtQuantityInt > 0 && pricePerUnit > 0) { // Só registra a compra caso os valores sejam válidos
+
+                            // Cria a compra para cada produto
+                            Buy buy = new Buy();
+                            buy.setProductId(product.getProduct_id());
+                            buy.setQuantity(boughtQuantityInt);
+                            buy.setBuyPrice(boughtQuantityInt * pricePerUnit);
+                            buy.setBuyPriceUnit(pricePerUnit);
+
+                            // Adiciona a compra à lista
+                            buyList.add(buy);
+
+                            product.setStock_quantity(product.getStock_quantity() + boughtQuantityInt);
+                            productDAO.updateProduct(product);
+                        }
+                    }
+                }
+
+                for (Buy buy : buyList) {
+                    buyDAO.insertBuy(buy);
+                }// Insere as compras
+                fetchItems(); // Atualiza a tabela
+            }
+        } else {
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto antes de registrar uma compra", "");
+        }
+
+    }
 }

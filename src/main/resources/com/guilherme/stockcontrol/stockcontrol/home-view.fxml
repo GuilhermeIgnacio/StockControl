@@ -129,6 +129,21 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </HBox>
+            <Button alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onRegisterBuyClicked" prefHeight="29.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Registrar Compra" textFill="WHITE">
+               <graphic>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@assets/icons/cart-shopping-solid.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+            </Button>
             </children>
             <padding>
                 <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
