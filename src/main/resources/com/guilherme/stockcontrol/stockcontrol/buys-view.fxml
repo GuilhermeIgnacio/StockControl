@@ -26,7 +26,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                             <children>
-                                <Label text="%total.expense" textFill="GREY" />
+                                <Label text="Despesa Total" textFill="GREY" />
                                 <Label fx:id="totalExpenseLabel" text="R$0">
                                     <font>
                                         <Font size="25.0" />
@@ -39,7 +39,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                             <children>
-                                <Label text="%month.expense" textFill="GREY" />
+                                <Label text="Despesas do Mês" textFill="GREY" />
                                 <Label fx:id="monthExpenseLabel" text="R$0">
                                     <font>
                                         <Font size="25.0" />
@@ -52,7 +52,7 @@
                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                             </padding>
                             <children>
-                                <Label text="%year.expense" textFill="GREY" />
+                                <Label text="Despesas do Ano" textFill="GREY" />
                                 <Label fx:id="yearExpenseLabel" text="R$0">
                                     <font>
                                         <Font size="25.0" />
@@ -62,15 +62,15 @@
                         </VBox>
                     </children>
                 </HBox>
-                <Label text="%buys.header.label">
+                <Label text="Compras">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
                 </Label>
                 <HBox alignment="CENTER_LEFT" spacing="10.0">
                     <children>
-                        <DatePicker fx:id="fromDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="%start.date" HBox.hgrow="ALWAYS" />
-                        <DatePicker fx:id="toDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="%end.date" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="fromDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="De" HBox.hgrow="ALWAYS" />
+                        <DatePicker fx:id="toDatePicker" editable="false" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" promptText="Até" HBox.hgrow="ALWAYS" />
                         <ComboBox fx:id="productsComboBox" maxWidth="1.7976931348623157E308" onAction="#onFilterChanged" prefWidth="150.0" HBox.hgrow="ALWAYS" />
                     </children>
                 </HBox>
@@ -89,7 +89,7 @@
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
                     <children>
                         <Region HBox.hgrow="ALWAYS" />
-                        <Button alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditBuyClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="%button.edit.item" textFill="WHITE">
+                        <Button alignment="CENTER" graphicTextGap="8.0" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onEditBuyClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #0073e6; -fx-border-color: transparent;" text="Editar" textFill="WHITE">
                             <graphic>
                                 <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -104,7 +104,7 @@
                                 <Insets right="8.0" />
                             </HBox.margin>
                         </Button>
-                        <Button alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onDeleteBuyButtonClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #e40001; -fx-border-color: transparent;" text="%button.delete.item" textFill="WHITE">
+                        <Button alignment="CENTER" graphicTextGap="8.0" mnemonicParsing="false" onAction="#onDeleteBuyButtonClicked" prefHeight="29.0" prefWidth="90.0" style="-fx-background-color: #e40001; -fx-border-color: transparent;" text="Excluir" textFill="WHITE">
                             <graphic>
                                 <ImageView fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                     <image>

@@ -208,11 +208,11 @@ public class SalesController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
             if (saleIds.size() == 1) {
-                alert.setHeaderText(getProp().getString("sale.delete.header.confirmation"));
+                alert.setHeaderText("Tem certeza que deseja excluir esta venda?");
             } else {
-                alert.setHeaderText(getProp().getString("sale.delete.header.confirmation.plural"));
+                alert.setHeaderText("Tem certeza que deseja excluir estas vendas?");
             }
-            alert.setContentText(getProp().getString("sale.delete.content.confirmation"));
+            alert.setContentText("Essa ação não poderá ser desfeita.");
 
             Optional<ButtonType> result = alert.showAndWait();
 
@@ -223,7 +223,7 @@ public class SalesController implements Initializable {
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.delete.empty.list"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda para excluir.", "");
         }
 
     }
@@ -242,12 +242,12 @@ public class SalesController implements Initializable {
 
             Dialog dialog = new Dialog();
 
-            dialog.setTitle(getProp().getString("sale.edit.title"));
-            dialog.setHeaderText(getProp().getString("sale.edit.header") + selectedSale.getProductName());
+            dialog.setTitle("Editar Venda");
+            dialog.setHeaderText("Editar venda de " + selectedSale.getProductName());
             dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-            Label soldQuantityLabel = new Label(getProp().getString("sale.sold.quantity.label"));
-            Label unitPriceLabel = new Label(getProp().getString("sale.unit.price.label"));
+            Label soldQuantityLabel = new Label("Quantidade Vendida");
+            Label unitPriceLabel = new Label("Preço da Unidade");
 
             TextField soldQuantityTextField = new TextField(String.valueOf(selectedSale.getQuantity()));
             TextFormatter<String> soldQuantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
@@ -281,16 +281,16 @@ public class SalesController implements Initializable {
                     fetchSales();
                     displayIncomeSummary();
                 } else {
-                    genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("changes.not.saved.warning"), getProp().getString("empty.fields.warning"));
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
                 }
 
             }
 
 
         } else if (tableView.getSelectionModel().getSelectedItems().size() > 1) {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.edit.many.items.warning"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma venda para editar", "");
         } else if (tableView.getSelectionModel() == null || tableView.getSelectionModel().getSelectedItems().isEmpty()) {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("sale.edit.empty.list"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma venda para editar", "");
         }
     }
 }

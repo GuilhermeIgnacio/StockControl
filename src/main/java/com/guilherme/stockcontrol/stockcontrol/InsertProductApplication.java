@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
-
 /**
  * Classe que representa a aplicação de inserção de itens.
  * Estende a classe Application do JavaFX e é responsável por criar uma janela
@@ -29,15 +27,13 @@ public class InsertProductApplication extends Application {
         // Carrega o arquivo FXML que define a interface de adicionar produto
         FXMLLoader fxmlLoader = new FXMLLoader(InsertProductApplication.class.getResource("add-item-view.fxml"));
 
-        fxmlLoader.setResources(getProp());
-
         Scene scene = new Scene(fxmlLoader.load()); // Cria a cena a partir do arquivo FXML
 
         // Define o título da janela com base se um produto foi selecionado ou não
         if (selectedProduct == null) {
-            stage.setTitle(getProp().getString("insert.window.title")); // Título para inserir um novo produto
+            stage.setTitle("Adicionar Produto"); // Título para inserir um novo produto
         } else {
-            stage.setTitle(getProp().getString("edit.window.title")); // Título para editar um produto existente
+            stage.setTitle("Editar Produto"); // Título para editar um produto existente
         }
         stage.setScene(scene);
         stage.initModality(Modality.APPLICATION_MODAL);

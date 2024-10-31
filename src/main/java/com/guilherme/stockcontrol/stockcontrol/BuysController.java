@@ -164,12 +164,12 @@ public class BuysController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 
             if (selectedBuys.size() > 1) {
-                alert.setHeaderText(getProp().getString("buy.delete.header.message.plural"));
+                alert.setHeaderText("Tem certeza que deseja excluir estas compras?");
             } else if (selectedBuys.size() == 1) {
-                alert.setHeaderText(getProp().getString("buy.delete.header.message"));
+                alert.setHeaderText("Tem certeza que deseja excluir esta compra?");
             }
 
-            alert.setContentText(getProp().getString("buy.delete.content.message"));
+            alert.setContentText("Essa ação não poderá ser desfeita.");
 
             Optional<ButtonType> result = alert.showAndWait();
 
@@ -180,7 +180,7 @@ public class BuysController implements Initializable {
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("empty.list.warning"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos uma compra antes de excluir.", "");
         }
 
     }
@@ -196,17 +196,17 @@ public class BuysController implements Initializable {
             BuyDetails selectedBuy = (BuyDetails) tableView.getSelectionModel().getSelectedItem();
 
             Dialog dialog = new Dialog();
-            dialog.setTitle(getProp().getString("buy.edit.title"));
-            dialog.setHeaderText(getProp().getString("buy.edit.header") + selectedBuy.getProductName());
+            dialog.setTitle("Editar Compra");
+            dialog.setHeaderText("Editar compra de ");
 
-            Label quantityLabel = new Label(getProp().getString("buy.quantity.label"));
+            Label quantityLabel = new Label("Quantidade");
 
             TextField quantityTextField = new TextField(String.valueOf(selectedBuy.getQuantity()));
             TextFormatter<String> quantityFormatter = new TextFormatter<>(getChangeUnaryOperator("^?\\d*$"));
             quantityTextField.setTextFormatter(quantityFormatter);
             addTextLimiter(quantityTextField, 7);
 
-            Label buyPriceUnitLabel = new Label(getProp().getString("buy.price.unit.label"));
+            Label buyPriceUnitLabel = new Label("Preço por Unidade");
 
             TextField buyPriceUnityTextField = new TextField();
             TextFormatter<String> buyPriceUnityFormatter = new TextFormatter<>(getChangeUnaryOperator("\\d*(\\.\\d*)?"));
@@ -242,12 +242,12 @@ public class BuysController implements Initializable {
                     fetchBuys();
                     displayExpenseSummary();
                 } else {
-                    genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("changes.not.saved.warning"), getProp().getString("empty.fields.warning"));
+                    genericAlertDialog(Alert.AlertType.INFORMATION, "", "As alterações não foram salvas.", "Certifique-se de preencher todos os campos e tente novamente.");
                 }
             }
 
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("buy.edit.many.items.warning"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione apenas uma compra para editar", "");
         }
 
     }

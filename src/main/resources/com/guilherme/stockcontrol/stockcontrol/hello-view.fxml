@@ -16,17 +16,17 @@
                         <Image url="@assets/img/logo-placeholder.jpg" />
                     </image>
                 </ImageView>
-                <Button mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%home.nav.btn" textFill="WHITE">
+                <Button mnemonicParsing="false" onAction="#onHomeBtnClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="Início" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
                 </Button>
-            <Button layoutX="10.0" layoutY="212.0" mnemonicParsing="false" onAction="#onBuysButtonClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%buys.header.label" textFill="WHITE">
+            <Button layoutX="10.0" layoutY="212.0" mnemonicParsing="false" onAction="#onBuysButtonClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="Compras" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>
             </Button>
-            <Button layoutX="10.0" layoutY="212.0" mnemonicParsing="false" onAction="#onSalesButtonClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="%sales.nav.btn" textFill="WHITE">
+            <Button layoutX="10.0" layoutY="212.0" mnemonicParsing="false" onAction="#onSalesButtonClicked" prefHeight="46.0" prefWidth="200.0" style="-fx-background-color: #0073e6;" text="Vendas" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="16.0" />
                </font>

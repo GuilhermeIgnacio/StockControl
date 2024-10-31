@@ -236,7 +236,7 @@ public class HomeController implements Initializable {
         } else {
             // Exibe um alerta se mais de um item estiver selecionado
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText(getProp().getString("edit.alert.dialog.content"));
+            alert.setContentText("Selecione um único produto, só é possível editar um produto por vez");
 
             alert.showAndWait();
         }
@@ -255,17 +255,17 @@ public class HomeController implements Initializable {
             ObservableList<Product> selectedProducts = productTableView.getSelectionModel().getSelectedItems();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(getProp().getString("delete.confirm.message"));
+            alert.setTitle("Confirmar Exclusão de Produto");
 
             if (selectedProducts.size() <= 1) {
-                alert.setHeaderText(getProp().getString("delete.warning"));
+                alert.setHeaderText("Tem Certeza Que Deseja Excluir Este Produto? Essa Ação Não Poderá Ser Desfeita");
             } else {
-                alert.setHeaderText(getProp().getString("delete.warning.plural"));
+                alert.setHeaderText("Tem Certeza Que Deseja Excluir Estes Produtos? Essa Ação Não Poderá Ser Desfeita");
             }
-            alert.setContentText(getProp().getString("delete.content.warning"));
+            alert.setContentText("Todas as informações relacionadas a ele, incluindo registros de compras e vendas, também serão excluídas");
 
-            ButtonType buttonTypeOne = new ButtonType(getProp().getString("delete.confirm.button"));
-            ButtonType buttonTypeCancel = new ButtonType(getProp().getString("delete.cancel.button"), ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType buttonTypeOne = new ButtonType("Confirmar");
+            ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);
 
@@ -281,7 +281,7 @@ public class HomeController implements Initializable {
 
             }
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("delete.empty.list"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto para excluir.", "");
         }
     }
 
@@ -308,7 +308,6 @@ public class HomeController implements Initializable {
 
                 // Carrega a interface de detalhes do item
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("item-detail-view.fxml"));
-                loader.setResources(getProp());
 
                 // Configura a nova janela de detalhes do item
                 Stage stage = new Stage(StageStyle.DECORATED);
@@ -345,10 +344,10 @@ public class HomeController implements Initializable {
 
             // Cria uma janela de diálogo para inserir as quantidades vendidas
             Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setHeaderText(getProp().getString("register.sale.header.text"));
+            dialog.setHeaderText("Registrar Venda");
 
             // Configura os botões de confirmação e cancelamento
-            ButtonType confirmButton = new ButtonType(getProp().getString("register.sale.confirm.button"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType confirmButton = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
             // VBox para os campos de texto
@@ -362,7 +361,7 @@ public class HomeController implements Initializable {
                 Label productLabel = new Label(product.getProduct_name());
 
                 TextField soldQuantityTextField = new TextField();
-                soldQuantityTextField.setPromptText(getProp().getString("register.sale.prompt.text"));
+                soldQuantityTextField.setPromptText("Quantidade Vendida");
                 soldQuantityTextField.setPrefWidth(570);
 
                 // Formata o campo de texto para aceitar apenas números inteiros
@@ -408,7 +407,7 @@ public class HomeController implements Initializable {
                                 product.setStock_quantity(product.getStock_quantity() - soldQuantityInt);
                                 productDAO.updateProduct(product);
                             } else {
-                                genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("register.sale.error") + product.getProduct_name(), getProp().getString("register.sale.unavailable.quantity"));
+                                genericAlertDialog(Alert.AlertType.INFORMATION, "", "Erro ao Registrar Venda de " + product.getProduct_name(), "A quantidade informada para venda é maior do que a disponível no estoque.");
                             }
                         }
                     }
@@ -418,7 +417,7 @@ public class HomeController implements Initializable {
                 fetchItems(); // Atualiza a tabela
             }
         } else {
-            genericAlertDialog(Alert.AlertType.INFORMATION, "", getProp().getString("register.sale.empty.list"), "");
+            genericAlertDialog(Alert.AlertType.INFORMATION, "", "Selecione ao menos um produto para registrar uma venda", "");
         }
 
 
@@ -436,7 +435,7 @@ public class HomeController implements Initializable {
         Alert alert;
         if (!lowStockProducts.isEmpty()) {
             alert = new Alert(Alert.AlertType.WARNING); // Alerta de aviso
-            alert.setHeaderText(getProp().getString("alert.window.title"));
+            alert.setHeaderText("Produtos Em Baixa Quantidade no Estoque");
 
             VBox vBox = new VBox();
             vBox.setSpacing(5);
@@ -453,7 +452,7 @@ public class HomeController implements Initializable {
 
         } else {
             alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText(getProp().getString("alert.window.title.no.low.stock"));
+            alert.setHeaderText("Nenhum Alerta");
         }
 
         alert.show();
@@ -487,7 +486,7 @@ public class HomeController implements Initializable {
         if (!lowStockProducts.isEmpty() && !dialogShown) { // Verifica se o alerta já foi mostrado
 
             Alert alert = new Alert(Alert.AlertType.WARNING); // Alerta de aviso
-            alert.setHeaderText(getProp().getString("alert.window.title"));
+            alert.setHeaderText("Produtos Em Baixa Quantidade no Estoque");
 
             VBox vBox = new VBox();
             vBox.setSpacing(5);
@@ -518,11 +517,11 @@ public class HomeController implements Initializable {
 
             // Cria uma janela de diálogo para inserir a quantidade comprada e o preço por unidade
             Dialog<ButtonType> dialog = new Dialog<>();
-            dialog.setTitle(getProp().getString("register.buy"));
-            dialog.setHeaderText(getProp().getString("register.buy"));
+            dialog.setTitle("Registrar Compra");
+            dialog.setHeaderText("Registrar Compra");
 
             // Configura os botões de confirmação e cancelamento
-            ButtonType confirmButton = new ButtonType(getProp().getString("confirm.buy"), ButtonBar.ButtonData.OK_DONE);
+            ButtonType confirmButton = new ButtonType("Confirmar Compra", ButtonBar.ButtonData.OK_DONE);
             dialog.getDialogPane().getButtonTypes().addAll(confirmButton, ButtonType.CANCEL);
 
             // VBox para os campos de texto
@@ -537,7 +536,7 @@ public class HomeController implements Initializable {
 
                 // Campo para quantidade comprada
                 TextField boughtQuantityTextField = new TextField();
-                boughtQuantityTextField.setPromptText(getProp().getString("buy.quantity"));
+                boughtQuantityTextField.setPromptText("Quantidade Comprada");
                 boughtQuantityTextField.setPrefWidth(570);
                 TextFormatter<String> intTextFormatter = new TextFormatter<>(getChangeUnaryOperator("^\\d*$"));
                 boughtQuantityTextField.setTextFormatter(intTextFormatter);

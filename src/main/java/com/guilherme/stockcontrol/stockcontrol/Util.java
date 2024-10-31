@@ -19,7 +19,7 @@ import java.util.function.UnaryOperator;
 public class Util {
 
     // Metodo para carregar o arquivo de propriedades (strings.properties) para internacionalização (i18n)
-    public static ResourceBundle getProp() {
+    /*public static ResourceBundle getProp() {
         FileInputStream file;
         try {
             file = new FileInputStream("src/main/resources/com/guilherme/stockcontrol/stockcontrol/strings.properties");
@@ -27,7 +27,7 @@ public class Util {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     // Metodo para limitar o número de caracteres de um TextField
     public static void addTextLimiter(final TextField textField, final int maxLength) {
@@ -64,7 +64,6 @@ public class Util {
     // Metodo para carregar um arquivo FXML em um VBox específico
     public static void loadContent(String fxml, VBox contentArea) throws Exception {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(Util.class.getResource(fxml)));
-        loader.setResources(getProp());
         Parent newContent = loader.load();
         contentArea.getChildren().setAll(newContent);
     }

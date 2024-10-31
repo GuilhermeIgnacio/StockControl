@@ -104,7 +104,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.sales.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Vendas", exception.getMessage()));
 
             return saleProducts;
         } finally {
@@ -157,7 +157,7 @@ public class SalesDAO extends StockDAO {
                     rollbackEx.printStackTrace();  // Adiciona um log mais apropriado aqui
                 }
             }
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.sale.error"), e.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Inserir Venda(s)", e.getMessage()));
             e.printStackTrace();
         } finally {
             closeConnection(conn, pstm, null);
@@ -266,7 +266,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.total.sales"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Total De Vendas Do Produto", exception.getMessage()));
 
             // Retorna o total, que será 0 em caso de erro
             return total;
@@ -314,7 +314,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.product.sale.amount"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Total Vendido", exception.getMessage()));
 
             // Retorna o valor total, que será 0 em caso de erro
             return saleAmount;
@@ -357,7 +357,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.total.income"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Rendimento Total", exception.getMessage()));
 
             // Retorna o valor total, que será 0 em caso de erro
             return total;
@@ -411,7 +411,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.month.income"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Renda Mensal", exception.getMessage()));
             return monthIncome; // Retorna o valor total (0 em caso de erro)
         } finally {
             // Fecha a conexão, a prepared statement e o result set para liberar os recursos
@@ -463,7 +463,7 @@ public class SalesDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.year.income"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Renda Anual", exception.getMessage()));
             return yearIncome; // Retorna o valor total (0 em caso de erro)
         } finally {
             // Fecha a conexão, a prepared statement e o result set para liberar os recursos

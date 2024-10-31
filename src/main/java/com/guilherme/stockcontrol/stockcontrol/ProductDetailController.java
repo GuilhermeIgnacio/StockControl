@@ -48,7 +48,7 @@ public class ProductDetailController {
 
         // Calcula e exibe a margem de lucro do produto
         float profitMargin = ((product.getRetail_price() - product.getPurchase_price()) / product.getRetail_price()) * 100f;
-        String formattedMarginProfit = String.format(getProp().getString("detail.per.unit"), profitMargin, currencyFormatter.format(product.getRetail_price() - product.getPurchase_price()));
+        String formattedMarginProfit = String.format("%.1f%% (%s por unidade)", profitMargin, currencyFormatter.format(product.getRetail_price() - product.getPurchase_price()));
         detailProfitMarginLabel.setText(formattedMarginProfit);
 
         // Exibe o valor total em vendas do produto

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.guilherme.stockcontrol.stockcontrol.Util.genericAlertDialog;
-import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
 
 /**
  * Classe DAO responsável pelas operações de banco de dados relacionadas aos produtos (products) no sistema de controle de estoque.
@@ -77,7 +76,7 @@ public class ProductDAO extends StockDAO {
             RuntimeException exception = new RuntimeException(e);
 
             // Exibe um alerta de erro para o usuário em caso de falha ao buscar os produtos
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.products.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Produtos", exception.getMessage()));
 
             // Retorna a lista de produtos até o momento, que pode estar vazia
             return items;
@@ -118,7 +117,7 @@ public class ProductDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("insert.product.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Inserir Produto", exception.getMessage()));
         } finally {
             // Executa a atualização no banco de dados
             closeConnection(conn, pstm, null);
@@ -160,7 +159,7 @@ public class ProductDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("update.product.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Atualizar O Produto", exception.getMessage()));
         } finally {
             // Executa a atualização no banco de dados
             closeConnection(conn, pstm, null);
@@ -208,7 +207,7 @@ public class ProductDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("delete.product.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Deletar O Produto", exception.getMessage()));
         } finally {
             // Fecha a conexão e a instrução para liberar os recursos
             closeConnection(conn, pstm, null);

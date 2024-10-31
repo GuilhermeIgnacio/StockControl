@@ -1,10 +1,13 @@
 package com.guilherme.stockcontrol.stockcontrol.dao;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
+import static com.guilherme.stockcontrol.stockcontrol.Util.genericAlertDialog;
 
 /**
  * Classe responsável pelo acesso aos dados relacionados ao estoque (DAO - Data Access Object).
@@ -44,7 +47,8 @@ public abstract class StockDAO {
 
         } catch (Exception e) {
             // Em caso de erro ao fechar as conexões, imprime a mensagem de erro
-            System.out.println(getProp().getString("close.connection.error") + e);
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Fechar Conexões Com O Banco", runtimeException.getMessage());
         }
     }
 

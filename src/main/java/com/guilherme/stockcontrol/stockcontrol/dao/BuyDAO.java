@@ -103,7 +103,7 @@ public class BuyDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", getProp().getString("fetch.sales.error"), exception.getMessage()));
+            Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Buscar Vendas", exception.getMessage()));
 
             return buyDetailsList;
         } finally {
@@ -202,7 +202,7 @@ public class BuyDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException exception = new RuntimeException(e);
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao excluir compras(s)", exception.getMessage());
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao excluir compra(s)", exception.getMessage());
         } finally {
             closeConnection(conn, pstm, null);
         }
@@ -236,7 +236,7 @@ public class BuyDAO extends StockDAO {
 
         } catch (Exception e) {
             RuntimeException runtimeException = new RuntimeException(e);
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total", runtimeException.getMessage());
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Buscar Gasto Total", runtimeException.getMessage());
             return totalExpense;
         } finally {
             closeConnection(conn, pstm, rs);
@@ -279,7 +279,7 @@ public class BuyDAO extends StockDAO {
 
         } catch (Exception e) {
             RuntimeException runtimeException = new RuntimeException(e);
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total do mês", runtimeException.getMessage());
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Buscar Gasto Total do Mês", runtimeException.getMessage());
             return monthExpense;
         } finally {
             closeConnection(conn, pstm, rs);
@@ -319,7 +319,7 @@ public class BuyDAO extends StockDAO {
         } catch (Exception e) {
             e.printStackTrace();
             RuntimeException runtimeException = new RuntimeException(e);
-            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao buscar gasto total do ano", runtimeException.getMessage());
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Buscar Gasto Total do Ano", runtimeException.getMessage());
             return yearExpense;
 
         } finally {

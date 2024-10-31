@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
-
 /**
  * A classe ConnectionFactory é responsável por criar e gerenciar a conexão com o banco de dados MySQL.
  * As credenciais de conexão, como nome de usuário, senha e URL do banco de dados, são lidas de um arquivo de propriedades.
@@ -13,13 +11,13 @@ import static com.guilherme.stockcontrol.stockcontrol.Util.getProp;
 public class ConnectionFactory {
 
     // Nome de usuário para a conexão com o banco de dados, lido de um arquivo de propriedades.
-    private static final String USERNAME = getProp().getString("sql.username");
+    private static final String USERNAME = "root";
 
     // Senha para a conexão com o banco de dados, lida de um arquivo de propriedades.
-    private static final String PASSWORD = getProp().getString("sql.password");
+    private static final String PASSWORD = "";
 
     // URL do banco de dados, lida de um arquivo de propriedades.
-    private static final String DATABASE_URL = getProp().getString("sql.database.url");
+    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/StockDb";
 
     /**
      * Cria e retorna uma conexão com o banco de dados MySQL usando o DriverManager.
