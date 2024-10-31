@@ -17,7 +17,7 @@ public class ConnectionFactory {
     private static final String PASSWORD = "";
 
     // URL do banco de dados, lida de um arquivo de propriedades.
-    private static final String DATABASE_URL = "jdbc:mysql://localhost:3306/StockDb";
+    private static final String DATABASE_URL = "jdbc:mariadb://localhost:3306/StockDb";
 
     /**
      * Cria e retorna uma conexão com o banco de dados MySQL usando o DriverManager.

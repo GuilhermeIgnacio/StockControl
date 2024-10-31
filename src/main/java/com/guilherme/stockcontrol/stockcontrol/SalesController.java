@@ -116,7 +116,7 @@ public class SalesController implements Initializable {
         priceUnitColumn.setCellValueFactory(new PropertyValueFactory<>("priceUnit"));
 
         // Formata a coluna da data da venda
-        saleDateColumn.setCellFactory(_ -> new TableCell<>() {
+        saleDateColumn.setCellFactory(foo -> new TableCell<>() {
 
             @Override
             protected void updateItem(LocalDateTime item, boolean empty) {
@@ -130,7 +130,7 @@ public class SalesController implements Initializable {
         });
 
         // Formata a coluna do preço da venda com o formato de moeda
-        salePriceColumn.setCellFactory(_ -> new TableCell<>() {
+        salePriceColumn.setCellFactory(foo -> new TableCell<>() {
             @Override
             protected void updateItem(Float item, boolean empty) {
                 super.updateItem(item, empty);
@@ -142,7 +142,7 @@ public class SalesController implements Initializable {
             }
         });
 
-        priceUnitColumn.setCellFactory(_ -> new TableCell<>() {
+        priceUnitColumn.setCellFactory(foo -> new TableCell<>() {
             @Override
             protected void updateItem(Float item, boolean empty) {
                 super.updateItem(item, empty);
