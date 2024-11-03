@@ -12,8 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -264,7 +262,7 @@ public class HomeController implements Initializable {
             }
             alert.setContentText("Todas as informações relacionadas a ele, incluindo registros de compras e vendas, também serão excluídas");
 
-            ButtonType buttonTypeOne = new ButtonType("Confirmar");
+            ButtonType buttonTypeOne = new ButtonType("Confirmar", ButtonBar.ButtonData.OK_DONE);
             ButtonType buttonTypeCancel = new ButtonType("Cancelar", ButtonBar.ButtonData.CANCEL_CLOSE);
 
             alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeCancel);

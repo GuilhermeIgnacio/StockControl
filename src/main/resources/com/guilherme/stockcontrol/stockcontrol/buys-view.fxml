@@ -79,11 +79,11 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="buyDateColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Dia da Compra" />
-                        <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Nome do Produto" />
-                        <TableColumn fx:id="buyQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Quantidade Comprada" />
-                        <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Preço por Unidade" />
-                        <TableColumn fx:id="buyPriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Preço da Compra" />
+                        <TableColumn fx:id="buyDateColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Dia da &#10;Compra" />
+                        <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Nome do &#10;Produto" />
+                        <TableColumn fx:id="buyQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Quantidade &#10;Comprada" />
+                        <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Preço por &#10;Unidade" />
+                        <TableColumn fx:id="buyPriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Preço da &#10;Compra" />
                     </columns>
                 </TableView>
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">

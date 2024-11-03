@@ -79,11 +79,11 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                     <columns>
-                        <TableColumn fx:id="saleDateColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Data da\n Venda" />
-                        <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Nome do\n Produto" />
-                  <TableColumn fx:id="soldQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Quantidade\n Vendida" />
-                  <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Valor por\n Unidade" />
-                        <TableColumn fx:id="salePriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Valor da\n Venda" />
+                        <TableColumn fx:id="saleDateColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Data da&#10; Venda" />
+                        <TableColumn fx:id="productNameColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Nome do&#10; Produto" />
+                  <TableColumn fx:id="soldQuantityColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Quantidade&#10; Vendida" />
+                  <TableColumn fx:id="priceUnitColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Valor por&#10; Unidade" />
+                        <TableColumn fx:id="salePriceColumn" prefWidth="75.0" style="-fx-alignment: BASELINE_CENTER;" text="Valor da&#10; Venda" />
                     </columns>
                 </TableView>
                 <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0">
