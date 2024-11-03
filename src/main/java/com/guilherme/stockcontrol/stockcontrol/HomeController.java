@@ -585,6 +585,7 @@ public class HomeController implements Initializable {
                             buyList.add(buy);
 
                             product.setStock_quantity(product.getStock_quantity() + boughtQuantityInt);
+                            product.setPurchase_price(pricePerUnit);
                             productDAO.updateProduct(product);
                         }
                     }
