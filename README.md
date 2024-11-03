@@ -1,4 +1,4 @@
-# Stock Control
+# StockControl
 
 StockControl é uma aplicação desktop desenvolvida em Java, utilizando JavaFX, com o objetivo de gerenciar o estoque de produtos em um ambiente de vendas e compras. O sistema permite registrar vendas e compras, monitorar o saldo de produtos em estoque, exibir alertas de baixo estoque, além de manter registros de vendas mensais para análise. Este projeto é parte de uma extensão acadêmica do curso de Ciência da Computação.
 
@@ -31,10 +31,12 @@ O sistema utiliza três tabelas principais no banco de dados:
 
 ## Instalação
 
+### Método 1: Desenvolvimento Local
+
 1. Clone o repositório:
     
     ```bash
-    git clone https://github.com/GuilhermeIgnacio/StockControl
+    git clone <https://github.com/GuilhermeIgnacio/StockControl.git>
     ```
     
 2. Configure o banco de dados MySQL
@@ -99,7 +101,14 @@ O sistema utiliza três tabelas principais no banco de dados:
 4. Instale os módulos faltantes
     - InteliJ: pressione CTRL duas vezes e execute o comando `mvn install`
     - Outras IDEs: Este projeto não foi testado em outras IDEs e talvez necessite de configurações adicionais
-
 5. Compile e excute o projeto
+
+### Método 2: Aplicativo
+
+1. Acesse a [página de releases no GitHub](https://www.github.com/GuilhermeIgnacio/StockControl/releases/latest) e faça o download do arquivo `app.zip`.
+2. Após o download, descompacte o arquivo `app.zip` em uma pasta de sua escolha.
+3. Navegue até a pasta descompactada e acesse a subpasta `bin`.
+4. Dentro da pasta `bin`, procure pelo arquivo `app.bat`.
+5. Dê um duplo clique no arquivo `app.bat` para iniciar o aplicativo.
 
 ---
