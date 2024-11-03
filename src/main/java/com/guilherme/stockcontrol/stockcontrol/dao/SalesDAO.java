@@ -159,8 +159,6 @@ public class SalesDAO extends StockDAO {
             }
             Platform.runLater(() -> genericAlertDialog(Alert.AlertType.ERROR, "", "Erro Ao Inserir Venda(s)", e.getMessage()));
             e.printStackTrace();
-        } finally {
-            closeConnection(conn, pstm, null);
         }
     }
 
