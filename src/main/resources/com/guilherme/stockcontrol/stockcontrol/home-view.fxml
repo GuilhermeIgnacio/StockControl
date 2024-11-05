@@ -72,11 +72,11 @@
                         <TableColumn fx:id="productIdTableColumn" prefWidth="75.0" text="Id" />
                         <TableColumn fx:id="productNameTableColumn" prefWidth="75.0" text="Nome" />
                         <TableColumn fx:id="productDescriptionTableColumn" prefWidth="75.0" text="Descrição" />
-                        <TableColumn fx:id="stockQuantityTableColumn" prefWidth="75.0" text="Quantidade no Estoque" />
-                        <TableColumn fx:id="purchasePriceTableColumn" prefWidth="75.0" text="Preço de Compra" />
-                        <TableColumn fx:id="retailPriceTableColumn" prefWidth="75.0" text="Preço de Venda" />
-                        <TableColumn fx:id="createdAtTableColumn" prefWidth="75.0" text="Data de Criação" />
-                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="75.0" text="Data de Atualização" />
+                        <TableColumn fx:id="stockQuantityTableColumn" prefWidth="75.0" text="Quantidade no&#10; Estoque" />
+                        <TableColumn fx:id="purchasePriceTableColumn" prefWidth="75.0" text="Preço de&#10; Compra" />
+                        <TableColumn fx:id="retailPriceTableColumn" prefWidth="75.0" text="Preço de&#10; Venda" />
+                        <TableColumn fx:id="createdAtTableColumn" prefWidth="75.0" text="Data de &#10;Criação" />
+                        <TableColumn fx:id="updatedAtTableColumn" prefWidth="75.0" text="  Última&#10;Atualização" />
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

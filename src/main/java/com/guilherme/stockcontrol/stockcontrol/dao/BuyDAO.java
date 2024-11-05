@@ -327,4 +327,87 @@ public class BuyDAO extends StockDAO {
         }
 
     }
+
+    /**
+     * Retorna o total de unidades compradas para um produto específico.
+     *
+     * Este método consulta o banco de dados e calcula a soma das quantidades compradas
+     * para o produto com o ID fornecido. O total é obtido através da tabela 'buy'
+     * e, caso ocorra uma exceção durante a execução, uma mensagem de erro é exibida.
+     *
+     * @param productId O ID do produto para o qual o total de unidades compradas será calculado.
+     * @return O total de unidades compradas para o produto especificado. Retorna 0 se ocorrer um erro.
+     */
+    public int getTotalUnitPurchased(int productId) {
+        int total = 0;
+        String sql = "SELECT SUM(quantity) from buy where product_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+
+            pstm.setInt(1, productId);
+
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getInt(1);
+            }
+
+            return total;
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Buscar Total de Unidades Compradas", runtimeException.getMessage());
+            return total;
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+
+    }
+
+    /**
+     * Retorna o valor total gasto em compras para um produto específico.
+     *
+     * Este método consulta o banco de dados e calcula a soma dos valores de compra
+     * para o produto com o ID fornecido. O valor total é obtido através da tabela 'buy'
+     * e, caso ocorra uma exceção durante a execução, uma mensagem de erro é exibida.
+     *
+     * @param productId O ID do produto para o qual o total de compras será calculado em moeda.
+     * @return O valor total gasto nas compras do produto especificado em formato de moeda. Retorna 0 se ocorrer um erro.
+     */
+    public float getTotalPurchasedInCurrency(int productId) {
+        float total = 0;
+        String sql = "SELECT SUM(buy_price) FROM buy WHERE product_id = ?";
+
+        Connection conn = null;
+        PreparedStatement pstm = null;
+        ResultSet rs = null;
+
+        try {
+            conn = ConnectionFactory.createConnectionToMySql();
+            pstm = conn.prepareStatement(sql);
+            pstm.setInt(1, productId);
+
+            rs = pstm.executeQuery();
+
+            if (rs.next()) {
+                total = rs.getFloat(1);
+            }
+
+            return total;
+
+        } catch (Exception e) {
+            RuntimeException runtimeException = new RuntimeException(e);
+            genericAlertDialog(Alert.AlertType.ERROR, "", "Erro ao Buscar Total Comprado", runtimeException.getMessage());
+            return total;
+        } finally {
+            closeConnection(conn, pstm, rs);
+        }
+
+    }
 }
