@@ -2,7 +2,7 @@ package com.guilherme.stockcontrol.stockcontrol.dao;
 
 import com.guilherme.stockcontrol.stockcontrol.factory.ConnectionFactory;
 import com.guilherme.stockcontrol.stockcontrol.model.Item;
-import com.guilherme.stockcontrol.stockcontrol.model.Sale;
+import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -202,9 +202,17 @@ public class StockDAO {
 
     }
 
-    public List<Sale> fetchSales(){
-        String sql = "SELECT * FROM sales";
-        List<Sale> sales = new  ArrayList<>();
+    public List<MonthlySales> fetchSales() {
+
+        String sql = "SELECT DATE_FORMAT(s.sale_date, '%Y-%m') AS sale_month, " +
+                "COUNT(s.id) AS total_sales, i.itemName, s.product_id " +
+                "FROM sales s " +
+                "JOIN items i ON s.product_id = i.id " +
+                "GROUP BY sale_month, s.product_id, i.itemName " +
+                "ORDER BY sale_month, i.itemName;";
+
+
+        List<MonthlySales> sales = new ArrayList<>();
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -216,16 +224,17 @@ public class StockDAO {
             resultSet = pstm.executeQuery();
 
             while (resultSet.next()) {
-                Sale sale = new Sale();
+                MonthlySales monthlySales = new MonthlySales();
 
-                sale.setId(resultSet.getInt("id"));
-                sale.setProduct_id(resultSet.getInt("product_id"));
-                sale.setSaleDate(resultSet.getDate("sale_date"));
+                monthlySales.setMonth(resultSet.getString("sale_month"));
+                monthlySales.setTotalSales(resultSet.getInt("total_sales"));
+                monthlySales.setItemName(resultSet.getString("itemName"));
+                monthlySales.setProductId(resultSet.getInt("product_id"));
 
-               sales.add(sale);
+                sales.add(monthlySales);
             }
 
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

@@ -1,11 +1,12 @@
 package com.guilherme.stockcontrol.stockcontrol;
 
 import com.guilherme.stockcontrol.stockcontrol.dao.StockDAO;
-import com.guilherme.stockcontrol.stockcontrol.model.Item;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.guilherme.stockcontrol.stockcontrol.model.MonthlySales;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
@@ -19,6 +20,7 @@ public class StatisticsController implements Initializable {
     public BorderPane borderPane;
     StockDAO stockDAO = new StockDAO();
 
+    /*
     public XYChart.Series<String, Number> fetchItems() {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
 
@@ -28,7 +30,20 @@ public class StatisticsController implements Initializable {
             series.getData().add(new XYChart.Data<>(item.getItemName(), item.getItemSales()));
         }
 
-//        series.setName("Products Sales"); Legend
+        return series;
+    }
+     */
+
+    public XYChart.Series<String, Number> fetchMonthlySales() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        List<MonthlySales> monthlySales = stockDAO.fetchSales();
+
+        for (MonthlySales sale : monthlySales) {
+            String label = sale.getItemName() + " - " + sale.getFormattedMonth();
+            series.getData().add(new XYChart.Data<>(label, sale.getTotalSales()));
+        }
+
         return series;
     }
 
@@ -44,7 +59,7 @@ public class StatisticsController implements Initializable {
         BarChart<String, Number> barChart = new BarChart<>(xAxis, yAxis);
         //barChart.setTitle("Chart Title");
 
-        XYChart.Series<String, Number> series = fetchItems();
+        XYChart.Series<String, Number> series = fetchMonthlySales();
 
         barChart.getData().add(series);
         barChart.setLegendVisible(false);
